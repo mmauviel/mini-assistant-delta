@@ -62,7 +62,7 @@ def test_taf_signale_orage_plafond_bas_et_visibilite():
 
 
 def test_sortie_complete():
-    out = imprevu.main("MCO", TAF, FAA)
+    out = imprevu.main("MCO", TAF, FAA, langue="fr")
     assert out["imprevu"].startswith("TODAY'S EVENT at MCO") and "ground stop" in out["imprevu"]
     assert "arrêt au sol FAA" in out["resume"] and "orage" in out["resume"]
 
@@ -84,7 +84,7 @@ def test_heure_iso():
 
 
 def test_autre_mois_que_aujourd_hui_n_est_pas_transmis():
-    out = imprevu.main("MCO", TAF, FAA, 7, "2026-11-06")
+    out = imprevu.main("MCO", TAF, FAA, 7, "2026-11-06", langue="fr")
     assert out["imprevu"].startswith("TODAY'S EVENT: not applicable") and "ground stop" not in out["imprevu"]
     assert "arrêt au sol FAA" in out["resume"] and "Non transmis" in out["resume"]
     assert "ground stop" in imprevu.main("MCO", TAF, FAA, 11, "2026-11-06")["imprevu"]
@@ -122,7 +122,7 @@ def test_prevision_7_jours():
 
 def test_alerte_pour_le_mail():
     assert imprevu.main("ATL", CALME_TAF, SANS_FAA)["alerte"] == "non"
-    out = imprevu.main("ATL", CALME_TAF, SANS_FAA, prevision=SEMAINE)
+    out = imprevu.main("ATL", CALME_TAF, SANS_FAA, prevision=SEMAINE, langue="fr")
     assert out["alerte"] == "oui" and "Next 7 days" in out["imprevu"] and "7 prochains jours" in out["resume"]
     assert imprevu.main("MCO", TAF, FAA)["alerte"] == "oui"
     calme_7j = json.dumps({"properties": {"periods": [{"name": "Today", "shortForecast": "Sunny"}]}})
@@ -140,7 +140,8 @@ def test_resume_en_anglais_pour_le_mail():
     assert out["resume"].startswith("Live events at ATL")
     assert "Next 7 days" in out["resume"] and "Adapt the suggestions" not in out["resume"]
     assert "TODAY'S EVENT" not in out["resume"] and "prochains" not in out["resume"]
-    assert out["imprevu"] == imprevu.main("ATL", CALME_TAF, SANS_FAA, prevision=SEMAINE)["imprevu"]
+    assert out["imprevu"] == imprevu.main("ATL", CALME_TAF, SANS_FAA, prevision=SEMAINE, langue="fr")["imprevu"]
     autre = imprevu.main("MCO", TAF, FAA, mois=7, aujourd_hui="2026-11-06", langue="en")
     assert "Not sent to the AI" in autre["resume"] and "juillet" not in autre["resume"]
-    assert imprevu.main("ATL", CALME_TAF, SANS_FAA)["resume"].startswith("Imprévus à ATL")
+    assert imprevu.main("ATL", CALME_TAF, SANS_FAA)["resume"].startswith("Live events at ATL")  # anglais par défaut
+    assert imprevu.main("ATL", CALME_TAF, SANS_FAA, langue="fr")["resume"].startswith("Imprévus à ATL")

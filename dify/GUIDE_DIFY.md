@@ -10,7 +10,7 @@ Trois workflows, tous dans https://cloud.dify.ai :
 
 Pourquoi ces délais : le programme des vols est presque définitif environ 100 jours avant ; le personnel au sol de l'été se recrute 3 à 4 mois avant ; le dossier des créneaux FAA de l'été est à rendre en octobre ; les plannings mensuels des pilotes sortent vers le 15 du mois précédent.
 
-Les noms sont donnés en français, avec l'anglais entre parenthèses. Remplacer `<compte>` par ton nom de compte GitHub.
+Tout ce que voit le manager (fiche, note de l'IA, alertes, mails) sort en **anglais** par défaut ; pour le français, mettre `langue` = `fr`. Les noms des réglages sont donnés en français, avec l'anglais entre parenthèses. Remplacer `<compte>` par ton nom de compte GitHub.
 
 ## 1. Une seule fois : les réglages
 
@@ -30,7 +30,7 @@ Les fichiers font environ 540 Ko et 350 Ko, sous la limite des requêtes HTTP de
 
 On repart du workflow existant (voir le mode d'emploi du zip), avec deux changements.
 
-1. **Début** : garder `aeroport`, `mois` et `langue`. Supprimer `fichier_bts` et `fichier_suivi`. `mois` peut valoir 0 : le bilan annuel des 12 mois.
+1. **Début** : garder `aeroport`, `mois` et `langue` (`en` pour l'anglais). Supprimer `fichier_bts` et `fichier_suivi`. `mois` peut valoir 0 : le bilan annuel des 12 mois.
 2. Remplacer les deux **Extracteurs de documents** par deux **Requêtes HTTP** (HTTP Request), méthode GET, avec les adresses de la partie 2. Dans **Gestion des erreurs** (Error Handling), laisser « Aucune » : si GitHub ne répond pas, mieux vaut un arrêt qu'une fiche vide.
 3. **Code « calcul »** : `bts` = `HTTP BTS / body`, `suivi` = `HTTP suivi / body`. Le reste ne change pas.
 4. **Mettre le code à jour** : coller dans les nœuds Code les versions de ce dossier (`noeud_code_calcul.py`, `noeud_code_imprevu.py`, `noeud_code_icao.py`). Dans le **LLM**, message Système : `You write short operational briefings for Delta Air Lines managers. Use only the numbers in DATA. Follow the format and the rules exactly. When something is not in DATA, leave it out.` Déclarer leurs sorties (Output Variables, toutes en String) : OACI = `aeroport`, `icao`, `lat`, `lon` ; imprévu = `imprevu`, `resume`, `alerte` ; calcul = `fiche`, `prompt`. Dans le Code « imprévu », relier l'entrée `mois` (Number) à `Début / mois` : pour un autre mois que le mois en cours, l'IA ne reçoit pas la météo du jour. Une sortie non déclarée donne l'erreur « Not all output parameters are validated ». Signe que l'ancien code est encore là : une note en anglais quand `langue` = `fr`, une partie « SELF-CHECK », des chiffres dans le message aux passagers.
@@ -42,12 +42,11 @@ Créer un nouveau workflow : **Studio** → **Créer depuis zéro** → **Workfl
 1. Supprimer le nœud Début, puis ajouter un **Déclencheur planifié** (clic droit → Ajouter un nœud → Start → **Schedule Trigger**) : tous les jours à 6 h, ou l'expression `0 6 * * *`. Vérifier le fuseau horaire affiché dans les 5 prochaines exécutions.
 2. **Variables d'environnement** (bouton ENV en haut du workflow) :
    - `aeroport` : type String, valeur `MCO` ;
-   - `email_manager` : type **Secret**, l'adresse du manager ;
-   - `langue` : type String, valeur `en` (langue du résumé joint au mail).
+   - `email_manager` : type **Secret**, l'adresse du manager.
 3. Les nœuds des imprévus, comme dans le mode d'emploi du zip : **Code « OACI »** (entrée `aeroport` = la variable d'environnement `aeroport`), **Requête HTTP « météo »**, **Requête HTTP « FAA »**, **Requête HTTP « points »**, **Code « lien prévision »**, **Requête HTTP « prévision 7 jours »**. Pour les quatre requêtes : Gestion des erreurs → Valeur par défaut.
-4. **Code « imprévu »** : `aeroport`, `taf`, `faa`, `prevision` comme dans le zip, et `langue` = la variable d'environnement `langue`. **Ne pas** relier `mois` : sans mois, le nœud décrit aujourd'hui et les 7 prochains jours. Sorties `imprevu`, `resume`, `alerte`.
+4. **Code « imprévu »** : `aeroport`, `taf`, `faa`, `prevision` comme dans le zip. Ne pas relier `langue` : le résumé sort en anglais. **Ne pas** relier `mois` : sans mois, le nœud décrit aujourd'hui et les 7 prochains jours. Sorties `imprevu`, `resume`, `alerte`.
 5. **SI/SINON** (IF/ELSE) : `imprévu / alerte` **est** `oui`.
-6. Branche SI : nœud **LLM** « alerte ». Système : `You write short operational alerts for Delta Air Lines managers. Use only the facts given. When something is not given, leave it out.` Utilisateur : le texte ci-dessous ; à la place de `{{imprevu}}`, insérer la variable `imprévu / imprevu` (taper `/`). Vérifier qu'elle apparaît en bleu : sans elle, le modèle invente (aéroport, neige…). Le mail sort en anglais ; pour le français, il suffit de traduire ce texte et de mettre `langue` = `fr`.
+6. Branche SI : nœud **LLM** « alerte ». Système : `You write short operational alerts for Delta Air Lines managers. Use only the facts given. When something is not given, leave it out.` Utilisateur : le texte ci-dessous ; à la place de `{{imprevu}}`, insérer la variable `imprévu / imprevu` (taper `/`). Vérifier qu'elle apparaît en bleu : sans elle, le modèle invente (aéroport, neige…). Le mail sort en anglais.
 
    ```
    Write a short alert email in English for the manager of the Delta Air Lines station named in the BLOCK below.
@@ -75,10 +74,10 @@ Créer un nouveau workflow : **Studio** → **Créer depuis zéro** → **Workfl
 2. **Variables d'environnement** : `aeroport` (String) et `email_manager` (Secret), comme pour B.
 3. **Code « rappel »** (Python 3) : entrée `aeroport` = variable d'environnement `aeroport` ; coller `noeud_code_rappel.py` ; sorties `mois_cible` (Number), `mois_annuel` (Number), `annuel` (String), `objet` (String), `message` (String).
 4. **Requête HTTP « BTS »** et **Requête HTTP « suivi »** : les adresses de la partie 2.
-5. **Code « calcul »** : coller `noeud_code_calcul.py` ; entrées `bts` = `HTTP BTS / body`, `suivi` = `HTTP suivi / body`, `aeroport` = variable d'environnement, `mois` = `rappel / mois_cible`. Ne pas relier `langue` : la fiche sort en français. Sorties `fiche` et `prompt`.
+5. **Code « calcul »** : coller `noeud_code_calcul.py` ; entrées `bts` = `HTTP BTS / body`, `suivi` = `HTTP suivi / body`, `aeroport` = variable d'environnement, `mois` = `rappel / mois_cible`. Ne pas relier `langue` : la fiche sort en anglais. Sorties `fiche` et `prompt`.
 6. **LLM** : le même message Système que dans le workflow A ; Utilisateur = `calcul / prompt`. Pas de bloc d'imprévus : le mois est dans 3 mois.
-7. **Email** : destinataire `email_manager` ; objet = `rappel / objet` ; contenu = `rappel / message`, une ligne vide, `calcul / fiche`, une ligne vide, `Note de l'IA (à vérifier) :` et `LLM / text`.
-8. **En octobre, le bilan annuel** : après l'Email, un **SI/SINON** sur `rappel / annuel` **est** `oui`. Branche SI : un deuxième **Code « calcul »** (même code ; `mois` = `rappel / mois_annuel`), un deuxième **LLM** (Utilisateur = son `prompt`) et un deuxième **Email** (objet `Bilan annuel`, contenu = sa `fiche` puis la note de l'IA). Les deux branches finissent sur **Fin**.
+7. **Email** : destinataire `email_manager` ; objet = `rappel / objet` ; contenu = `rappel / message`, une ligne vide, `calcul / fiche`, une ligne vide, `AI note (to check):` et `LLM / text`.
+8. **En octobre, le bilan annuel** : après l'Email, un **SI/SINON** sur `rappel / annuel` **est** `oui`. Branche SI : un deuxième **Code « calcul »** (même code ; `mois` = `rappel / mois_annuel`), un deuxième **LLM** (Utilisateur = son `prompt`) et un deuxième **Email** (objet `Yearly calendar`, contenu = sa `fiche` puis la note de l'IA). Les deux branches finissent sur **Fin**.
 9. **Publier**.
 
 ## 6. Avant la présentation

@@ -7,7 +7,7 @@
 #   prevision: corps de la prévision à 7 jours de api.weather.gov (JSON), facultatif
 # Sorties :
 #   imprevu  : bloc en anglais à ajouter au prompt (« TODAY'S EVENT »), qui ne contient que ce que disent les API
-#   resume   : le même contenu en français, pour le manager
+#   resume   : le même contenu pour le manager, en anglais (ou en français si langue = « fr »)
 #   alerte   : « oui » si une API signale un risque (pour envoyer un mail), sinon « non »
 #
 # Mêmes seuils que l'étude : orage (TS) ; plafond bas (couche BKN/OVC/OVX sous 1 000 pieds) ou visibilité sous
@@ -172,12 +172,12 @@ MOIS_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet",
 
 
 def main(aeroport: str, taf: str, faa: str, mois: float = 0, aujourd_hui: str = "", prevision: str = "",
-         langue: str = "fr") -> dict:
+         langue: str = "en") -> dict:
     """mois : le mois de la fiche. Les données en direct ne valent que pour aujourd'hui : si la fiche porte sur un
     autre mois (juillet alors qu'on est en novembre), on dit à l'IA de ne pas s'en servir.
     aujourd_hui : date ISO, seulement pour les tests ; vide = la date du jour.
-    langue : langue du résumé pour le manager (« fr » par défaut, « en » pour l'anglais)."""
-    anglais = (langue or "").strip().lower().startswith("en")
+    langue : langue du résumé pour le manager (« en » par défaut, « fr » pour le français)."""
+    anglais = not (langue or "").strip().lower().startswith("fr")
     ap = (aeroport or "").strip().upper()
     jour = datetime.fromisoformat(aujourd_hui) if aujourd_hui else datetime.now(timezone.utc)
     try:

@@ -6,7 +6,7 @@
 #   suivi   : texte du fichier de suivi des avions et de la météo (delta_monthly_airport_full.csv) ; vide = sans suivi
 #   aeroport: code de l'aéroport (MCO, ATL…)
 #   mois    : 1 à 12 pour la fiche du mois, 0 pour le bilan annuel (les 12 mois, à lancer en octobre)
-#   langue  : "fr" ou "en" : langue de la fiche et de la réponse de l'IA (le prompt est toujours en anglais)
+#   langue  : "en" (par défaut) ou "fr" : langue de la fiche et de la réponse de l'IA (le prompt est toujours en anglais)
 # Sorties : fiche (la fiche du mini-assistant) et prompt (les chiffres du prompt 3 + les consignes pour l'IA, version Dify 2).
 # L'Extracteur de documents peut rendre un CSV tel quel ou sous forme de tableau Markdown : les deux sont lus.
 import csv
@@ -367,19 +367,20 @@ def bilan_annuel(bts, AP, EN):
     return fiche, "\n".join([intro, ""] + D + regles)
 
 
-def main(bts: str, suivi: str, aeroport: str, mois: float, langue: str = "fr") -> dict:
+def main(bts: str, suivi: str, aeroport: str, mois: float, langue: str = "en") -> dict:
     """mois = 1 à 12 : la fiche du mois ; mois = 0 : le bilan annuel des 12 mois."""
     AP = (aeroport or "").strip().upper()
     try:
         MOIS = int(mois)
     except (TypeError, ValueError):
         MOIS = -1
-    EN = str(langue or "").strip().lower() == "en"
+    EN = str(langue or "").strip().lower() != "fr"  # anglais sauf si « fr » est demandé
     if MOIS == 0:
         fiche, prompt = bilan_annuel(bts, AP, EN)
         return {"fiche": fiche, "prompt": prompt}
     if not 1 <= MOIS <= 12:
-        msg = "Le mois doit être un nombre entre 1 et 12 (ou 0 pour le bilan annuel)."
+        msg = ("The month must be a number from 1 to 12 (or 0 for the yearly calendar)." if EN
+               else "Le mois doit être un nombre entre 1 et 12 (ou 0 pour le bilan annuel).")
         return {"fiche": msg, "prompt": "Reply only with this sentence: " + msg}
     fiche, prompt = analyse(bts, suivi, AP, MOIS, EN)
     return {"fiche": fiche, "prompt": prompt}
