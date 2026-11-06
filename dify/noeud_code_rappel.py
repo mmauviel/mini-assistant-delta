@@ -29,6 +29,7 @@ def main(aeroport: str = "", aujourd_hui: str = "", langue: str = "en") -> dict:
         objet = f"Mini-assistant Delta : préparer {nom} à {ap}"
         message = (f"Bonjour,\n\nVoici la fiche de {nom} pour {ap}. C'est le moment de préparer ce mois : le programme des vols "
                    f"est presque définitif environ 100 jours avant, et les renforts au sol se recrutent 3 à 4 mois avant.\n\n"
+                   f"Si la fiche indique « Mois normal », aucune préparation particulière n'est nécessaire.\n\n"
                    f"La fiche est calculée par le code. La note de l'IA, en dessous, est une proposition à vérifier avec la checklist "
                    f"avant d'agir.")
         if annuel:
@@ -40,6 +41,7 @@ def main(aeroport: str = "", aujourd_hui: str = "", langue: str = "en") -> dict:
         objet = f"Delta mini-assistant: prepare {nom} at {ap}"
         message = (f"Hello,\n\nHere is the {nom} briefing for {ap}. Now is the time to prepare this month: the flight schedule "
                    f"is almost final about 100 days ahead, and extra ground staff are hired 3 to 4 months ahead.\n\n"
+                   f"If the briefing says \"Normal month\", no special preparation is needed.\n\n"
                    f"The briefing is computed by our code. The AI note below is a suggestion: check it with the checklist "
                    f"before acting.")
         if annuel:

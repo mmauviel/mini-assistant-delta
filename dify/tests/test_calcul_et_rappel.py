@@ -44,3 +44,20 @@ def test_rappel_en_anglais_par_defaut():
     assert octobre["mois_cible"] == 1 and octobre["annuel"] == "oui" and "yearly calendar" in octobre["message"]
     francais = rappel.main("MCO", "2027-04-01", "fr")
     assert francais["objet"] == "Mini-assistant Delta : préparer juillet à MCO" and francais["message"].startswith("Bonjour")
+
+
+def test_mois_normal_et_aucune_hausse():
+    fevrier = calcul.main(BTS, SUIVI, "MCO", 2)  # MCO en février : sous 25 % chaque année, aucune cause en hausse
+    assert "**Normal month**: above 25% in 0 year(s) out of 4" in fevrier["fiche"]
+    assert "No cause rises above the airport's average this month." in fevrier["fiche"]
+    assert "Cause rising most" not in fevrier["fiche"] and "One-off" not in fevrier["fiche"]
+    assert "Disruption level: normal" in fevrier["prompt"] and "Cause rising most: none" in fevrier["prompt"]
+    assert "If there is no such block" in fevrier["prompt"]
+    assert "**Mois normal**" in calcul.main(BTS, SUIVI, "MCO", 2, "fr")["fiche"]
+    juillet = calcul.main(BTS, SUIVI, "MCO", 7)
+    assert "**Recurring disruption**" in juillet["fiche"] and "Cause rising most: **airline**" in juillet["fiche"]
+
+
+def test_rappel_mois_normal():
+    assert "Normal month" in rappel.main("MCO", "2026-11-01")["message"]
+    assert "Mois normal" in rappel.main("MCO", "2026-11-01", "fr")["message"]

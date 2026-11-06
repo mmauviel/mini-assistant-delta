@@ -97,6 +97,7 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
     n_fort = sum(haut)
     recurrent = n_fort == len(taux_an)
     a_risque = not recurrent and ((len(haut) >= 2 and haut[-1] and haut[-2]) or n_fort > len(haut) / 2)
+    normal = n_fort == 0  # jamais au-dessus du seuil : un mois normal (comme dans le bilan annuel)
 
     # 2. EXPLIQUER : causes du mois contre la moyenne de tous les mois de l'aéroport
     def parts(rows):
@@ -106,6 +107,7 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
     hausse = {c: m[c] - calme[c] for c in CAUSES}
     ecart = {c: round(m[c], 1) - round(calme[c], 1) for c in CAUSES}
     principale = max(hausse, key=hausse.get)
+    aucune_hausse = round(hausse[principale], 1) <= 0  # aucune cause au-dessus de la moyenne de l'aéroport
     del15 = somme(am, "arr_del15")
     cmin = div(somme(am, "carrier_ct"), del15) * 100
     cmax = div(somme(am, "carrier_ct") + somme(am, "late_aircraft_ct"), del15) * 100
@@ -145,8 +147,8 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
          f"## 1. {T('Repérer', 'Detect')}"]
     L += [f"- {int(y)}{SEP}{N(v)}{P}" + (" ⚠" if v > SEUIL else "") for y, v in taux_an.items()]
     L += [T(f"- Moyenne du réseau Delta en {mois} : {N(reseau)} %.", f"- Delta network average in {mois}: {N(reseau)}%."),
-          T(f"- **{'Perturbation récurrente' if recurrent else 'Perturbation à risque' if a_risque else 'Perturbation ponctuelle'}** : au-dessus de {SEUIL} % {n_fort} année(s) sur {len(taux_an)}.",
-            f"- **{'Recurring disruption' if recurrent else 'At-risk disruption' if a_risque else 'One-off disruption'}**: above {SEUIL}% in {n_fort} year(s) out of {len(taux_an)}.")]
+          T(f"- **{'Perturbation récurrente' if recurrent else 'Perturbation à risque' if a_risque else 'Mois normal' if normal else 'Perturbation ponctuelle'}** : au-dessus de {SEUIL} % {n_fort} année(s) sur {len(taux_an)}.",
+            f"- **{'Recurring disruption' if recurrent else 'At-risk disruption' if a_risque else 'Normal month' if normal else 'One-off disruption'}**: above {SEUIL}% in {n_fort} year(s) out of {len(taux_an)}.")]
     if a_risque:
         L += [T("- " + ("Au-dessus du seuil les deux dernières années de suite : la tendance monte." if haut[-1] and haut[-2] else "Au-dessus du seuil la plupart des années.") + " On prépare un plan léger et on surveille.",
                 "- " + ("Above the threshold in the last two years in a row: the trend is rising." if haut[-1] and haut[-2] else "Above the threshold in most years.") + " Prepare a light plan and monitor.")]
@@ -158,7 +160,8 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
           T(f"Part des vols retardés par chaque cause en {mois}, comparée à la moyenne de l'aéroport sur tous les mois :",
             f"Share of flights delayed by each cause in {mois}, compared with the airport's average over all months:")]
     L += [f"- {CAUSES[c]}{SEP}{N(m[c])}{P} ({T('contre', 'vs')} {N(calme[c])}{P}, {'+' if ecart[c] >= 0 else ''}{N(ecart[c])} pt)" for c in CAUSES]
-    L += [T(f"- Cause qui augmente le plus : **{CAUSES[principale]}**.", f"- Cause rising most: **{CAUSES[principale]}**."),
+    L += [T("- Aucune cause n'augmente par rapport à la moyenne de l'aéroport." if aucune_hausse else f"- Cause qui augmente le plus : **{CAUSES[principale]}**.",
+            "- No cause rises above the airport's average this month." if aucune_hausse else f"- Cause rising most: **{CAUSES[principale]}**."),
           T(f"- Part que Delta contrôle : entre {cmin:.0f} % et {cmax:.0f} % des retards.", f"- Share Delta controls: between {cmin:.0f}% and {cmax:.0f}% of delays.")
           if suivi is None else
           T(f"- Part que Delta contrôle, en suivant chaque avion : entre {suivi['min']:.0f} % et {suivi['max']:.0f} % des retards (fichier mensuel seul : {cmin:.0f} à {cmax:.0f} %).",
@@ -189,7 +192,10 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
                 f"We wish you a pleasant journey.")
         quand = T("Message préventif, à envoyer si la surveillance confirme le risque", "Preventive message, sent if monitoring confirms the risk")
     else:
-        L += [T("Pas de schéma qui revient chaque année : pas de plan saisonnier. Surveiller en temps réel et, si une perturbation apparaît, appliquer :",
+        L += [T(f"Mois normal : sous {SEUIL} % chaque année, pas de plan saisonnier. Surveillance habituelle en temps réel et, si une perturbation apparaît, appliquer :",
+                f"Normal month: below {SEUIL}% every year, no seasonal plan. Usual real-time monitoring and, if a disruption appears, apply:")
+              if normal else
+              T("Pas de schéma qui revient chaque année : pas de plan saisonnier. Surveiller en temps réel et, si une perturbation apparaît, appliquer :",
                 "No pattern that returns every year: no seasonal plan. Monitor in real time and, if a disruption appears, apply:")]
         L += [f"- {REPONSES[c]}" for c in ordre] + ([f"- {REPONSE_METEO}"] if meteo else [])
         msg = T(f"> Madame, Monsieur, nous vous informons que votre vol à destination de {ville} est retardé, et nous vous prions de bien vouloir nous en excuser. "
@@ -208,15 +214,16 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
     CAUSES_EN = {"carrier_ct": "airline", "late_aircraft_ct": "late-arriving aircraft",
                  "nas_ct": "national aviation system", "weather_ct": "extreme weather"}
     mois_en = LONG_EN[MOIS - 1]
-    niveau = "recurring" if recurrent else "at risk" if a_risque else "one-off"
+    niveau = "recurring" if recurrent else "at risk" if a_risque else "normal" if normal else "one-off"
     D = [f"DATA – Delta Air Lines mainline, flights arriving at {nom} ({AP}), {mois_en}, BTS data {PERIODE_PROMPT}",
          "- Share of flights delayed 15 minutes or more in " + mois_en + ", by year: " + " ; ".join(f"{int(y)} = {v:.1f}%" for y, v in taux_an.items()),
          f"- Delta network average in {mois_en}: {reseau:.1f}%",
          f"- Disruption level: {niveau} (above {SEUIL}% in {n_fort} year(s) out of {len(taux_an)}). Recurring = above {SEUIL}% every year ; "
-         f"at risk = above {SEUIL}% the last two years in a row or in most years ; one-off = a single year.",
+         f"at risk = above {SEUIL}% the last two years in a row or in most years ; one-off = a single year ; normal = never.",
          f"- Share of flights delayed by each cause in {mois_en}, compared with the airport's average over all months:"]
     D += [f"  {CAUSES_EN[c]}: {m[c]:.1f}% (average {calme[c]:.1f}%, {'+' if ecart[c] >= 0 else ''}{ecart[c]:.1f} points)" for c in CAUSES]
-    D += [f"- Cause rising most: {CAUSES_EN[principale]}"]
+    D += ["- Cause rising most: none (every cause is at or below the airport's average)" if aucune_hausse
+          else f"- Cause rising most: {CAUSES_EN[principale]}"]
     if suivi is not None:
         D += [f"- Share of delays Delta controls, tracing each late aircraft back to the flight that started the delay: between {suivi['min']:.0f}% and {suivi['max']:.0f}%. "
               "The range exists because some delays cannot be traced.",
@@ -281,8 +288,8 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
         "no causes other than those given, nothing about capacity, costs or staffing levels, no season, holiday or tourism explanations.",
         "- No promise about what Delta is doing beyond what the approved passenger message already says.",
         "- Do not say that you verified or calculated something unless you show the calculation.",
-        "- A TODAY'S EVENT block may follow: it describes today and the next 7 days only. If it says \"not applicable\", do not mention "
-        "today's conditions anywhere. "
+        "- A TODAY'S EVENT block may follow: it describes today and the next 7 days only. If there is no such block, or it says "
+        "\"not applicable\", do not mention today's conditions anywhere. "
         "If it reports nothing, say so in one sentence at the end of the interpretation.",
         "",
         f"BEFORE ANSWERING, CHECK: the passenger message has no digit; {reseau:.1f}% is never called a threshold; each suggestion has an "
