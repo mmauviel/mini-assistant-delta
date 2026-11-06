@@ -1,0 +1,50 @@
+# Mise à jour mensuelle des données du mini-assistant (gratuit sur un dépôt public).
+# Télécharge les vols du BTS et la météo, refait les deux fichiers et les publie dans donnees/, où Dify les lit.
+# Aucun secret n'est nécessaire : le jeton GITHUB_TOKEN est fourni par GitHub et ne sert qu'à enregistrer les fichiers.
+name: Mise à jour des données
+
+on:
+  schedule:
+    - cron: "0 6 20 * *"   # le 20 de chaque mois à 6 h UTC (le BTS publie environ 2 mois après le mois concerné)
+  workflow_dispatch:         # bouton « Run workflow » pour lancer à la main
+
+permissions:
+  contents: write            # seulement pour enregistrer donnees/ dans le dépôt
+
+concurrency:
+  group: donnees
+  cancel-in-progress: false
+
+jobs:
+  donnees:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Installer les bibliothèques
+        run: pip install -r requirements.txt
+      - name: Tests
+        run: python -m pytest -q tests dify/tests
+      - name: Reprendre les vols déjà téléchargés
+        uses: actions/cache@v4
+        with:
+          path: data/bts
+          key: bts-${{ github.run_id }}
+          restore-keys: bts-
+      - name: Télécharger et refaire les fichiers
+        run: python -I src/mise_a_jour.py --data data --publie donnees
+      - name: Publier les fichiers pour Dify
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add donnees
+          if git diff --cached --quiet; then
+            echo "Pas de nouveau mois : rien à publier."
+          else
+            git commit -m "Données mises à jour : $(cat donnees/mise_a_jour.txt)"
+            git push
+          fi

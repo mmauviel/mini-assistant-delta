@@ -1,0 +1,13 @@
+# Gros fichiers de travail : jamais publiés (seul donnees/ l'est)
+data/
+*.parquet
+*.zip
+# Secrets : ne jamais les mettre dans le dépôt
+.env
+*.env
+secrets*
+*token*
+*.key
+# Python
+__pycache__/
+.pytest_cache/
