@@ -61,3 +61,11 @@ def test_mois_normal_et_aucune_hausse():
 def test_rappel_mois_normal():
     assert "Normal month" in rappel.main("MCO", "2026-11-01")["message"]
     assert "Mois normal" in rappel.main("MCO", "2026-11-01", "fr")["message"]
+
+
+def test_autant_de_suggestions_que_d_actions():
+    fevrier = calcul.main(BTS, SUIVI, "MCO", 2)["prompt"]  # une seule action approuvée
+    assert "SUGGESTIONS – exactly 1 (there is only one approved action: do not repeat it)" in fevrier
+    assert "The suggestion applies in real time" in fevrier
+    juillet = calcul.main(BTS, SUIVI, "MCO", 7)["prompt"]
+    assert "SUGGESTIONS – exactly 2, most useful first" in juillet and "Both suggestions are part of a plan" in juillet

@@ -244,12 +244,14 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
     if meteo:
         actions += [f"- Track storm forecasts at arrival times and warn passengers as soon as an alert is issued "
                     f"(addresses: bad weather, {suivi['meteo']:.0f}% of air-system delay minutes)."]
+    n_sugg = min(2, len(actions))  # jamais plus de suggestions que d'actions approuvées (sinon l'IA en répète une)
+    les = "Both suggestions" if n_sugg == 2 else "The suggestion"
     if recurrent:
-        quand_en = f"Both suggestions are part of a plan prepared before {mois_en}: say \"before {mois_en}\" as the timing."
+        quand_en = f"{les} {'are' if n_sugg == 2 else 'is'} part of a plan prepared before {mois_en}: say \"before {mois_en}\" as the timing."
     elif a_risque:
-        quand_en = f"Both suggestions are a light plan prepared before {mois_en}, plus close monitoring during {mois_en}."
+        quand_en = f"{les} {'are' if n_sugg == 2 else 'is'} a light plan prepared before {mois_en}, plus close monitoring during {mois_en}."
     else:
-        quand_en = "Both suggestions apply in real time, only if delays appear: no seasonal plan."
+        quand_en = f"{les} {'apply' if n_sugg == 2 else 'applies'} in real time, only if delays appear: no seasonal plan."
     francais = not EN
     langue_txt = "French (formal French, \"vous\")" if francais else "English"
     titres = ("1. Faits / 2. Interprétation / 3. Suggestions / 4. Message aux passagers / 5. Autocontrôle" if francais
@@ -273,14 +275,14 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
         f"2. INTERPRETATION – {'3' if suivi is not None else '2'} sentences: (1) the disruption level and why, using the threshold; (2) whether "
         "delays are mostly controllable (whole range above 50%), mostly external (whole range below 50%) or mixed (range crossing 50%), quoting the range"
         + ("; (3) whether bad weather explains more than half of the air-system delay minutes, quoting the percentage." if suivi is not None else "."),
-        "3. SUGGESTIONS – exactly 2, most useful first, each on one line: \"Suggestion N: [action taken from APPROVED ACTIONS] – "
+        f"3. SUGGESTIONS – exactly {n_sugg}{', most useful first, each' if n_sugg == 2 else ' (there is only one approved action: do not repeat it)'} on one line: \"Suggestion N: [action taken from APPROVED ACTIONS] – "
         "[timing] – [the number from DATA it addresses]\". " + quand_en +
         " If delays are mostly external, do not choose crew, staff or maintenance actions.",
         "4. PASSENGER MESSAGE – copy the APPROVED PASSENGER MESSAGE word for word (translate it if needed). Change it only if a TODAY'S EVENT "
         "block below reports an event: then add one sentence saying that flights may be disrupted today or in the coming days, and inviting "
         "passengers to check their flight in the Fly Delta app.",
         "5. SELF-CHECK – (a) every number you used and the DATA line it comes from; (b) every sentence that is not a fact from DATA "
-        "(at least the two suggestions, which are recommendations).",
+        + ("(at least the two suggestions, which are recommendations)." if n_sugg == 2 else "(at least the suggestion, which is a recommendation)."),
         "",
         "RULES:",
         "- The passenger message contains no digits and no percentages.",
@@ -289,7 +291,7 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
         "- No promise about what Delta is doing beyond what the approved passenger message already says.",
         "- Do not say that you verified or calculated something unless you show the calculation.",
         "- A TODAY'S EVENT block may follow: it describes today and the next 7 days only. If there is no such block, or it says "
-        "\"not applicable\", do not mention today's conditions anywhere. "
+        "\"not applicable\", do not mention today's conditions or this block anywhere. "
         "If it reports nothing, say so in one sentence at the end of the interpretation.",
         "",
         f"BEFORE ANSWERING, CHECK: the passenger message has no digit; {reseau:.1f}% is never called a threshold; each suggestion has an "
