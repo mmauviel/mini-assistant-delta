@@ -46,15 +46,24 @@ Créer un nouveau workflow : **Studio** → **Créer depuis zéro** → **Workfl
 3. Les nœuds des imprévus, comme dans le mode d'emploi du zip : **Code « OACI »** (entrée `aeroport` = la variable d'environnement `aeroport`), **Requête HTTP « météo »**, **Requête HTTP « FAA »**, **Requête HTTP « points »**, **Code « lien prévision »**, **Requête HTTP « prévision 7 jours »**. Pour les quatre requêtes : Gestion des erreurs → Valeur par défaut.
 4. **Code « imprévu »** : `aeroport`, `taf`, `faa`, `prevision` comme dans le zip. **Ne pas** relier `mois` : sans mois, le nœud décrit aujourd'hui et les 7 prochains jours. Sorties `imprevu`, `resume`, `alerte`.
 5. **SI/SINON** (IF/ELSE) : `imprévu / alerte` **est** `oui`.
-6. Branche SI : nœud **LLM** « alerte ». Système : `You write short operational alerts for Delta Air Lines managers. Use only the facts given. When something is not given, leave it out.` Utilisateur : le texte ci-dessous, puis la variable `imprévu / imprevu`.
+6. Branche SI : nœud **LLM** « alerte ». Système : `You write short operational alerts for Delta Air Lines managers. Use only the facts given. When something is not given, leave it out.` Utilisateur : le texte ci-dessous ; à la place de `{{imprevu}}`, insérer la variable `imprévu / imprevu` (taper `/`). Vérifier qu'elle apparaît en bleu : sans elle, le modèle invente (aéroport, neige…).
 
    ```
-   Write a short alert email, in formal French ("vous"), to the manager of the Delta Air Lines station named in the block below.
-   1. Start with "Alerte" followed by the airport code, then one sentence giving the main risk and its day.
-   2. List each risk with its day and time exactly as given (weather times are in UTC: write "UTC").
-   3. Suggest at most 2 actions, chosen only from this list: warn passengers on the affected flights through the Fly Delta app;
-      prepare rebookings; reinforce standby crews and ground staff for those days; coordinate with air traffic control.
-   4. No number that is not in the block. No promise to passengers. 10 lines maximum.
+   Write a short alert email in French, formal ("vous"), for the manager of the Delta Air Lines station named in the BLOCK below.
+   Use only the BLOCK. If the BLOCK is empty, reply only: "Données indisponibles : aucune alerte."
+   1. First line: "Alerte" followed by the airport code written in the BLOCK, then one sentence with the main risk and its day.
+      Write days in French (lundi, mardi...).
+   2. List each risk with its day and time exactly as in the BLOCK (weather times are in UTC: write "UTC").
+      If the BLOCK reports no risk, write only "Aucun risque signalé pour aujourd'hui et les 7 prochains jours." and stop.
+   3. Suggest at most 2 actions, copied word for word from this list only:
+      « Prévenir les passagers des vols concernés par l'application Fly Delta. »
+      « Préparer les réacheminements. »
+      « Renforcer les équipages et le personnel au sol de réserve pour ces jours. »
+      « Se coordonner avec le contrôle aérien. »
+   4. No number that is not in the BLOCK. No promise to passengers. 10 lines maximum.
+
+   BLOCK:
+   {{imprevu}}
    ```
 7. Nœud **Email** (outil du plugin) : destinataire = la variable d'environnement `email_manager` ; objet = `Alerte météo et FAA` suivi de la variable `OACI / aeroport` ; contenu = `LLM / text`, puis une ligne vide et `imprévu / resume` (les données brutes, pour vérifier).
 8. Relier la branche SINON directement à un nœud **Fin** : les jours calmes, aucun mail.
