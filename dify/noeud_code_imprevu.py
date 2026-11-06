@@ -171,10 +171,13 @@ MOIS_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet",
            "août", "septembre", "octobre", "novembre", "décembre"]
 
 
-def main(aeroport: str, taf: str, faa: str, mois: float = 0, aujourd_hui: str = "", prevision: str = "") -> dict:
+def main(aeroport: str, taf: str, faa: str, mois: float = 0, aujourd_hui: str = "", prevision: str = "",
+         langue: str = "fr") -> dict:
     """mois : le mois de la fiche. Les données en direct ne valent que pour aujourd'hui : si la fiche porte sur un
     autre mois (juillet alors qu'on est en novembre), on dit à l'IA de ne pas s'en servir.
-    aujourd_hui : date ISO, seulement pour les tests ; vide = la date du jour."""
+    aujourd_hui : date ISO, seulement pour les tests ; vide = la date du jour.
+    langue : langue du résumé pour le manager (« fr » par défaut, « en » pour l'anglais)."""
+    anglais = (langue or "").strip().lower().startswith("en")
     ap = (aeroport or "").strip().upper()
     jour = datetime.fromisoformat(aujourd_hui) if aujourd_hui else datetime.now(timezone.utc)
     try:
@@ -216,7 +219,15 @@ def main(aeroport: str, taf: str, faa: str, mois: float = 0, aujourd_hui: str = 
     if autre_mois:
         fr.append(f"(Non transmis à l'IA : la fiche porte sur {MOIS_FR[m - 1]}, ces données ne valent que pour aujourd'hui, "
                   f"{jour.day} {MOIS_FR[jour.month - 1]}.)")
+        resume = "\n".join(fr)
+        if anglais:
+            resume = "\n".join([f"Live events at {ap} (FAA and official weather forecasts)"] + en[1:-1] + [
+                f"(Not sent to the AI: the briefing is about {MOIS_EN[m - 1]}, and this data only describes today, "
+                f"{MOIS_EN[jour.month - 1]} {jour.day}.)"])
         return {"alerte": alerte, "imprevu": f"TODAY'S EVENT: not applicable. The briefing is about {MOIS_EN[m - 1]}, and live data only describes today "
                            f"({jour.day} {MOIS_EN[jour.month - 1]}). Do not mention today's conditions.",
-                "resume": "\n".join(fr)}
-    return {"imprevu": "\n".join(en), "resume": "\n".join(fr), "alerte": alerte}
+                "resume": resume}
+    resume = "\n".join(fr)
+    if anglais:  # même contenu que le bloc pour l'IA, sans l'en-tête ni la consigne
+        resume = "\n".join([f"Live events at {ap} (FAA and official weather forecasts)"] + en[1:-1])
+    return {"imprevu": "\n".join(en), "resume": resume, "alerte": alerte}

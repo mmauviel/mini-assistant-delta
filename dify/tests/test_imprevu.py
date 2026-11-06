@@ -133,3 +133,14 @@ def test_west_palm_beach_s_appelle_djt_a_la_faa():
     faa = FAA.replace("<ARPT>LGA</ARPT>", "<ARPT>DJT</ARPT>")
     progs, _ = imprevu.lire_faa(faa, "PBI")
     assert len(progs) == 1 and "ground delay program" in progs[0][0]
+
+
+def test_resume_en_anglais_pour_le_mail():
+    out = imprevu.main("ATL", CALME_TAF, SANS_FAA, prevision=SEMAINE, langue="en")
+    assert out["resume"].startswith("Live events at ATL")
+    assert "Next 7 days" in out["resume"] and "Adapt the suggestions" not in out["resume"]
+    assert "TODAY'S EVENT" not in out["resume"] and "prochains" not in out["resume"]
+    assert out["imprevu"] == imprevu.main("ATL", CALME_TAF, SANS_FAA, prevision=SEMAINE)["imprevu"]
+    autre = imprevu.main("MCO", TAF, FAA, mois=7, aujourd_hui="2026-11-06", langue="en")
+    assert "Not sent to the AI" in autre["resume"] and "juillet" not in autre["resume"]
+    assert imprevu.main("ATL", CALME_TAF, SANS_FAA)["resume"].startswith("Imprévus à ATL")
