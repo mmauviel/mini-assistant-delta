@@ -33,6 +33,7 @@ On repart du workflow existant (voir le mode d'emploi du zip), avec deux changem
 1. **Début** : garder `aeroport`, `mois` et `langue`. Supprimer `fichier_bts` et `fichier_suivi`. `mois` peut valoir 0 : le bilan annuel des 12 mois.
 2. Remplacer les deux **Extracteurs de documents** par deux **Requêtes HTTP** (HTTP Request), méthode GET, avec les adresses de la partie 2. Dans **Gestion des erreurs** (Error Handling), laisser « Aucune » : si GitHub ne répond pas, mieux vaut un arrêt qu'une fiche vide.
 3. **Code « calcul »** : `bts` = `HTTP BTS / body`, `suivi` = `HTTP suivi / body`. Le reste ne change pas.
+4. **Mettre le code à jour** : coller dans les nœuds Code les versions de ce dossier (`noeud_code_calcul.py`, `noeud_code_imprevu.py`, `noeud_code_icao.py`). Dans le **LLM**, message Système : `You write short operational briefings for Delta Air Lines managers. Use only the numbers in DATA. Follow the format and the rules exactly. When something is not in DATA, leave it out.` Déclarer leurs sorties (Output Variables, toutes en String) : OACI = `aeroport`, `icao`, `lat`, `lon` ; imprévu = `imprevu`, `resume`, `alerte` ; calcul = `fiche`, `prompt`. Dans le Code « imprévu », relier l'entrée `mois` (Number) à `Début / mois` : pour un autre mois que le mois en cours, l'IA ne reçoit pas la météo du jour. Une sortie non déclarée donne l'erreur « Not all output parameters are validated ». Signe que l'ancien code est encore là : une note en anglais quand `langue` = `fr`, une partie « SELF-CHECK », des chiffres dans le message aux passagers.
 
 ## 4. Workflow B : alerte du matin
 
@@ -74,7 +75,8 @@ Créer un nouveau workflow : **Studio** → **Créer depuis zéro** → **Workfl
 ## 6. Avant la présentation
 
 - Lancer A pour MCO, mois 7 : la fiche doit être identique à celle d'avant (mêmes chiffres).
-- Lancer B avec « Exécuter cette étape » sur le déclencheur. Les jours calmes, rien n'arrive : c'est normal. Pour voir un mail, changer `aeroport` pour un aéroport où il y a un orage ce jour-là.
+- Lancer B avec « Exécuter cette étape » sur le déclencheur. Les jours calmes, rien n'arrive : c'est normal. Pour voir un mail, changer provisoirement la condition en `alerte` **n'est pas vide** (is not empty), lancer, puis remettre **est** `oui`.
+- Si un champ des en-têtes (Headers) refuse le texte : **Import from cURL** avec `curl -H "User-Agent: mini-assistant-delta (projet etudiant)" "https://api.weather.gov/x"`, puis remettre l'URL avec les variables.
 - Lancer C de la même façon : un mail avec la fiche du mois dans 3 mois.
 - Vérifier chaque note de l'IA avec `verifier_reponse_IA.md`.
 
