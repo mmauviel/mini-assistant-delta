@@ -64,9 +64,10 @@ Créer un nouveau workflow : **Studio** → **Créer depuis zéro** → **Workfl
    BLOCK:
    {{imprevu}}
    ```
-7. Nœud **Email** (outil du plugin) : destinataire = la variable d'environnement `email_manager` ; objet = `Weather and FAA alert ` suivi de la variable `OACI / aeroport` ; contenu = `LLM / text`, puis une ligne vide et `imprévu / resume` (les données brutes, pour vérifier).
-8. Relier la branche SINON directement à un nœud **Fin** : les jours calmes, aucun mail.
-9. **Publier** (Publish) : le déclencheur ne tourne qu'une fois le workflow publié. Pour tester sans attendre 6 h : sur le déclencheur, « Exécuter cette étape » (Run this step).
+7. **Code « mail »** (Python 3), après le LLM : coller `noeud_code_mail.py`. Entrées (String) : `genre` = le texte `alert` ; `aeroport` = `OACI / aeroport` ; `ia` = `LLM / text` ; `donnees` = `imprévu / resume`. Sorties (String) : `html`, `texte`, `apercu`. Il habille le mail aux couleurs de la charte Delta (voir partie 7) sans changer le texte.
+8. Nœud **Email** (outil du plugin) : destinataire = la variable d'environnement `email_manager` ; objet = `Weather and FAA alert ` suivi de la variable `OACI / aeroport` ; contenu = `mail / html` ; **Convert to HTML** (Convertir en HTML) = **activé**.
+9. Relier la branche SINON directement à un nœud **Fin** : les jours calmes, aucun mail.
+10. **Publier** (Publish) : le déclencheur ne tourne qu'une fois le workflow publié. Pour tester sans attendre 6 h : sur le déclencheur, « Exécuter cette étape » (Run this step).
 
 ## 5. Workflow C : fiche du 1er
 
@@ -76,9 +77,10 @@ Créer un nouveau workflow : **Studio** → **Créer depuis zéro** → **Workfl
 4. **Requête HTTP « BTS »** et **Requête HTTP « suivi »** : les adresses de la partie 2.
 5. **Code « calcul »** : coller `noeud_code_calcul.py` ; entrées `bts` = `HTTP BTS / body`, `suivi` = `HTTP suivi / body`, `aeroport` = variable d'environnement, `mois` = `rappel / mois_cible`. Ne pas relier `langue` : la fiche sort en anglais. Sorties `fiche` et `prompt`.
 6. **LLM** : le même message Système que dans le workflow A ; Utilisateur = `calcul / prompt`. Pas de bloc d'imprévus : le mois est dans 3 mois.
-7. **Email** : destinataire `email_manager` ; objet = `rappel / objet` ; contenu = `rappel / message`, une ligne vide, `calcul / fiche`, une ligne vide, `AI note (to check):` et `LLM / text`.
-8. **En octobre, le bilan annuel** : après l'Email, un **SI/SINON** sur `rappel / annuel` **est** `oui`. Branche SI : un deuxième **Code « calcul »** (même code ; `mois` = `rappel / mois_annuel`), un deuxième **LLM** (Utilisateur = son `prompt`) et un deuxième **Email** (objet `Yearly calendar`, contenu = sa `fiche` puis la note de l'IA). Les deux branches finissent sur **Fin**.
-9. **Publier**.
+7. **Code « mail »** (Python 3) : coller `noeud_code_mail.py`. Entrées (String) : `genre` = le texte `briefing` ; `aeroport` = variable d'environnement ; `intro` = `rappel / message` ; `fiche` = `calcul / fiche` ; `ia` = `LLM / text`. Sorties (String) : `html`, `texte`, `apercu`.
+8. **Email** : destinataire `email_manager` ; objet = `rappel / objet` ; contenu = `mail / html` ; **Convert to HTML** = **activé**.
+9. **En octobre, le bilan annuel** : après l'Email, un **SI/SINON** sur `rappel / annuel` **est** `oui`. Branche SI : un deuxième **Code « calcul »** (même code ; `mois` = `rappel / mois_annuel`), un deuxième **LLM** (Utilisateur = son `prompt`), un deuxième **Code « mail »** (`genre` = `briefing`, `fiche` = la `fiche` du deuxième calcul, `ia` = le texte du deuxième LLM, `intro` vide) et un deuxième **Email** (objet `Yearly calendar`, contenu = son `html`, Convert to HTML activé). Les deux branches finissent sur **Fin**.
+10. **Publier**.
 
 ## 6. Avant la présentation
 
@@ -87,6 +89,17 @@ Créer un nouveau workflow : **Studio** → **Créer depuis zéro** → **Workfl
 - Si un champ des en-têtes (Headers) refuse le texte : **Import from cURL** avec `curl -H "User-Agent: mini-assistant-delta (projet etudiant)" "https://api.weather.gov/x"`, puis remettre l'URL avec les variables.
 - Lancer C de la même façon : un mail avec la fiche du mois dans 3 mois.
 - Vérifier chaque note de l'IA avec `verifier_reponse_IA.md`.
+
+## 7. La mise en page des mails (charte Delta)
+
+Le nœud « mail » ne change aucun mot : il reprend la fiche, la note de l'IA, l'alerte et les données en direct, et les met en forme.
+
+- **Charte** : bandeau Delta Blue (`#003366`) avec le logo blanc en haut à gauche (fond foncé, donc logo inversé, avec la marge demandée), filet Delta Red (`#C01933`), texte blanc sur les fonds de couleur, couleurs tertiaires en petites touches seulement (niveau du mois).
+- **En tête** : ce qu'il faut retenir. Fiche : le niveau (Normal month, At-risk, Recurring…), le taux de la dernière année et la prochaine étape. Alerte : le risque principal en rouge, puis les risques jour par jour et les actions à cocher.
+- **Fiche** : les taux par année en barres (rouge au-dessus du seuil de 25 %), les causes en tableau (écart en rouge s'il monte, en vert s'il baisse), le message aux passagers en citation, la note de l'IA dans un encadré orange « à vérifier ».
+- **Boîtes mail** : tableaux et styles en ligne, largeur 600 px, lisible sur téléphone  ; conçu pour Gmail, Outlook et Apple Mail. Le logo est une image du dépôt (`dify/mail/delta_logo_white.png`) : si la boîte bloque les images, le mot DELTA s'affiche à la place.
+- **Version texte** : la sortie `texte` est le même mail sans mise en page (lisible dans le journal de Dify). Le plugin Email met dans la partie texte du mail le contenu tel quel, ici le code HTML : seules les rares boîtes « texte seul » le verraient. Pour un mail en texte simple, mettre `mail / texte` comme contenu et désactiver Convert to HTML.
+- **Pied de page** : il précise que c'est un projet étudiant, pas une communication officielle de Delta Air Lines.
 
 ## Ce qui reste privé
 
