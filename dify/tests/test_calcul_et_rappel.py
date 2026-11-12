@@ -80,3 +80,10 @@ def test_action_de_repli_sans_chiffre_et_mots_simples():
     assert "entirely above 50%" in fevrier and "whole range" not in fevrier
     juillet = calcul.main(BTS, SUIVI, "MCO", 7)["prompt"]  # une vraie hausse : la suggestion garde son chiffre
     assert "[timing] – [the number from DATA it addresses]" in juillet and "fallback" not in juillet
+
+
+def test_consignes_sans_mot_a_recopier():
+    # Fiche à la demande, MCO juillet : l'IA avait écrit « quoting 60% » et 8 faits au lieu de 3 à 5.
+    juillet = calcul.main(BTS, SUIVI, "MCO", 7)["prompt"]
+    assert "quoting the" not in juillet and "never write the word \"quoting\"" in juillet
+    assert "3 to 5 bullet points, never more" in juillet

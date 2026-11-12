@@ -273,12 +273,12 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
         f"ROLE: You are an operations analyst at Delta's Operations and Customer Center. You write for the manager of the {AP} station.",
         "",
         f"TASK: Write your whole answer in {langue_txt}, with exactly these 5 headings: {titres}.",
-        "1. FACTS – 3 to 5 bullet points. Only numbers from DATA, or a difference between two of them with the calculation shown "
+        "1. FACTS – 3 to 5 bullet points, never more: keep the most important numbers. Only numbers from DATA, or a difference between two of them with the calculation shown "
         f"(for example: {max(taux_an.values()):.1f} - {reseau:.1f} = {max(taux_an.values()) - reseau:.1f} points).",
         f"2. INTERPRETATION – {'3' if suivi is not None else '2'} sentences: (1) the disruption level and why, using the threshold; (2) whether "
         "delays are mostly controllable (the range is entirely above 50%), mostly external (the range is entirely below 50%) or mixed "
-        "(the range crosses 50%), quoting the range"
-        + ("; (3) whether bad weather explains more than half of the air-system delay minutes, quoting the percentage." if suivi is not None else "."),
+        "(the range crosses 50%); give the range in the sentence"
+        + ("; (3) whether bad weather explains more than half of the air-system delay minutes, with its percentage in the sentence (never write the word \"quoting\")." if suivi is not None else "."),
         f"3. SUGGESTIONS – exactly {n_sugg}{', most useful first, each' if n_sugg == 2 else ' (there is only one approved action: do not repeat it)'} on one line: \"Suggestion N: [action taken from APPROVED ACTIONS] – "
         + ("[timing]\", adding \" – [number]\" only for an action that lists a number: a fallback action addresses no rising cause, "
            "so it gets no number. " if aucune_hausse else "[timing] – [the number from DATA it addresses]\". ") + quand_en +
