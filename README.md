@@ -22,7 +22,7 @@ Toutes les données sont publiques et gratuites. Le dépôt peut être public : 
 | `donnees/` | Les deux fichiers lus par Dify (`Airline_Delay_Cause.csv`, `suivi_mainline.csv`) et la date de mise à jour |
 | `src/` | La chaîne de données (téléchargements, suivi des avions, météo, fichiers pour Dify) |
 | `tests/` | Les tests : `python -m pytest -q tests` |
-| `dify/` | Le code des nœuds Dify et le guide des workflows automatiques (alerte du matin, fiche du 1er, bilan d'octobre) |
+| `dify/` | Le code des nœuds Dify et le guide des workflows automatiques (alerte du matin, fiche du 1er, bilan d'octobre), avec la mise en page des mails aux couleurs de Delta |
 | `.github/workflows/` | La mise à jour mensuelle et les tests |
 
 ## Mise en route
