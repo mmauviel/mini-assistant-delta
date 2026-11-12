@@ -69,3 +69,14 @@ def test_autant_de_suggestions_que_d_actions():
     assert "The suggestion applies in real time" in fevrier
     juillet = calcul.main(BTS, SUIVI, "MCO", 7)["prompt"]
     assert "SUGGESTIONS – exactly 2, most useful first" in juillet and "Both suggestions are part of a plan" in juillet
+
+
+def test_action_de_repli_sans_chiffre_et_mots_simples():
+    # Mail du 1er novembre (MCO, février) : « – 0.5% » au bout de la suggestion et « wholely » dans l'interprétation.
+    fevrier = calcul.main(BTS, SUIVI, "MCO", 2)["prompt"]
+    assert "fallback action: no cause rises" in fevrier and "addresses: extreme weather" not in fevrier
+    assert "a fallback action addresses no rising cause, so it gets no number" in fevrier
+    assert "no suggestion is repeated" in fevrier
+    assert "entirely above 50%" in fevrier and "whole range" not in fevrier
+    juillet = calcul.main(BTS, SUIVI, "MCO", 7)["prompt"]  # une vraie hausse : la suggestion garde son chiffre
+    assert "[timing] – [the number from DATA it addresses]" in juillet and "fallback" not in juillet
