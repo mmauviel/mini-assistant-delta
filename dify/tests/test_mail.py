@@ -81,3 +81,11 @@ def test_en_francais():
     fiche = calcul.main(BTS, SUIVI, "MCO", 7, "fr")["fiche"]
     out = mail.main("briefing", "MCO", "", "", rappel.main("MCO", "2026-04-01", "fr")["message"], fiche)
     assert "Perturbation récurrente" in out["html"] and "À faire" in out["html"]
+
+
+def test_genre_deduit():
+    """Dify n'accepte pas de texte fixe en entrée : sans genre, une fiche = briefing, sinon alerte."""
+    alerte = mail.main(aeroport="MCO", ia=ALERTE, donnees=DONNEES_DIRECT)
+    assert "Weather and FAA alert" in alerte["html"]
+    fiche = mail.main(aeroport="MCO", fiche=calcul.main(BTS, SUIVI, "MCO", 2)["fiche"])
+    assert "Normal month" in fiche["html"] and "Weather and FAA alert" not in fiche["html"]
