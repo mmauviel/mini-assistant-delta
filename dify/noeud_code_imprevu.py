@@ -138,29 +138,85 @@ RISQUES_7J = [
 ]
 
 
-def lire_prevision(texte):
-    """Prévision à 7 jours (périodes de 12 h) : renvoie (périodes à signaler, message d'erreur ou None).
-    Les risques faibles (« Slight Chance ») ne sont pas signalés."""
+def instant(t):
+    """Date d'une période ou d'une prévision (secondes depuis 1970 ou date ISO), en UTC ; None si illisible."""
+    try:
+        if isinstance(t, str) and not t.strip().isdigit():
+            d = datetime.fromisoformat(t.strip().replace("Z", "+00:00"))
+            return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
+        return datetime.fromtimestamp(int(t), tz=timezone.utc)
+    except (TypeError, ValueError, OSError):
+        return None
+
+
+def fin_taf(texte):
+    """Heure de fin de la prévision de l'aéroport (TAF) : elle ne couvre que les 24 à 30 prochaines heures."""
+    try:
+        donnees = json.loads(texte)
+    except (TypeError, ValueError):
+        return None
+    if isinstance(donnees, dict):
+        donnees = [donnees]
+    if not donnees or not isinstance(donnees[0], dict):
+        return None
+    taf = donnees[0]
+    fins = [instant(taf.get("validTimeTo"))] + [instant(f.get("timeTo")) for f in taf.get("fcsts") or [] if isinstance(f, dict)]
+    fins = [f for f in fins if f is not None]
+    return max(fins) if fins else None
+
+
+def lire_prevision(texte, maintenant=None, fin_aeroport=None, risque_aeroport=False):
+    """Prévision à 7 jours de la zone (périodes de 12 h) : renvoie (périodes à signaler, message d'erreur ou None).
+    - Les risques faibles (« Slight Chance ») ne sont pas signalés ; « Chance » (30 à 50 %) est écrit « possible ».
+    - Les périodes déjà terminées ne sont pas signalées.
+    - Le jour et la nuit d'une même date, avec les mêmes risques, tiennent sur une ligne.
+    - Si la prévision de l'aéroport (TAF) couvre la période et ne signale rien, on le dit : le risque n'est pas confirmé.
+      Sans cette précision, le mail annonce un orage et dit en même temps qu'aucun orage n'est prévu."""
     if not (texte or "").strip():
         return [], None  # nœud absent : rien à dire
     try:
         periodes = json.loads(texte)["properties"]["periods"]
     except (TypeError, ValueError, KeyError):
         return [], "7-day forecast unavailable"
-    trouves = []
+    groupes = []  # [date, noms, risques, prob max, possible, non confirmé, textes NWS]
     for p in periodes if isinstance(periodes, list) else []:
+        if not isinstance(p, dict):
+            continue
         court = str(p.get("shortForecast") or "")
         if "slight chance" in court.lower():
             continue
         risques = [(en, fr) for motif, en, fr in RISQUES_7J if re.search(motif, court, re.IGNORECASE)]
         if not risques:
             continue
+        fin = instant(p.get("endTime"))
+        if maintenant is not None and fin is not None and fin <= maintenant:
+            continue  # période passée
+        debut = instant(p.get("startTime"))
+        non_confirme = (not risque_aeroport and fin_aeroport is not None and debut is not None and debut < fin_aeroport)
         prob = (p.get("probabilityOfPrecipitation") or {}).get("value")
         nom = str(p.get("name") or "?")
         date = str(p.get("startTime") or "")[:10]
-        jour = f"{nom} ({date[8:10]}/{date[5:7]})" if len(date) == 10 else nom
-        en = f"{', '.join(e for e, _ in risques)} forecast {jour}" + (f", {prob}% chance of precipitation" if prob else "") + f" [NWS: {court}]"
-        fr = f"{', '.join(f for _, f in risques)} prévu(e)s {jour}" + (f", risque de précipitations {prob} %" if prob else "")
+        if groupes and date and groupes[-1][0] == date and groupes[-1][2] == risques:
+            g = groupes[-1]
+            g[1].append(nom); g[4] = g[4] and "chance" in court.lower(); g[5] = g[5] or non_confirme; g[6].append(court)
+            if prob is not None and (g[3] is None or prob > g[3]):
+                g[3] = prob
+        else:
+            groupes.append([date, [nom], risques, prob, "chance" in court.lower(), non_confirme, [court]])
+    trouves = []
+    for date, noms, risques, prob, possible, non_confirme, courts in groupes:
+        jj = f" ({date[8:10]}/{date[5:7]})" if len(date) == 10 else ""
+        quand_en, quand_fr = " and ".join(noms) + jj, " et ".join(noms) + jj
+        haut = "up to " if len(noms) > 1 else ""
+        haut_fr = "jusqu'à " if len(noms) > 1 else ""
+        en = (f"{', '.join(e for e, _ in risques)} {'possible' if possible else 'forecast'} {quand_en}"
+              + (f", {haut}{prob}% chance of precipitation" if prob else ""))
+        fr = (f"{', '.join(f for _, f in risques)} {'possible(s)' if possible else 'prévu(e)s'} {quand_fr}"
+              + (f", risque de précipitations {haut_fr}{prob} %" if prob else ""))
+        if non_confirme:
+            en += "; not in the airport forecast (TAF) for that time, so not confirmed"
+            fr += " ; absent(e)s de la prévision de l'aéroport (TAF) pour ce moment, donc non confirmé(e)s"
+        en += f" [NWS: {' / '.join(courts)}]"
         trouves.append((en, fr))
     return trouves, None
 
@@ -187,7 +243,8 @@ def main(aeroport: str, taf: str, faa: str, mois: float = 0, aujourd_hui: str = 
     autre_mois = 1 <= m <= 12 and m != jour.month
     meteo, err_meteo = lire_taf(taf)
     programmes, err_faa = lire_faa(faa, ap)
-    semaine, err_7j = lire_prevision(prevision)
+    fin_aeroport = None if err_meteo else fin_taf(taf)
+    semaine, err_7j = lire_prevision(prevision, jour, fin_aeroport, bool(meteo))
     alerte = "oui" if (programmes or meteo or semaine) else "non"
     en = [f"TODAY'S EVENT at {ap} (live data from the FAA airport status and the official weather forecasts, for today and the next 7 days; "
           "use only what is written here, and nothing else about today):"]
@@ -202,17 +259,22 @@ def main(aeroport: str, taf: str, faa: str, mois: float = 0, aujourd_hui: str = 
     if err_meteo:
         en.append(f"- {err_meteo}."); fr.append("- Prévisions météo indisponibles.")
     elif meteo:
-        en += [f"- {e}." for e, _ in meteo]; fr += [f"- {f}." for _, f in meteo]
+        en += [f"- Airport forecast (TAF): {e}." for e, _ in meteo]
+        fr += [f"- Prévision de l'aéroport (TAF) : {f}." for _, f in meteo]
     else:
-        en.append("- Weather forecast: no thunderstorm, low ceiling/visibility, snow or freezing precipitation expected.")
-        fr.append("- Météo : ni orage, ni plafond bas, ni neige ou verglas prévus.")
+        jusqu = f", until {heure(fin_aeroport.timestamp())}" if fin_aeroport else ""
+        jusqu_fr = f", jusqu'au {heure(fin_aeroport.timestamp())}" if fin_aeroport else ""
+        en.append(f"- Airport forecast (TAF, next 24 to 30 hours{jusqu}): no thunderstorm, low ceiling/visibility, "
+                  "snow or freezing precipitation expected.")
+        fr.append(f"- Prévision de l'aéroport (TAF, 24 à 30 prochaines heures{jusqu_fr}) : ni orage, ni plafond bas, "
+                  "ni neige ou verglas prévus.")
     if err_7j:
         en.append(f"- {err_7j}."); fr.append("- Prévision à 7 jours indisponible.")
     elif semaine:
-        en += [f"- Next 7 days (National Weather Service): {e}." for e, _ in semaine]
-        fr += [f"- 7 prochains jours (service météo américain) : {f}." for _, f in semaine]
+        en += [f"- Next 7 days (National Weather Service, area forecast): {e}." for e, _ in semaine]
+        fr += [f"- 7 prochains jours (service météo américain, prévision de la zone) : {f}." for _, f in semaine]
     elif (prevision or "").strip():
-        en.append("- Next 7 days (National Weather Service): no thunderstorm, snow, ice or fog expected.")
+        en.append("- Next 7 days (National Weather Service, area forecast): no thunderstorm, snow, ice or fog expected.")
         fr.append("- 7 prochains jours : ni orage, ni neige, ni verglas, ni brouillard prévus.")
     en.append("Adapt the suggestions and the passenger message to these events, without inventing anything about them. "
               "If nothing is reported, say so in one sentence at the end of the interpretation and keep the approved passenger message.")

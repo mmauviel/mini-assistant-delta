@@ -145,3 +145,42 @@ def test_resume_en_anglais_pour_le_mail():
     assert "Not sent to the AI" in autre["resume"] and "juillet" not in autre["resume"]
     assert imprevu.main("ATL", CALME_TAF, SANS_FAA)["resume"].startswith("Live events at ATL")  # anglais par défaut
     assert imprevu.main("ATL", CALME_TAF, SANS_FAA, langue="fr")["resume"].startswith("Imprévus à ATL")
+
+
+# Le mail reçu à MCO le 11 novembre 2026 : orages « Chance » dans la prévision de la zone (NWS),
+# rien dans la prévision de l'aéroport (TAF) qui couvre pourtant la même journée.
+TAF_CALME_MCO = json.dumps([{"icaoId": "KMCO", "validTimeTo": "2026-11-12T12:00:00Z", "fcsts": [
+    {"timeFrom": "2026-11-11T06:00:00Z", "timeTo": "2026-11-12T12:00:00Z", "visib": "6+", "wxString": None,
+     "clouds": [{"cover": "BKN", "base": 5000}]}]}])
+NWS_MCO = json.dumps({"properties": {"periods": [
+    {"name": "Veterans Day", "startTime": "2026-11-11T06:00:00-05:00", "endTime": "2026-11-11T18:00:00-05:00",
+     "shortForecast": "Mostly Cloudy then Chance Showers And Thunderstorms", "probabilityOfPrecipitation": {"value": 46}},
+    {"name": "Wednesday Night", "startTime": "2026-11-11T18:00:00-05:00", "endTime": "2026-11-12T06:00:00-05:00",
+     "shortForecast": "Chance Showers And Thunderstorms then Mostly Cloudy", "probabilityOfPrecipitation": {"value": 46}},
+    {"name": "Saturday", "startTime": "2026-11-14T06:00:00-05:00", "endTime": "2026-11-14T18:00:00-05:00",
+     "shortForecast": "Showers And Thunderstorms Likely", "probabilityOfPrecipitation": {"value": 70}},
+]}})
+
+
+def test_orage_de_la_zone_non_confirme_par_l_aeroport():
+    out = imprevu.main("MCO", TAF_CALME_MCO, SANS_FAA, prevision=NWS_MCO, aujourd_hui="2026-11-11T11:00:00+00:00")
+    lignes = [l for l in out["imprevu"].splitlines() if l.startswith("- Next 7 days")]
+    assert len(lignes) == 2  # le jour et la nuit du 11/11 sur une seule ligne, puis samedi
+    assert "thunderstorms possible Veterans Day and Wednesday Night (11/11), up to 46%" in lignes[0]
+    assert "not in the airport forecast (TAF) for that time, so not confirmed" in lignes[0]
+    assert "thunderstorms forecast Saturday (14/11), 70%" in lignes[1] and "not confirmed" not in lignes[1]  # après la TAF
+    assert "Airport forecast (TAF, next 24 to 30 hours, until 12/11 12:00 UTC): no thunderstorm" in out["imprevu"]
+    assert "Weather forecast:" not in out["imprevu"]
+    assert "non confirmé" in imprevu.main("MCO", TAF_CALME_MCO, SANS_FAA, prevision=NWS_MCO,
+                                          aujourd_hui="2026-11-11T11:00:00+00:00", langue="fr")["resume"]
+
+
+def test_orage_confirme_par_l_aeroport():
+    taf_orage = TAF_CALME_MCO.replace('"wxString": null', '"wxString": "TSRA"')
+    out = imprevu.main("MCO", taf_orage, SANS_FAA, prevision=NWS_MCO, aujourd_hui="2026-11-11T11:00:00+00:00")
+    assert "Airport forecast (TAF): thunderstorm" in out["imprevu"] and "not confirmed" not in out["imprevu"]
+
+
+def test_periodes_passees_ignorees():
+    out = imprevu.main("MCO", TAF_CALME_MCO, SANS_FAA, prevision=NWS_MCO, aujourd_hui="2026-11-12T13:00:00+00:00")
+    assert "11/11" not in out["imprevu"] and "Saturday (14/11)" in out["imprevu"]

@@ -240,7 +240,10 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
         "nas_ct": "Prepare rebookings, coordinate with air traffic control and warn passengers earlier (Delta does not control this cause).",
         "weather_ct": "Monitor weather alerts and prepare a targeted cancellation plan.",
     }
-    actions = [f"- {ACTIONS_EN[c]} (addresses: {CAUSES_EN[c]}, {m[c]:.1f}% in {mois_en} vs {calme[c]:.1f}% on average)" for c in ordre]
+    if aucune_hausse:  # action de repli : elle ne répond à aucune hausse, donc pas de chiffre à viser (sinon « 0.5% » sans aucun sens)
+        actions = [f"- {ACTIONS_EN[c]} (fallback action: no cause rises above the airport's average in {mois_en})" for c in ordre]
+    else:
+        actions = [f"- {ACTIONS_EN[c]} (addresses: {CAUSES_EN[c]}, {m[c]:.1f}% in {mois_en} vs {calme[c]:.1f}% on average)" for c in ordre]
     if meteo:
         actions += [f"- Track storm forecasts at arrival times and warn passengers as soon as an alert is issued "
                     f"(addresses: bad weather, {suivi['meteo']:.0f}% of air-system delay minutes)."]
@@ -273,10 +276,12 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
         "1. FACTS – 3 to 5 bullet points. Only numbers from DATA, or a difference between two of them with the calculation shown "
         f"(for example: {max(taux_an.values()):.1f} - {reseau:.1f} = {max(taux_an.values()) - reseau:.1f} points).",
         f"2. INTERPRETATION – {'3' if suivi is not None else '2'} sentences: (1) the disruption level and why, using the threshold; (2) whether "
-        "delays are mostly controllable (whole range above 50%), mostly external (whole range below 50%) or mixed (range crossing 50%), quoting the range"
+        "delays are mostly controllable (the range is entirely above 50%), mostly external (the range is entirely below 50%) or mixed "
+        "(the range crosses 50%), quoting the range"
         + ("; (3) whether bad weather explains more than half of the air-system delay minutes, quoting the percentage." if suivi is not None else "."),
         f"3. SUGGESTIONS – exactly {n_sugg}{', most useful first, each' if n_sugg == 2 else ' (there is only one approved action: do not repeat it)'} on one line: \"Suggestion N: [action taken from APPROVED ACTIONS] – "
-        "[timing] – [the number from DATA it addresses]\". " + quand_en +
+        + ("[timing]\", adding \" – [number]\" only for an action that lists a number: a fallback action addresses no rising cause, "
+           "so it gets no number. " if aucune_hausse else "[timing] – [the number from DATA it addresses]\". ") + quand_en +
         " If delays are mostly external, do not choose crew, staff or maintenance actions.",
         "4. PASSENGER MESSAGE – copy the APPROVED PASSENGER MESSAGE word for word (translate it if needed). Change it only if a TODAY'S EVENT "
         "block below reports an event: then add one sentence saying that flights may be disrupted today or in the coming days, and inviting "
@@ -295,7 +300,9 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
         "If it reports nothing, say so in one sentence at the end of the interpretation.",
         "",
         f"BEFORE ANSWERING, CHECK: the passenger message has no digit; {reseau:.1f}% is never called a threshold; each suggestion has an "
-        "action from the list, a timing and a number; nothing is said that DATA does not support.",
+        + ("action from the list and a timing (and a number only if its action lists one)" if aucune_hausse
+           else "action from the list, a timing and a number")
+        + "; no suggestion is repeated; every word is spelled correctly; nothing is said that DATA does not support.",
     ]
     intro = ("My group recommends that Delta Air Lines use a generative AI assistant that turns operational data into short briefings for managers. "
              "The numbers below were computed by our code from official U.S. Bureau of Transportation Statistics (BTS) data.")

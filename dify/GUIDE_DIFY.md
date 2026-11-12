@@ -33,7 +33,7 @@ On repart du workflow existant (voir le mode d'emploi du zip), avec deux changem
 1. **Début** : garder `aeroport`, `mois` et `langue` (`en` pour l'anglais). Supprimer `fichier_bts` et `fichier_suivi`. `mois` peut valoir 0 : le bilan annuel des 12 mois.
 2. Remplacer les deux **Extracteurs de documents** par deux **Requêtes HTTP** (HTTP Request), méthode GET, avec les adresses de la partie 2. Dans **Gestion des erreurs** (Error Handling), laisser « Aucune » : si GitHub ne répond pas, mieux vaut un arrêt qu'une fiche vide.
 3. **Code « calcul »** : `bts` = `HTTP BTS / body`, `suivi` = `HTTP suivi / body`. Le reste ne change pas.
-4. **Mettre le code à jour** : coller dans les nœuds Code les versions de ce dossier (`noeud_code_calcul.py`, `noeud_code_imprevu.py`, `noeud_code_icao.py`). Dans le **LLM**, message Système : `You write short operational briefings for Delta Air Lines managers. Use only the numbers in DATA. Follow the format and the rules exactly. When something is not in DATA, leave it out.` Déclarer leurs sorties (Output Variables, toutes en String) : OACI = `aeroport`, `icao`, `lat`, `lon` ; imprévu = `imprevu`, `resume`, `alerte` ; calcul = `fiche`, `prompt`. Dans le Code « imprévu », relier l'entrée `mois` (Number) à `Début / mois` : pour un autre mois que le mois en cours, l'IA ne reçoit pas la météo du jour. Une sortie non déclarée donne l'erreur « Not all output parameters are validated ». Signe que l'ancien code est encore là : une note en anglais quand `langue` = `fr`, une partie « SELF-CHECK », des chiffres dans le message aux passagers.
+4. **Mettre le code à jour** : coller dans les nœuds Code les versions de ce dossier (`noeud_code_calcul.py`, `noeud_code_imprevu.py`, `noeud_code_icao.py`). Dans le **LLM**, message Système : `You write short operational briefings for Delta Air Lines managers. Use only the numbers in DATA. Follow the format and the rules exactly. When something is not in DATA, leave it out.` Déclarer leurs sorties (Output Variables, toutes en String) : OACI = `aeroport`, `icao`, `lat`, `lon` ; imprévu = `imprevu`, `resume`, `alerte` ; calcul = `fiche`, `prompt`. Dans le Code « imprévu », relier l'entrée `mois` (Number) à `Début / mois` : pour un autre mois que le mois en cours, l'IA ne reçoit pas la météo du jour. Une sortie non déclarée donne l'erreur « Not all output parameters are validated ». Signe que l'ancien code est encore là : une note en anglais quand `langue` = `fr`, une partie « SELF-CHECK » quand `langue` = `fr`, des chiffres dans le message aux passagers, la même suggestion écrite deux fois, un pourcentage au bout d'une suggestion d'un « Normal month », ou la phrase « There is no TODAY'S EVENT block ».
 
 ## 4. Workflow B : alerte du matin
 
@@ -48,11 +48,16 @@ Créer un nouveau workflow : **Studio** → **Créer depuis zéro** → **Workfl
 5. **SI/SINON** (IF/ELSE) : `imprévu / alerte` **est** `oui`.
 6. Branche SI : nœud **LLM** « alerte ». Système : `You write short operational alerts for Delta Air Lines managers. Use only the facts given. When something is not given, leave it out.` Utilisateur : le texte ci-dessous ; à la place de `{{imprevu}}`, insérer la variable `imprévu / imprevu` (taper `/`). Vérifier qu'elle apparaît en bleu : sans elle, le modèle invente (aéroport, neige…). Le mail sort en anglais.
 
+   Les deux prévisions météo ne disent pas la même chose, et c'est normal : la **prévision de l'aéroport** (TAF, aviationweather.gov) ne couvre que les 24 à 30 prochaines heures, mais elle est précise ; la **prévision de la zone** (service météo américain, NWS) couvre 7 jours, par périodes de 12 heures, avec une probabilité. Le nœud « imprévu » nomme chaque ligne d'après sa source, écrit « possible » quand le NWS dit « Chance » (30 à 50 %), ajoute « not confirmed » quand la TAF couvre la même période sans rien signaler, et ignore les périodes déjà passées.
+
    ```
    Write a short alert email in English for the manager of the Delta Air Lines station named in the BLOCK below.
    Use only the BLOCK. If the BLOCK is empty, reply only: "Data unavailable: no alert."
    1. First line: "Alert" followed by the airport code written in the BLOCK, then one sentence with the main risk and its day.
+      If the BLOCK says the risk is "possible" or "not confirmed", say it in that sentence.
    2. List each risk with its day and time exactly as in the BLOCK (weather times are in UTC: write "UTC").
+      Keep the words "possible", "not confirmed" and the chance of precipitation exactly as in the BLOCK.
+      Never write that a risk is "forecast" when the BLOCK says "possible".
       If the BLOCK reports no risk, write only "No risk reported for today and the next 7 days." and stop.
    3. Suggest at most 2 actions, copied word for word from this list only:
       "Warn passengers on the affected flights through the Fly Delta app."
@@ -75,7 +80,7 @@ Créer un nouveau workflow : **Studio** → **Créer depuis zéro** → **Workfl
 2. **Variables d'environnement** : `aeroport` (String) et `email_manager` (Secret), comme pour B.
 3. **Code « rappel »** (Python 3) : entrée `aeroport` = variable d'environnement `aeroport` ; coller `noeud_code_rappel.py` ; sorties `mois_cible` (Number), `mois_annuel` (Number), `annuel` (String), `objet` (String), `message` (String).
 4. **Requête HTTP « BTS »** et **Requête HTTP « suivi »** : les adresses de la partie 2.
-5. **Code « calcul »** : coller `noeud_code_calcul.py` ; entrées `bts` = `HTTP BTS / body`, `suivi` = `HTTP suivi / body`, `aeroport` = variable d'environnement, `mois` = `rappel / mois_cible`. Ne pas relier `langue` : la fiche sort en anglais. Sorties `fiche` et `prompt`.
+5. **Code « calcul »** : coller `noeud_code_calcul.py` (la dernière version du dépôt : chaque nœud Code garde sa propre copie, celle du workflow A ne met pas à jour celle de C) ; entrées `bts` = `HTTP BTS / body`, `suivi` = `HTTP suivi / body`, `aeroport` = variable d'environnement, `mois` = `rappel / mois_cible`. Ne pas relier `langue` : la fiche sort en anglais. Sorties `fiche` et `prompt`.
 6. **LLM** : le même message Système que dans le workflow A ; Utilisateur = `calcul / prompt`. Pas de bloc d'imprévus : le mois est dans 3 mois.
 7. **Code « mail »** (Python 3) : coller `noeud_code_mail.py`. Entrées (String) : `genre` = le texte `briefing` ; `aeroport` = variable d'environnement ; `intro` = `rappel / message` ; `fiche` = `calcul / fiche` ; `ia` = `LLM / text`. Sorties (String) : `html`, `texte`, `apercu`.
 8. **Email** : destinataire `email_manager` ; objet = `rappel / objet` ; contenu = `mail / html` ; **Convert to HTML** = **activé**.
