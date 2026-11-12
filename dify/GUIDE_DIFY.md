@@ -48,11 +48,16 @@ Créer un nouveau workflow : **Studio** → **Créer depuis zéro** → **Workfl
 5. **SI/SINON** (IF/ELSE) : `imprévu / alerte` **est** `oui`.
 6. Branche SI : nœud **LLM** « alerte ». Système : `You write short operational alerts for Delta Air Lines managers. Use only the facts given. When something is not given, leave it out.` Utilisateur : le texte ci-dessous ; à la place de `{{imprevu}}`, insérer la variable `imprévu / imprevu` (taper `/`). Vérifier qu'elle apparaît en bleu : sans elle, le modèle invente (aéroport, neige…). Le mail sort en anglais.
 
+   Les deux prévisions météo ne disent pas la même chose, et c'est normal : la **prévision de l'aéroport** (TAF, aviationweather.gov) ne couvre que les 24 à 30 prochaines heures, mais elle est précise ; la **prévision de la zone** (service météo américain, NWS) couvre 7 jours, par périodes de 12 heures, avec une probabilité. Le nœud « imprévu » nomme chaque ligne d'après sa source, écrit « possible » quand le NWS dit « Chance » (30 à 50 %), ajoute « not confirmed » quand la TAF couvre la même période sans rien signaler, et ignore les périodes déjà passées.
+
    ```
    Write a short alert email in English for the manager of the Delta Air Lines station named in the BLOCK below.
    Use only the BLOCK. If the BLOCK is empty, reply only: "Data unavailable: no alert."
    1. First line: "Alert" followed by the airport code written in the BLOCK, then one sentence with the main risk and its day.
+      If the BLOCK says the risk is "possible" or "not confirmed", say it in that sentence.
    2. List each risk with its day and time exactly as in the BLOCK (weather times are in UTC: write "UTC").
+      Keep the words "possible", "not confirmed" and the chance of precipitation exactly as in the BLOCK.
+      Never write that a risk is "forecast" when the BLOCK says "possible".
       If the BLOCK reports no risk, write only "No risk reported for today and the next 7 days." and stop.
    3. Suggest at most 2 actions, copied word for word from this list only:
       "Warn passengers on the affected flights through the Fly Delta app."
