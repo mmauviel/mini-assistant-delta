@@ -69,7 +69,7 @@ Créer un nouveau workflow : **Studio** → **Créer depuis zéro** → **Workfl
    BLOCK:
    {{imprevu}}
    ```
-7. **Code « mail »** (Python 3), après le LLM : coller `noeud_code_mail.py`. Entrées (String) : `genre` = le texte `alert` ; `aeroport` = `OACI / aeroport` ; `ia` = `LLM / text` ; `donnees` = `imprévu / resume`. Sorties (String) : `html`, `texte`, `apercu`. Il habille le mail aux couleurs de la charte Delta (voir partie 7) sans changer le texte.
+7. **Code « mail »** (Python 3), après le LLM : coller `noeud_code_mail.py`. Entrées (String) : `aeroport` = `OACI / aeroport` ; `ia` = `LLM / text` ; `donnees` = `imprévu / resume`. Sorties (String) : `html`, `texte`, `apercu`. Pas d'entrée `genre` : sans fiche, le nœud sait que c'est l'alerte. Il habille le mail aux couleurs de la charte Delta (voir partie 7) sans changer le texte.
 8. Nœud **Email** (outil du plugin) : destinataire = la variable d'environnement `email_manager` ; objet = `Weather and FAA alert ` suivi de la variable `OACI / aeroport` ; contenu = `mail / html` ; **Convert to HTML** (Convertir en HTML) = **activé**.
 9. Relier la branche SINON directement à un nœud **Fin** : les jours calmes, aucun mail.
 10. **Publier** (Publish) : le déclencheur ne tourne qu'une fois le workflow publié. Pour tester sans attendre 6 h : sur le déclencheur, « Exécuter cette étape » (Run this step).
@@ -82,9 +82,9 @@ Créer un nouveau workflow : **Studio** → **Créer depuis zéro** → **Workfl
 4. **Requête HTTP « BTS »** et **Requête HTTP « suivi »** : les adresses de la partie 2.
 5. **Code « calcul »** : coller `noeud_code_calcul.py` (la dernière version du dépôt : chaque nœud Code garde sa propre copie, celle du workflow A ne met pas à jour celle de C) ; entrées `bts` = `HTTP BTS / body`, `suivi` = `HTTP suivi / body`, `aeroport` = variable d'environnement, `mois` = `rappel / mois_cible`. Ne pas relier `langue` : la fiche sort en anglais. Sorties `fiche` et `prompt`.
 6. **LLM** : le même message Système que dans le workflow A ; Utilisateur = `calcul / prompt`. Pas de bloc d'imprévus : le mois est dans 3 mois.
-7. **Code « mail »** (Python 3) : coller `noeud_code_mail.py`. Entrées (String) : `genre` = le texte `briefing` ; `aeroport` = variable d'environnement ; `intro` = `rappel / message` ; `fiche` = `calcul / fiche` ; `ia` = `LLM / text`. Sorties (String) : `html`, `texte`, `apercu`.
+7. **Code « mail »** (Python 3) : coller `noeud_code_mail.py`. Entrées (String) : `aeroport` = variable d'environnement ; `intro` = `rappel / message` ; `fiche` = `calcul / fiche` ; `ia` = `LLM / text`. Sorties (String) : `html`, `texte`, `apercu`.
 8. **Email** : destinataire `email_manager` ; objet = `rappel / objet` ; contenu = `mail / html` ; **Convert to HTML** = **activé**.
-9. **En octobre, le bilan annuel** : après l'Email, un **SI/SINON** sur `rappel / annuel` **est** `oui`. Branche SI : un deuxième **Code « calcul »** (même code ; `mois` = `rappel / mois_annuel`), un deuxième **LLM** (Utilisateur = son `prompt`), un deuxième **Code « mail »** (`genre` = `briefing`, `fiche` = la `fiche` du deuxième calcul, `ia` = le texte du deuxième LLM, `intro` vide) et un deuxième **Email** (objet `Yearly calendar`, contenu = son `html`, Convert to HTML activé). Les deux branches finissent sur **Fin**.
+9. **En octobre, le bilan annuel** : après l'Email, un **SI/SINON** sur `rappel / annuel` **est** `oui`. Branche SI : un deuxième **Code « calcul »** (même code ; `mois` = `rappel / mois_annuel`), un deuxième **LLM** (Utilisateur = son `prompt`), un deuxième **Code « mail »** (`aeroport`, `fiche` = la `fiche` du deuxième calcul, `ia` = le texte du deuxième LLM, pas d'`intro`) et un deuxième **Email** (objet `Yearly calendar`, contenu = son `html`, Convert to HTML activé). Les deux branches finissent sur **Fin**.
 10. **Publier**.
 
 ## 6. Avant la présentation

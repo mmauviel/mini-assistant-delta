@@ -6,7 +6,8 @@
 # téléphone. Mise en page en tableaux et styles en ligne : la seule qui passe dans Gmail, Outlook et Apple Mail.
 #
 # Entrées :
-#   genre     : « alert » (workflow B) ou « briefing » (workflow C)
+#   genre     : facultatif. Sans lui (Dify n'accepte que des variables en entrée d'un nœud Code), le nœud
+#               le déduit : une fiche reçue = « briefing » (workflow C), sinon « alert » (workflow B)
 #   aeroport  : code IATA (MCO)
 #   ia        : le texte du LLM (B : l'alerte ; C : la note de l'IA)
 #   donnees   : B seulement, imprévu / resume (les données en direct, pour vérifier)
@@ -532,13 +533,16 @@ def mail_alerte(aeroport, ia, donnees, logo, jour):
     return html, "\n".join(t).strip(), apercu
 
 
-def main(genre: str = "briefing", aeroport: str = "", ia: str = "", donnees: str = "", intro: str = "",
+def main(genre: str = "", aeroport: str = "", ia: str = "", donnees: str = "", intro: str = "",
          fiche: str = "", logo: str = "", aujourd_hui: str = "") -> dict:
     ap = "".join(ch for ch in (aeroport or "").upper() if ch.isalpha())[:3]
     jour = datetime.fromisoformat(aujourd_hui) if aujourd_hui else datetime.now(timezone.utc)
     if logo and not str(logo).startswith("https://"):
         logo = ""  # seulement une adresse https
-    if (genre or "").strip().lower().startswith(("alert", "alerte")):
+    g = (genre or "").strip().lower()
+    if not g:
+        g = "briefing" if (fiche or "").strip() else "alert"
+    if g.startswith(("alert", "alerte")):
         html, texte, apercu = mail_alerte(ap, ia, donnees, logo, jour)
     else:
         html, texte, apercu = mail_fiche(ap, ia, intro, fiche, logo, jour)
