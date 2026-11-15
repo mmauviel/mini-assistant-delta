@@ -25,7 +25,8 @@ Ce qui est dans le dépôt :
 | `dify/master/delta_flight_iq_master.yml` | Le modèle du Chatflow à importer dans Dify (écrit à la main, sans clé ni adresse) |
 | `dify/master/construire_master.py` | Le script qui écrit ce modèle à partir des deux fichiers ci-dessous |
 | `dify/noeud_code_routeur.py` | Nœud « Check and route » : vérifie l'aéroport et le mois, choisit le workflow |
-| `dify/noeud_code_reponse.py` | Nœuds « format » : mettent en forme ce que renvoie l'outil pour le chat |
+| `dify/noeud_code_reponse.py` | Nœuds « format » : mettent en forme ce que renvoie l'outil pour le chat (sans la météo du jour quand la fiche porte sur un autre mois) |
+| `dify/noeud_code_controle.py` | Contrôle automatique des chiffres de la note de l'IA, à ajouter dans A |
 | `dify/tests/test_master.py` | Les tests (`python -m pytest -q dify/tests`) |
 
 ## Ajouter des fonctionnalités plus tard sans toucher au master
@@ -36,6 +37,18 @@ Oui, c'est fait pour. Les nouvelles fonctionnalités (coût des retards en dolla
 2. **Ajouter les nouveaux résultats comme nouvelles sorties du nœud Fin** de A ou B, par exemple `cout_des_retards`. Le nœud « format » du master affiche toute sortie qu'il ne connaît pas à la fin de la réponse, sous son nom (« Cout des retards »). Rien à refaire dans le master.
 
 Après une modification de A ou B : **Publier** le workflow. L'outil se met à jour tout seul. Si Dify affiche « mettre à jour » (Update) sur le nœud outil du master, cliquer dessus.
+
+## Contrôle automatique des chiffres (contre les hallucinations)
+
+Un nœud Code sans IA, `dify/noeud_code_controle.py`, relit la note de l'IA et signale tout nombre qui n'est pas dans les données (DATA, la fiche ou les imprévus du jour). Il vérifie aussi les différences que la consigne autorise (« 17.6 - 15.8 = 1.8 points ») : les deux chiffres doivent être dans DATA et le résultat doit être juste. Il ne juge pas le sens des phrases : la checklist `verifier_reponse_IA.md` reste nécessaire.
+
+C'est le premier exemple d'ajout qui ne touche pas au master. Dans **A. Fiche à la demande** :
+
+1. Après le **LLM**, ajouter un **Code** « contrôle » (Python 3) et coller `noeud_code_controle.py`.
+2. Entrées (String) : `ia` = `LLM / text`, `prompt` = `calcul / prompt`, `fiche` = `calcul / fiche`, `imprevu` = `imprévu / imprevu`.
+3. Sortie (String) : `number_check`.
+4. Dans le nœud **Fin**, ajouter la sortie `number_check` = `contrôle / number_check`.
+5. **Publier** A. Dans le master, si le nœud outil affiche **Update**, cliquer dessus. Rien d'autre à changer : la réponse du chat affiche maintenant une partie « Number check ».
 
 ## Sécurité
 
