@@ -37,7 +37,7 @@ def test_un_vieux_mois_absent_est_une_vraie_erreur(tmp_path, monkeypatch):
 
 
 def test_alleger():
-    bts = pd.DataFrame([{c: 1 for c in alleger.COLS_BTS} | {"carrier": "DL", "arr_delay": 5}])
+    bts = pd.DataFrame([{c: 1 for c in alleger.COLS_BTS} | {"carrier": "DL", "security_ct": 5}])
     assert list(alleger.alleger_bts(bts).columns) == alleger.COLS_BTS
     suivi = pd.DataFrame([{c: 1 for c in alleger.COLS_SUIVI} | {"scope": s, "faa_total_min": 3} for s in ("mainline", "network")])
     s = alleger.alleger_suivi(suivi)
