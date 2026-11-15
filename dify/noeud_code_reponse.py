@@ -9,6 +9,7 @@
 # Entrées : resultat (sortie `text` de l'outil), message (sortie `message` du nœud « routeur »).
 # Sortie  : reponse (texte Markdown en anglais, affiché par le nœud Réponse).
 import json
+import re
 
 # Sorties connues, dans l'ordre d'affichage, avec leur titre. Les autres suivent, titrées d'après leur nom.
 CONNUES = [
@@ -21,11 +22,25 @@ CONNUES = [
 # Le nœud « imprévu » ajoute cette phrase quand la fiche porte sur un autre mois : la météo du jour ne sert alors à
 # rien dans le chat, on ne l'affiche pas.
 HORS_SUJET = "(Not sent to the AI"
+# Note de l'IA : dans le chat, on ne garde que ce qu'elle ajoute à la fiche, INTERPRETATION et SUGGESTIONS.
+# FACTS répète la fiche, PASSENGER MESSAGE est déjà dans la fiche, SELF-CHECK est remplacé par le contrôle
+# automatique des chiffres (number_check), qui lit, lui, la note complète. Si les titres ne sont pas trouvés,
+# la note est affichée en entier.
+DEBUT_NOTE = re.compile(r"^\W*2\W+(INTERPRETATION|INTERPRÉTATION)\b", re.I | re.M)
+FIN_NOTE = re.compile(r"^\W*4\W+(PASSENGER|MESSAGE)\b", re.I | re.M)
 MAX_SORTIE = 20000  # caractères : au-delà, la réponse est coupée (le chat de Dify reste lisible)
 
 
 def _titre(nom):
     return str(nom).replace("_", " ").strip().capitalize()
+
+
+def _note_courte(note):
+    debut = DEBUT_NOTE.search(note)
+    if not debut:
+        return note
+    fin = FIN_NOTE.search(note, debut.end())
+    return note[debut.start():fin.start() if fin else len(note)].strip()
 
 
 def _lire(resultat):
@@ -64,6 +79,8 @@ def main(resultat: str = "", message: str = "") -> dict:
         avant = len(parties)
         for nom, titre in CONNUES:
             contenu = _texte(sorties.get(nom))
+            if nom == "note_ia":
+                contenu = _note_courte(contenu)
             if nom in ("imprevus", "donnees") and HORS_SUJET in contenu:
                 continue
             if contenu and contenu not in deja:  # imprevus et donnees peuvent être le même texte

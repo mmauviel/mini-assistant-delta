@@ -87,6 +87,20 @@ def test_reponse_remet_les_sorties_dans_l_ordre():
     assert out.index("July briefing") < out.index("# Operational") < out.index("### AI note") < out.index("### Live data")
 
 
+def test_note_ia_reduite_a_interpretation_et_suggestions():
+    note = ("1. FACTS\n- 17.6%\n\n2. INTERPRETATION\n- Normal month.\n\n3. SUGGESTIONS\nSuggestion 1: Monitor.\n\n"
+            "4. PASSENGER MESSAGE\n\"Dear Customer\"\n\n5. SELF-CHECK\n(a) 17.6%")
+    out = reponse.main(json.dumps({"fiche": "F", "note_ia": note}), "")["reponse"]
+    assert "2. INTERPRETATION" in out and "Suggestion 1: Monitor." in out
+    assert "FACTS" not in out and "Dear Customer" not in out and "SELF-CHECK" not in out
+    # titres en gras ou en Markdown
+    note_md = "**1. FACTS**\nx\n## 2. INTERPRETATION\ny\n**3. SUGGESTIONS**\nz\n**4. PASSENGER MESSAGE**\nw"
+    out = reponse.main(json.dumps({"note_ia": note_md}), "")["reponse"]
+    assert "y" in out and "z" in out and "FACTS" not in out and "w" not in out.split("SUGGESTIONS")[1]
+    # format inattendu : la note entière
+    assert "Free text" in reponse.main(json.dumps({"note_ia": "Free text"}), "")["reponse"]
+
+
 def test_meteo_du_jour_masquee_pour_un_mois_lointain():
     imprevus = "Live events at MCO\n- FAA: nothing.\n(Not sent to the AI: the briefing is about July.)"
     out = reponse.main(json.dumps({"fiche": "F", "imprevus": imprevus}), "")["reponse"]

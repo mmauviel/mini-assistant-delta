@@ -36,7 +36,7 @@ Oui, c'est fait pour. Les nouvelles fonctionnalités (coût des retards en dolla
 1. **Ne pas changer les entrées** de A (`aeroport`, `mois`, `langue`) ni de B en direct (`aeroport`). En ajouter une facultative est possible, mais il faut alors la relier dans le nœud outil du master.
 2. **Ajouter les nouveaux résultats comme nouvelles sorties du nœud Fin** de A ou B, par exemple `cout_des_retards`. Le nœud « format » du master affiche toute sortie qu'il ne connaît pas à la fin de la réponse, sous son nom (« Cout des retards »). Rien à refaire dans le master.
 
-Après une modification de A ou B : **Publier** le workflow. L'outil se met à jour tout seul. Si Dify affiche « mettre à jour » (Update) sur le nœud outil du master, cliquer dessus.
+Après une modification de A ou B : **Publier** (Publish Update), puis menu Publish → **Workflow as Tool** → **Update**. Sans cette deuxième étape, l'outil reste sur l'ancienne version et le master ne voit pas la nouvelle sortie (testé le 15 novembre 2026 avec `number_check`).
 
 ## Contrôle automatique des chiffres (contre les hallucinations)
 
@@ -48,7 +48,7 @@ C'est le premier exemple d'ajout qui ne touche pas au master. Dans **A. Fiche à
 2. Entrées (String) : `ia` = `LLM / text`, `prompt` = `calcul / prompt`, `fiche` = `calcul / fiche`, `imprevu` = `imprévu / imprevu`.
 3. Sortie (String) : `number_check`.
 4. Dans le nœud **Fin**, ajouter la sortie `number_check` = `contrôle / number_check`.
-5. **Publier** A. Dans le master, si le nœud outil affiche **Update**, cliquer dessus. Rien d'autre à changer : la réponse du chat affiche maintenant une partie « Number check ».
+5. **Publier** A, puis **Workflow as Tool** → **Update**. Rien d'autre à changer : la réponse du chat affiche maintenant une partie « Number check ».
 
 ## Sécurité
 
