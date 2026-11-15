@@ -49,3 +49,8 @@ def test_titres_en_gras_et_numeros_de_suggestion_ne_sont_pas_des_chiffres():
     out = controle.main(ia, PROMPT)["number_check"]
     assert out.startswith("Number check: all"), out
     assert "NOT" in controle.main("**2. Interpretation**\n- 33% of delays.", PROMPT)["number_check"]
+
+
+def test_numero_de_section_n_est_pas_un_chiffre():
+    out = controle.main("* In Section 3 (Suggestions), both are recommendations.", PROMPT)["number_check"]
+    assert out.startswith("Number check: all"), out

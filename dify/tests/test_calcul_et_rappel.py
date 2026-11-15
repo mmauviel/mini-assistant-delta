@@ -170,3 +170,8 @@ def test_definition_ponctuelle_couvre_deux_annees_non_consecutives():
     assert "one-off = one year, or two years that are not in a row" in prompt
     assert "one-off = a single year" not in prompt and "one-off = a single year" not in calcul.main(BTS, SUIVI, "MCO", 0)["prompt"]
     assert "never by a line number" in prompt
+
+
+def test_chaque_suggestion_sur_sa_ligne():
+    # Gemini 2.5 Flash écrivait les 2 suggestions sur une seule ligne (comparaison du 15 novembre 2026)
+    assert 'start a new line before "Suggestion 2"' in calcul.main(BTS, SUIVI, "MCO", 7)["prompt"]

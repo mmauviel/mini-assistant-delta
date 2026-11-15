@@ -56,7 +56,7 @@ def main(ia: str = "", prompt: str = "", fiche: str = "", imprevu: str = "") -> 
                     faux.append(f"{a} - {b} = {c}")
         a_lire = NUMERO_DE_LISTE.sub(" ", ligne, count=1)
         # « Suggestion 1 », « Suggestions 1 and 2 », « DATA line 8 », « sentence (3) » : des numéros, pas des chiffres
-        a_lire = re.sub(r"\b(Suggestions?|line|lines|sentence|part)\s+\(?\d{1,2}\)?(?:\s*(?:and|,|-)\s*\d{1,2})?", r"\1", a_lire, flags=re.I)
+        a_lire = re.sub(r"\b(Suggestions?|line|lines|sentence|sentences|part|section)\s+\(?\d{1,2}\)?(?:\s*(?:and|,|-)\s*\d{1,2})?", r"\1", a_lire, flags=re.I)
         for brut in NOMBRE.findall(a_lire):
             total += 1
             if _normal(brut) not in connus:

@@ -1,0 +1,37 @@
+1. Facts
+
+* In June, the share of Delta Air Lines mainline flights arriving at New York, NY: LaGuardia (LGA) delayed 15 minutes or more was 26.5% in 2023, 20.8% in 2024, 33.8% in 2025, and 22.1% in 2026 (compared to the Delta network average in June of 21.4%).
+
+* National aviation system delays are the cause rising most in June at 10.0%, which is 2.2 points above the airport's all-month average of 7.8% (10.0 - 7.8 = 2.2 points).
+
+* Late-arriving aircraft caused 7.7% of delays in June, which is 1.1 points above the airport's average of 6.6% (7.7 - 6.6 = 1.1 points), while airline delays were 7.1% (average 6.3%, +0.8 points) and extreme weather was 1.1% (average 0.6%, +0.5 points).
+
+* Tracing each late aircraft back to the flight that started the delay shows that Delta controls between 41% and 45% of delays.
+
+* Within the national aviation system cause, 48% of delay minutes occurred during thunderstorms or low cloud at the airport.
+
+2. Interpretation
+The disruption level at LGA in June is one-off because the share of delayed flights exceeded the 25% strong disruption threshold in 2 non-consecutive years out of 4 (26.5% in 2023 and 33.8% in 2025). The delays are mostly external because the share of delays Delta controls is between 41% and 45%, which is entirely below 50%. Bad weather does not explain more than half of the air-system delay minutes, as thunderstorms or low cloud at the airport account for 48% of those minutes.
+
+3. Suggestions
+Suggestion 1: Prepare rebookings, coordinate with air traffic control and warn passengers earlier (Delta does not control this cause) – in real time, only if delays appear – national aviation system, 10.0% in June vs 7.8% on average. Suggestion 2: Add buffers between rotations of aircraft passing through this airport, and track late aircraft in real time to offer a replacement aircraft or crew – in real time, only if delays appear – late-arriving aircraft, 7.7% in June vs 6.6% on average.
+
+4. Passenger message
+Dear Customer, we regret to inform you that your flight to New York is delayed, and we sincerely apologize for the inconvenience. Your new arrival time and the options available to you can be found in the Fly Delta app, and we will keep you informed of any further change. Thank you for your patience and understanding.
+
+5. Self-check
+
+* (a) Numbers used and their DATA lines:
+   * 15 minutes, 2023, 26.5%, 2024, 20.8%, 2025, 33.8%, 2026, 22.1%: from "Share of flights delayed 15 minutes or more in June, by year".
+   * 21.4%: from "Delta network average in June".
+   * 10.0%, 2.2 points, 7.8%, 7.7%, 1.1 points, 6.6%, 7.1%, 6.3%, +0.8 points, 1.1%, 0.6%, +0.5 points: from "Share of flights delayed by each cause in June, compared with the airport's average over all months" (and "APPROVED ACTIONS" for the suggestion targets).
+   * 41%, 45%: from "Share of delays Delta controls, tracing each late aircraft back to the flight that started the delay".
+   * 48%: from "Weather inside the 'national aviation system' cause".
+   * 25%: from "THRESHOLD: our group's threshold for a strong disruption is 25%" (and "Disruption level").
+   * 2, 4: from "Disruption level".
+   * 50%: from the TASK instructions defining mostly controllable, mostly external, and mixed ranges.
+
+* (b) Sentences that are not facts from DATA:
+   * In Section 2 (Interpretation), all three sentences are analytical interpretations applying the rules in TASK to the DATA rather than direct facts from DATA.
+   * In Section 3 (Suggestions), both Suggestion 1 and Suggestion 2 are operational recommendations rather than facts from DATA.
+   * In Section 4 (Passenger message), all three sentences are pre-approved customer communication text rather than facts from DATA.

@@ -1,0 +1,23 @@
+1. Facts
+
+* In July 2026, 47.3% of Delta Air Lines mainline flights arriving at San Francisco International (SFO) were delayed 15 minutes or more, which is 22.1 points higher than the Delta network average of 25.2% (47.3 - 25.2 = 22.1 points).
+
+* Across the four years of July data, the share of flights delayed 15 minutes or more was 23.7% in 2023, 23.6% in 2024, 28.1% in 2025, and 47.3% in 2026.
+
+* In July, flights were delayed by national aviation system at 13.2% (compared to the airport's all-months average of 13.8%, a difference of -0.6 points), by airline at 10.3% (average 7.7%, +2.6 points), by late-arriving aircraft at 6.4% (average 4.3%, +2.1 points), and by extreme weather at 1.0% (average 0.4%, +0.6 points).
+
+* Delta controls between 42% and 46% of delays when tracing each late aircraft back to the flight that started the delay.
+
+* Within the national aviation system cause, 21% of delay minutes happened during thunderstorms or low cloud at the airport.
+
+2. Interpretation
+The disruption level at San Francisco International (SFO) in July is at risk because the share of delayed flights exceeded the 25% threshold in 2 out of 4 years (2025 and 2026, the last two years in a row). Delays are mostly external because the share of delays Delta controls is entirely below 50%, ranging between 42% and 46%. Bad weather does not explain more than half of the air-system delay minutes, as thunderstorms or low cloud at the airport accounted for only 21% of the national aviation system delay minutes.
+
+3. Suggestions
+Suggestion 1: Prepare rebookings, coordinate with air traffic control and warn passengers earlier (Delta does not control this cause) – prepare a light plan before July, plus close monitoring during July – Delta controls only 42% to 46% of delays (and national aviation system delays are 13.2%). Suggestion 2: Add buffers between rotations of aircraft passing through this airport, and track late aircraft in real time to offer a replacement aircraft or crew – prepare a light plan before July, plus close monitoring during July – late-arriving aircraft delays are 6.4% in July vs 4.3% on average.
+
+4. Passenger message
+Dear Customer, thank you for choosing Delta. In recent years, arrivals at San Francisco have frequently been delayed in July. We recommend allowing ample time for your connections. Should your flight be delayed, you will be notified promptly in the Fly Delta app. We wish you a pleasant journey.
+
+5. Self-check
+(a) and (b): long list, shortened here. (b) lists the three interpretation sentences, both suggestions and the passenger message.

@@ -1,0 +1,23 @@
+1. Facts
+
+* In July, the share of Delta Air Lines mainline flights arriving at Orlando International (MCO) delayed 15 minutes or more was 36.2% in 2023, 34.4% in 2024, 34.6% in 2025, and 32.8% in 2026, compared with the July Delta network average of 25.2%.
+
+* Airline delays in July reached 12.8% compared with the airport's all-months average of 9.1% (12.8 - 9.1 = 3.7 points), making it the cause rising most.
+
+* National aviation system delays in July were 12.0% compared with an average of 8.7% (12.0 - 8.7 = 3.3 points), with 60% of its delay minutes occurring during thunderstorms or low cloud at the airport.
+
+* Late-arriving aircraft delays in July were 8.8% compared with an average of 5.4% (8.8 - 5.4 = 3.4 points), while extreme weather delays were 1.0% compared with an average of 0.5% (1.0 - 0.5 = 0.5 points).
+
+* Tracing each late aircraft back to the flight that started the delay shows that Delta controls between 48% and 52% of delays.
+
+2. Interpretation
+The disruption level at Orlando International (MCO) in July is recurring because the share of delayed flights exceeded the 25% threshold in 4 years out of 4. The delays are mixed because the share of delays Delta controls is between 48% and 52%, which crosses the 50% mark. Bad weather explains more than half of the air-system delay minutes, accounting for 60% of the delay minutes inside the national aviation system cause.
+
+3. Suggestions
+Suggestion 1: Reinforce standby crews and ground staff, and bring maintenance checks forward before the month – before July – airline, 12.8% in July vs 9.1% on average Suggestion 2: Add buffers between rotations of aircraft passing through this airport, and track late aircraft in real time to offer a replacement aircraft or crew – before July – late-arriving aircraft, 8.8% in July vs 5.4% on average
+
+4. Passenger message
+Dear Customer, thank you for choosing Delta. In July, arrivals at Orlando are frequently delayed, largely due to weather conditions. We recommend allowing ample time for your connections. Should your flight be delayed, you will be notified promptly in the Fly Delta app, along with the options available to you. We wish you a pleasant journey.
+
+5. Self-check
+(a) and (b): long list, shortened here. (b) lists interpretation sentences 2 and 3, both suggestions and the passenger message.

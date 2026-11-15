@@ -322,7 +322,7 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
         "delays are mostly controllable (the range is entirely above 50%), mostly external (the range is entirely below 50%) or mixed "
         "(the range crosses 50%); give the range in the sentence"
         + ("; (3) whether bad weather explains more than half of the air-system delay minutes, with its percentage in the sentence (never write the word \"quoting\")." if suivi is not None else "."),
-        f"3. SUGGESTIONS – exactly {n_sugg}{', most useful first, each' if n_sugg == 2 else ' (there is only one approved action: do not repeat it)'} on one line: \"Suggestion N: [action taken from APPROVED ACTIONS] – "
+        f"3. SUGGESTIONS – exactly {n_sugg}{', most useful first, each on its own line (start a new line before "Suggestion 2")' if n_sugg == 2 else ' (there is only one approved action: do not repeat it), on one line'}: \"Suggestion N: [action taken from APPROVED ACTIONS] – "
         + ("[timing]\", adding \" – [number]\" only for an action that lists a number: a fallback action addresses no rising cause, "
            "so it gets no number. " if aucune_hausse else "[timing] – [the number from DATA it addresses]\". ") + quand_en +
         " The list already fits this airport: choose only from it.",
