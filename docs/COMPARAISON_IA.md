@@ -77,12 +77,32 @@ réponses floues (« unclear » donne une fiche).
 12 fiches sur 12 sans aucun défaut repéré (3 modèles × 4 cas), 0 chiffre hors données, 2 suggestions de la liste
 à SFO et LGA, « one-off » expliqué correctement. Réponses dans `dify/evaluation/reponses_apres/`.
 
+### Gemini 2.5 Flash (le modèle de production), réponses collées par Maeva
+
+| Point | Gemini 2.5 Flash |
+|---|---|
+| Chiffres hors données | 0 sur les 7 cas, calculs montrés justes |
+| Interprétation | juste partout (« one-off » de LGA bien expliqué) |
+| SFO | plus d'action équipage (grâce à la correction 1) |
+| Message aux passagers | copié mot pour mot, sans chiffre |
+| Suggestions | **les 2 sur une seule ligne** dans les 4 fiches |
+| Autocontrôle | juste mais très long (fiches de 400 à 620 mots) |
+| Alertes (B) | conformes |
+| Master | 8/8 |
+
+Correction 5 : le prompt demande maintenant d'aller à la ligne avant « Suggestion 2 ». « Section 3 » n'est plus compté
+comme un chiffre par le contrôle.
+
+Remarque : dans l'application Gemini (et non AI Studio), l'alerte « Write a short alert email » a été prise pour une
+demande d'envoi : Gemini a demandé l'accès à Gmail au lieu d'écrire le texte. Dans Dify, le modèle n'a aucun outil, donc
+ce cas ne peut pas arriver ; mais la même IA ne se comporte pas pareil selon l'endroit où elle tourne.
+
 ## Limites
 
 - Les réponses Claude ont été produites par des sous-agents qui lisaient les deux messages, pas par l'API avec une
   température fixée : c'est une bonne approximation, pas une mesure exacte.
-- Gemini (le modèle de production) et ChatGPT : à tester en collant les cas (Google AI Studio, ChatGPT), puis
-  `noter_reponse_ia.py` sur leurs réponses (un dossier par modèle).
+- ChatGPT : pas encore testé (coller les cas, puis `noter_reponse_ia.py` sur ses réponses, un dossier par modèle).
+- Les autocontrôles de deux fiches Gemini (MCO, SFO) sont raccourcis dans le dépôt ; le reste est recopié tel quel.
 
 ## À faire dans Dify après la fusion
 
