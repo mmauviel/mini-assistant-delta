@@ -1,0 +1,26 @@
+1. Facts
+- Share of Delta flights arriving at ATL delayed 15 minutes or more in February 2026: 11.6%.
+- Same share in February of the other years: 10.8% (2023), 8.8% (2024), 17.6% (2025).
+- Delta network average in February: 15.8%.
+- Share of delays Delta controls: between 56% and 60%.
+- Weather inside the national aviation system cause: 53% of its delay minutes happened during thunderstorms or low cloud at the airport.
+
+2. Interpretation
+The disruption level is normal, because the share was never above the 25% threshold in any of the four Februaries (0 of 4 years). Delays are mostly controllable, since the range of 56% to 60% lies entirely above 50%. Bad weather explains more than half of the air-system delay minutes, at 53%.
+
+3. Suggestions
+Suggestion 1: Track storm forecasts at arrival times and warn passengers as soon as an alert is issued – in real time, only if delays appear – 53%
+Suggestion 2: Monitor weather alerts and prepare a targeted cancellation plan – in real time, only if delays appear
+
+4. Passenger message
+"Dear Customer, we regret to inform you that your flight to Atlanta is delayed, and we sincerely apologize for the inconvenience. Your new arrival time and the options available to you can be found in the Fly Delta app, and we will keep you informed of any further change. Thank you for your patience and understanding."
+
+5. Self-check
+(a) Numbers used:
+- 11.6%, 10.8%, 8.8%, 17.6%: line "Share of flights delayed 15 minutes or more in February, by year".
+- 25%: line "THRESHOLD". 0 of 4 years: line "Disruption level".
+- 15.8%: line "Delta network average" (used as a comparison only, not as a threshold).
+- 56% and 60%: line "Share of delays Delta controls".
+- 50%: the rule for the controllable, external or mixed categories in the task, not a DATA line.
+- 53%: line "Weather inside the 'national aviation system' cause".
+(b) Sentences that are not facts from DATA: both suggestions are recommendations chosen from the approved action list. The controllable and weather conclusions in the interpretation are readings of the DATA ranges and percentages.

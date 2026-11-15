@@ -39,3 +39,13 @@ def test_zeros_et_fiche():
     assert "all" in controle.main("Threshold 42%", PROMPT, fiche="threshold 42 %")["number_check"]
     assert "all" in controle.main("27% chance of storms", PROMPT, imprevu="Chance: 27%")["number_check"]
     assert "no AI note" in controle.main("", PROMPT)["number_check"]
+
+
+def test_titres_en_gras_et_numeros_de_suggestion_ne_sont_pas_des_chiffres():
+    # Faux positifs vus pendant la comparaison des IA (15 novembre 2026)
+    ia = ("**1. Facts**\n- 2025 = 17.6%\n**2. Interpretation**\n### 3. Suggestions\n"
+          "- Suggestion 1 and Suggestion 2 are recommendations.\n- Suggestions 1 and 2 come from the list.\n"
+          "- 17.6%: DATA lines 8 and 9.")
+    out = controle.main(ia, PROMPT)["number_check"]
+    assert out.startswith("Number check: all"), out
+    assert "NOT" in controle.main("**2. Interpretation**\n- 33% of delays.", PROMPT)["number_check"]

@@ -20,8 +20,8 @@ import re
 NOMBRE = re.compile(r"(?<![\w.])(\d+(?:[.,]\d+)?)(?![\w])")
 # Différence écrite par l'IA : « 17.6 - 15.8 = 1.8 ».
 DIFFERENCE = re.compile(r"(\d+(?:[.,]\d+)?)\s*[-\u2212\u2013]\s*(\d+(?:[.,]\d+)?)\s*=\s*([-\u2212\u2013+]?\d+(?:[.,]\d+)?)")
-# Numéros de partie ou de liste en début de ligne (« 1. FACTS », « 3) »), à ne pas contrôler.
-NUMERO_DE_LISTE = re.compile(r"^\s*(?:[-*]\s*)?\(?\d{1,2}[.)]\s")
+# Numéros de partie ou de liste en début de ligne (« 1. FACTS », « **2. Interpretation** », « ### 3) »), à ne pas contrôler.
+NUMERO_DE_LISTE = re.compile(r"^\s*(?:[-*#_]+\s*)?\(?\d{1,2}[.)]\s")
 
 # Seuils écrits dans les consignes elles-mêmes, que l'IA doit citer : « the range is entirely above 50% ».
 SEUILS_DES_CONSIGNES = {"50"}
@@ -55,8 +55,8 @@ def main(ia: str = "", prompt: str = "", fiche: str = "", imprevu: str = "") -> 
                 else:
                     faux.append(f"{a} - {b} = {c}")
         a_lire = NUMERO_DE_LISTE.sub(" ", ligne, count=1)
-        if re.match(r"^\s*(?:\*\*)?Suggestion \d", a_lire):  # « Suggestion 1: » est un numéro, pas un chiffre
-            a_lire = re.sub(r"Suggestion \d", "Suggestion", a_lire, count=1)
+        # « Suggestion 1 », « Suggestions 1 and 2 », « DATA line 8 », « sentence (3) » : des numéros, pas des chiffres
+        a_lire = re.sub(r"\b(Suggestions?|line|lines|sentence|part)\s+\(?\d{1,2}\)?(?:\s*(?:and|,|-)\s*\d{1,2})?", r"\1", a_lire, flags=re.I)
         for brut in NOMBRE.findall(a_lire):
             total += 1
             if _normal(brut) not in connus:

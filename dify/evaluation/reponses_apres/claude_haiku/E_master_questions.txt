@@ -1,0 +1,8 @@
+{"aeroport": "MCO", "mois": 7, "demande": "briefing"}
+{"aeroport": "ATL", "mois": null, "demande": "risk"}
+{"aeroport": "BOS", "mois": null, "demande": "yearly"}
+{"aeroport": "EWR", "mois": 12, "demande": "briefing"}
+{"aeroport": "SFO", "mois": null, "demande": "briefing"}
+{"aeroport": "LGA", "mois": 2, "demande": "unclear"}
+{"aeroport": "ORD", "mois": 12, "demande": "unclear"}
+{"aeroport": "ATL", "mois": null, "demande": "risk"}

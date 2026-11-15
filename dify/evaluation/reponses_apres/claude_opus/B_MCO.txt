@@ -1,0 +1,8 @@
+Alert MCO: an FAA ground stop for thunderstorms is in place today, until 5:00 pm EST.
+- Today: FAA ground stop, reason: thunderstorms, until 5:00 pm EST.
+- Today: FAA arrival delays 31 minutes to 45 minutes (increasing), reason: WX:Thunderstorms.
+- 06/11 17:00 UTC to 06/11 21:00 UTC: thunderstorm, low ceiling/visibility (ceiling 800 ft, visibility 2 mi) forecast (TEMPO).
+- 06/11 21:00 UTC to 06/11 23:00 UTC: low ceiling/visibility (ceiling 200 ft, visibility 0.5 mi) forecast (PROB 30% probability).
+Suggested actions:
+- Coordinate with air traffic control.
+- Warn passengers on the affected flights through the Fly Delta app.

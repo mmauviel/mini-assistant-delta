@@ -1,0 +1,29 @@
+1. Facts
+- Share of flights delayed 15 minutes or more at SFO in July: 2023 = 23.7%; 2024 = 23.6%; 2025 = 28.1%; 2026 = 47.3%.
+- July 2026 compared with the Delta network average in July: 47.3 - 25.2 = 22.1 points.
+- Airline: 10.3% in July vs 7.7% on average (+2.6 points), the cause rising most.
+- Late-arriving aircraft: 6.4% in July vs 4.3% on average (+2.1 points).
+- Share of delays Delta controls: between 42% and 46%.
+
+2. Interpretation
+The disruption level is at risk: the last two years in a row were above our group's 25% threshold for a strong disruption (28.1% in 2025 and 47.3% in 2026), 2 years out of 4. Delays are mostly external, because the share Delta controls is between 42% and 46%, a range entirely below 50%. Bad weather does not explain more than half of the air-system delay minutes, with only 21% of them happening during thunderstorms or low cloud at the airport.
+
+3. Suggestions
+Suggestion 1: Add buffers between rotations of aircraft passing through this airport, and track late aircraft in real time to offer a replacement aircraft or crew. – light plan before July, plus close monitoring during July – 6.4%
+No second suggestion: the only other approved action reinforces crews, staff and maintenance, which is not allowed when delays are mostly external.
+
+4. Passenger message
+"Dear Customer, thank you for choosing Delta. In recent years, arrivals at San Francisco have frequently been delayed in July. We recommend allowing ample time for your connections. Should your flight be delayed, you will be notified promptly in the Fly Delta app. We wish you a pleasant journey."
+
+5. Self-check
+(a) Numbers used and their DATA line:
+- 23.7%, 23.6%, 28.1%, 47.3%: share of flights delayed by year.
+- 25.2%: Delta network average in July; 47.3 - 25.2 = 22.1 points is a difference calculated from these two numbers.
+- 25% and 2 year(s) out of 4: threshold and disruption level lines.
+- 10.3%, 7.7%, +2.6 points; 6.4%, 4.3%, +2.1 points: causes line.
+- 42% and 46%: share of delays Delta controls.
+- 21%: weather inside the national aviation system cause.
+(b) Sentences that are not facts from DATA:
+- Suggestion 1 is a recommendation (approved action addressing late-arriving aircraft; it concerns aircraft rotations, not a reinforcement of crews or staff).
+- The sentence explaining why there is no second suggestion is a recommendation-based choice, following the rule on external delays.
+- The statement that delays are mostly external is an interpretation of the 42% to 46% range against 50%.
