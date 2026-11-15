@@ -173,5 +173,5 @@ def test_definition_ponctuelle_couvre_deux_annees_non_consecutives():
 
 
 def test_chaque_suggestion_sur_sa_ligne():
-    # Gemini 2.5 Flash écrivait les 2 suggestions sur une seule ligne (comparaison du 15 novembre 2026)
+    # Gemini 3.5 écrivait les 2 suggestions sur une seule ligne (comparaison du 15 novembre 2026)
     assert 'start a new line before "Suggestion 2"' in calcul.main(BTS, SUIVI, "MCO", 7)["prompt"]
