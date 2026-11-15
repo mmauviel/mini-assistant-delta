@@ -9,7 +9,7 @@ from pathlib import Path
 import pandas as pd
 
 COLS_BTS = ["year", "month", "airport", "airport_name", "arr_flights", "arr_del15",
-            "carrier_ct", "late_aircraft_ct", "nas_ct", "weather_ct"]
+            "carrier_ct", "late_aircraft_ct", "nas_ct", "weather_ct", "arr_delay"]
 COLS_SUIVI = ["year", "month", "airport", "scope", "Carrier_ct", "NAS_ct", "Weather_ct", "Security_ct",
               "Unresolved_ct", "NASDelay", "nas_min_wx_either"]
 

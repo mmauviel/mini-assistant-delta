@@ -17,6 +17,13 @@ SEUIL = 25  # % de vols en retard au-dessus duquel on parle de perturbation fort
 CAUSES_COLS = ["carrier_ct", "late_aircraft_ct", "nas_ct", "weather_ct"]
 SUIVI_COLS = ["Carrier_ct", "NAS_ct", "Weather_ct", "Security_ct", "Unresolved_ct"]
 VIDES = ("", "nan", "NaN", "None", "null")
+# Coût des retards : minutes de retard à l'arrivée (colonne arr_delay du BTS) × coût moyen d'une minute de vol des
+# compagnies américaines, publié par Airlines for America (A4A) : 98,41 $ en 2025 (équipage 37,01, carburant 29,34,
+# maintenance 18,35, avion 9,76, autres 3,95). https://airlines.org/dataset/u-s-passenger-carrier-delay-costs/
+# Estimation grossière : une minute d'attente au sol coûte moins qu'une minute de vol, et les coûts pour les passagers
+# (correspondances manquées, hôtels) ne sont pas comptés. Sans colonne arr_delay dans le fichier, pas de ligne de coût.
+COUT_MINUTE = 98.41
+SOURCE_COUT = "A4A 2025"
 
 
 def lire_table(texte):
@@ -53,6 +60,25 @@ def div(a, b):
     if b:
         return a / b
     return math.nan if a == 0 else math.copysign(math.inf, a)
+
+
+def a_les_minutes(rows):
+    return any(str(r.get("arr_delay", "")).strip() not in VIDES for r in rows)
+
+
+def dollars(x, EN):
+    """1 234 567 $ → « $1.2 M » (anglais) ou « 1,2 M$ » (français)."""
+    if x >= 1e6:
+        t = f"{x / 1e6:.1f} M"
+    else:
+        t = f"{x / 1e3:.0f} k"
+    return f"${t}" if EN else t.replace(".", ",") + " $"
+
+
+def cout_par_an(rows):
+    """Coût estimé des retards par année ({année: dollars}) pour des lignes d'un même mois et d'un même aéroport."""
+    return {y: somme([r for r in rows if r["year"] == y], "arr_delay") * COUT_MINUTE
+            for y in sorted({r["year"] for r in rows})}
 
 
 def analyse(bts, suivi_txt, AP, MOIS, EN):
@@ -98,6 +124,7 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
     recurrent = n_fort == len(taux_an)
     a_risque = not recurrent and ((len(haut) >= 2 and haut[-1] and haut[-2]) or n_fort > len(haut) / 2)
     normal = n_fort == 0  # jamais au-dessus du seuil : un mois normal (comme dans le bilan annuel)
+    cout = cout_par_an(am) if a_les_minutes(am) else {}
 
     # 2. EXPLIQUER : causes du mois contre la moyenne de tous les mois de l'aéroport
     def parts(rows):
@@ -147,6 +174,11 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
          f"## 1. {T('Repérer', 'Detect')}"]
     L += [f"- {int(y)}{SEP}{N(v)}{P}" + (" ⚠" if v > SEUIL else "") for y, v in taux_an.items()]
     L += [T(f"- Moyenne du réseau Delta en {mois} : {N(reseau)} %.", f"- Delta network average in {mois}: {N(reseau)}%."),
+          *([T(f"- Coût estimé des retards à l'arrivée en {mois} : environ {dollars(sum(cout.values()) / len(cout), EN)} par an en moyenne, "
+               f"jusqu'à {dollars(max(cout.values()), EN)} en {max(cout, key=cout.get)} (minutes de retard × {N(COUT_MINUTE)} $ la minute, {SOURCE_COUT} ; ordre de grandeur).",
+               f"- Estimated cost of arrival delays in {mois}: about {dollars(sum(cout.values()) / len(cout), EN)} per year on average, "
+               f"up to {dollars(max(cout.values()), EN)} in {max(cout, key=cout.get)} (delay minutes × ${COUT_MINUTE:.2f} per minute, {SOURCE_COUT}; order of magnitude).")]
+            if cout else []),
           T(f"- **{'Perturbation récurrente' if recurrent else 'Perturbation à risque' if a_risque else 'Mois normal' if normal else 'Perturbation ponctuelle'}** : au-dessus de {SEUIL} % {n_fort} année(s) sur {len(taux_an)}.",
             f"- **{'Recurring disruption' if recurrent else 'At-risk disruption' if a_risque else 'Normal month' if normal else 'One-off disruption'}**: above {SEUIL}% in {n_fort} year(s) out of {len(taux_an)}.")]
     if a_risque:
@@ -328,7 +360,8 @@ def bilan_annuel(bts, AP, EN):
         return msg, "Reply only with this sentence: " + msg
     noms = [r.get("airport_name", "") for r in a if str(r.get("airport_name", "")).strip() not in VIDES]
     nom = noms[0] if noms else AP
-    lignes = []
+    lignes, couts = [], {}
+    minutes = a_les_minutes(a)
     for M in range(1, 13):
         am = [r for r in a if r["month"] == M]
         if not am:
@@ -343,22 +376,36 @@ def bilan_annuel(bts, AP, EN):
             else "one-off" if n else "normal"
         prepa = (M - 4) % 12 + 1  # préparer 3 mois avant : le 1er du mois M-3
         lignes.append((M, taux, reseau, niveau, n, prepa))
+        if minutes:
+            c = cout_par_an(am)
+            couts[M] = sum(c.values()) / len(c)
     NIV = {"recurring": T("récurrente", "recurring"), "at risk": T("à risque", "at risk"),
            "one-off": T("ponctuelle", "one-off"), "normal": T("normale", "normal")}
     a_preparer = [l for l in lignes if l[3] in ("recurring", "at risk")]
     L = [f"# {T('Bilan annuel', 'Annual review')}{T(' : ', ': ')}{AP}", f"_{nom}_", "",
          T(f"Part des vols en retard de 15 minutes ou plus, par mois et par année (seuil : {SEUIL} %).",
            f"Share of flights delayed 15 minutes or more, by month and year (threshold: {SEUIL}%)."), "",
-         T("| Mois | Par année | Réseau Delta | Perturbation | Préparer dès le 1er |", "| Month | By year | Delta network | Disruption | Prepare from the 1st of |"),
-         "| --- | --- | --- | --- | --- |"]
+         T("| Mois | Par année | Réseau Delta | Perturbation | Préparer dès le 1er |", "| Month | By year | Delta network | Disruption | Prepare from the 1st of |")
+         + (T(" Coût des retards / an |", " Delay cost / year |") if couts else ""),
+         "| --- | --- | --- | --- | --- |" + (" --- |" if couts else "")]
     for M, taux, reseau, niveau, n, prepa in lignes:
         par_an = ", ".join(f"{y} : {N(v)}{P}" if not EN else f"{y}: {N(v)}{P}" for y, v in taux.items())
         L.append(f"| {NOMS[M - 1]} | {par_an} | {N(reseau)}{P} | {NIV[niveau]} ({n}/{len(taux)}) | "
-                 + (NOMS[prepa - 1] if niveau in ("recurring", "at risk") else "–") + " |")
+                 + (NOMS[prepa - 1] if niveau in ("recurring", "at risk") else "–") + " |"
+                 + (f" {dollars(couts[M], EN)} |" if couts else ""))
     L += ["", T(f"**Mois à préparer** : {', '.join(NOMS[l[0] - 1] for l in a_preparer) or 'aucun'}. Pour chacun, lancer la fiche du mois "
                 "3 mois avant (le 1er), pour avoir le temps de prévoir les renforts et les marges.",
                 f"**Months to prepare**: {', '.join(NOMS[l[0] - 1] for l in a_preparer) or 'none'}. For each, run the monthly briefing "
                 "3 months before (on the 1st), to have time to plan reinforcements and buffers.")]
+    if couts:
+        total = sum(couts.values())
+        prep = sum(couts[l[0]] for l in a_preparer if l[0] in couts)
+        L += ["", T(f"**Coût estimé des retards à l'arrivée** : environ {dollars(total, EN)} par an à {AP}"
+                    + (f", dont {dollars(prep, EN)} ({prep / total * 100:.0f} %) sur les mois à préparer" if a_preparer and total else "")
+                    + f" (moyenne de chaque mois sur les années du fichier ; minutes de retard × {N(COUT_MINUTE)} $ la minute, {SOURCE_COUT} ; ordre de grandeur).",
+                    f"**Estimated cost of arrival delays**: about {dollars(total, EN)} per year at {AP}"
+                    + (f", including {dollars(prep, EN)} ({prep / total * 100:.0f}%) in the months to prepare" if a_preparer and total else "")
+                    + f" (each month's average over the years in the file; delay minutes × ${COUT_MINUTE:.2f} per minute, {SOURCE_COUT}; order of magnitude).")]
     fiche = "\n".join(L)
     D = [f"DATA – Delta Air Lines mainline, flights arriving at {nom} ({AP}), share of flights delayed 15 minutes or more, by month:"]
     for M, taux, reseau, niveau, n, prepa in lignes:

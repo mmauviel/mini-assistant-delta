@@ -28,6 +28,7 @@ def test_meme_definition_que_le_bts():
     assert len(t) == 1 and (r.year, r.month, r.airport, r.carrier) == (2026, 7, "MCO", "DL")
     assert r.arr_flights == 5 and r.arr_del15 == 2 and r.arr_cancelled == 1 and r.arr_diverted == 1
     assert r.carrier_ct == 0.75 and r.nas_ct == 0.25 and r.late_aircraft_ct == 1 and r.weather_ct == 0
+    assert r.arr_delay == 60  # 30 + 10 + 20 minutes, sans le vol régional
     assert r.airport_name == "Orlando, FL: Orlando International"
 
 

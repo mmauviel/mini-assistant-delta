@@ -9,7 +9,8 @@
 #
 # Même définition que le BTS (vols opérés par Delta, compagnie DL) :
 #   arr_flights = vols prévus à l'arrivée (annulés et déroutés compris) ; arr_del15 = vols arrivés avec 15 min ou plus de retard ;
-#   *_ct = vols en retard répartis entre les causes au prorata de leurs minutes ; arr_cancelled, arr_diverted.
+#   *_ct = vols en retard répartis entre les causes au prorata de leurs minutes ; arr_cancelled, arr_diverted ;
+#   arr_delay = minutes de retard de ces vols (somme des minutes par cause, comme la colonne arr_delay du BTS).
 # Vérifié sur janv. 2023 - août 2026 : mêmes valeurs que le fichier du BTS, à un vol près sur quelques lignes.
 import argparse
 from pathlib import Path
@@ -32,13 +33,15 @@ def construire(vols: pd.DataFrame, noms: pd.DataFrame | None = None) -> pd.DataF
     minutes = late[list(MINUTES)].fillna(0)
     parts = minutes.div(minutes.sum(axis=1), axis=0).fillna(0)  # sans minutes renseignées : 0
     late[list(MINUTES.values())] = parts.to_numpy()
-    m = late.groupby(CLES).agg(arr_del15=("Dest", "size"), **{c: (c, "sum") for c in MINUTES.values()})
+    late["arr_delay"] = minutes.sum(axis=1)
+    m = late.groupby(CLES).agg(arr_del15=("Dest", "size"), arr_delay=("arr_delay", "sum"),
+                               **{c: (c, "sum") for c in MINUTES.values()})
     t = g.join(m, how="left").fillna(0).reset_index()
     t.insert(2, "carrier", COMPAGNIE)
     t.insert(3, "carrier_name", "Delta Air Lines Inc.")
     t["airport_name"] = t.airport.map(dict(zip(noms.airport, noms.airport_name)) if noms is not None else {}).fillna(t.airport)
     cols = ["year", "month", "carrier", "carrier_name", "airport", "airport_name", "arr_flights", "arr_del15",
-            "carrier_ct", "weather_ct", "nas_ct", "security_ct", "late_aircraft_ct", "arr_cancelled", "arr_diverted"]
+            "carrier_ct", "weather_ct", "nas_ct", "security_ct", "late_aircraft_ct", "arr_cancelled", "arr_diverted", "arr_delay"]
     t = t[cols]
     num = cols[6:]
     t[num] = t[num].astype(float).round(2)

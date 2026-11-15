@@ -87,3 +87,44 @@ def test_consignes_sans_mot_a_recopier():
     juillet = calcul.main(BTS, SUIVI, "MCO", 7)["prompt"]
     assert "quoting the" not in juillet and "never write the word \"quoting\"" in juillet
     assert "3 to 5 bullet points, never more" in juillet
+
+
+# --- coût des retards (colonne arr_delay) ----------------------------------------------------------------------------
+
+def _avec_minutes(minutes_par_an):
+    """Fichier BTS réduit à MCO en juillet, avec la colonne arr_delay (minutes) donnée pour chaque année."""
+    lignes = ["year,month,airport,airport_name,arr_flights,arr_del15,carrier_ct,late_aircraft_ct,nas_ct,weather_ct,arr_delay"]
+    for y, mn in minutes_par_an.items():
+        lignes.append(f'{y},7,MCO,"Orlando, FL: Orlando International",1000,300,100,80,100,20,{mn}')
+        lignes.append(f'{y},1,MCO,"Orlando, FL: Orlando International",1000,100,40,20,30,10,1000')
+    return "\n".join(lignes)
+
+
+def test_cout_des_retards_dans_la_fiche():
+    fiche = calcul.main(_avec_minutes({2024: 40000, 2025: 60000}), "", "MCO", 7)["fiche"]
+    # moyenne 50 000 min × 98,41 $ = 4,92 M$ ; maximum 60 000 min en 2025 = 5,90 M$
+    assert "Estimated cost of arrival delays in July: about $4.9 M per year on average, up to $5.9 M in 2025" in fiche
+    assert "$98.41 per minute, A4A 2025" in fiche
+    fr = calcul.main(_avec_minutes({2024: 40000, 2025: 60000}), "", "MCO", 7, "fr")["fiche"]
+    assert "environ 4,9 M $ par an en moyenne, jusqu'à 5,9 M $ en 2025" in fr
+
+
+def test_cout_dans_le_bilan_annuel():
+    fiche = calcul.main(_avec_minutes({2024: 40000, 2025: 60000}), "", "MCO", 0)["fiche"]
+    assert "Delay cost / year |" in fiche and "| $4.9 M |" in fiche and "| $98 k |" in fiche
+    assert "about $5.0 M per year at MCO, including $4.9 M (98%) in the months to prepare" in fiche
+
+
+def test_sans_colonne_arr_delay_pas_de_cout():
+    # données publiées avant l'ajout de la colonne : la fiche reste la même qu'avant
+    import csv
+    import io
+    lignes = list(csv.reader(io.StringIO(BTS)))
+    if "arr_delay" in lignes[0]:
+        i = lignes[0].index("arr_delay")
+        lignes = [l[:i] + l[i + 1:] for l in lignes]
+    sortie = io.StringIO()
+    csv.writer(sortie).writerows(lignes)
+    sans = sortie.getvalue()
+    assert "cost" not in calcul.main(sans, SUIVI, "MCO", 7)["fiche"].lower()
+    assert "Delay cost" not in calcul.main(sans, SUIVI, "MCO", 0)["fiche"]
