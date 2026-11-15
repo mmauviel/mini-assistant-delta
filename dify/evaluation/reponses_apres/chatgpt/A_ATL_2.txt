@@ -1,0 +1,32 @@
+1. Facts
+
+* The share of flights delayed by 15 minutes or more was 10.8% in 2023, 8.8% in 2024, 17.6% in 2025 and 11.6% in 2026.
+* The February delay share at ATL in 2026 was 11.6%, compared with the Delta network average of 15.8% (15.8 - 11.6 = 4.2 percentage points below).
+* The disruption level was normal: the share of delayed flights exceeded the 25% threshold in 0 out of 4 years.
+* All four delay causes were below their airport averages: airline 4.2% (-0.4 points), late-arriving aircraft 4.6% (-1.4 points), national aviation system 3.1% (-0.6 points), and extreme weather 0.4% (-0.2 points).
+* Delta controls between 56% and 60% of delays. Within the national aviation system cause, 53% of delay minutes occurred during thunderstorms or low cloud at the airport.
+
+2. Interpretation
+The disruption level is normal because the share of delayed flights never exceeded the 25% threshold in the four February observations. Delays are mostly controllable because the estimated controllable share ranges from 56% to 60%, entirely above 50%. Bad weather explains more than half of national aviation system delay minutes, accounting for 53%.
+3. Suggestions
+Suggestion 1: Track storm forecasts at arrival times and warn passengers as soon as an alert is issued – in real time, only if delays appear – 53%.
+Suggestion 2: Monitor weather alerts and prepare a targeted cancellation plan – in real time, only if delays appear.
+4. Passenger message
+Dear Customer, we regret to inform you that your flight to Atlanta is delayed, and we sincerely apologize for the inconvenience. Your new arrival time and the options available to you can be found in the Fly Delta app, and we will keep you informed of any further change. Thank you for your patience and understanding.
+5. Self-check
+(a) Numbers used and their DATA sources
+
+* 10.8%, 8.8%, 17.6%, 11.6%: Share of flights delayed 15 minutes or more in February, by year.
+* 15.8%: Delta network average in February.
+* 4.2 percentage points: Calculation using the 2026 delay share and Delta network average (15.8 - 11.6 = 4.2).
+* 25% and 0 out of 4 years: Disruption level and threshold.
+* 4.2%, 4.6%, 3.1%, 0.4%: Share of delays by cause in February.
+* -0.4, -1.4, -0.6 and -0.2 points: Differences from the airport's average for each cause.
+* 56%–60%: Share of delays Delta controls.
+* 53%: Weather inside the national aviation system cause.
+
+(b) Statements that are not facts from DATA
+
+* Suggestion 1 is a recommendation taken from the approved actions list.
+* Suggestion 2 is a recommendation taken from the approved actions list.
+* The passenger message is the approved passenger message, reproduced word for word.

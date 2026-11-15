@@ -1,0 +1,26 @@
+1. Facts
+- Share of Delta flights arriving at SFO delayed 15 minutes or more in July 2026: 47.3%.
+- Same share in July of the other years: 23.7% (2023), 23.6% (2024), 28.1% (2025).
+- Gap to the Delta network average in July (25.2%): 47.3 - 25.2 = 22.1 points.
+- Share of delays Delta controls: between 42% and 46%.
+
+2. Interpretation
+The disruption level is at risk, because the share was above the 25% threshold in 2025 and 2026, the last two years in a row. Delays are mostly external, since the range of 42% to 46% lies entirely below 50%. Bad weather does not explain more than half of the air-system delay minutes, at 21%.
+
+3. Suggestions
+Suggestion 1: Add buffers between rotations of aircraft passing through this airport, and track late aircraft in real time to offer a replacement aircraft or crew – before July, plus close monitoring during July – 6.4%
+Suggestion 2: Prepare rebookings, coordinate with air traffic control and warn passengers earlier – before July, plus close monitoring during July – 42% to 46%
+
+4. Passenger message
+"Dear Customer, thank you for choosing Delta. In recent years, arrivals at San Francisco have frequently been delayed in July. We recommend allowing ample time for your connections. Should your flight be delayed, you will be notified promptly in the Fly Delta app. We wish you a pleasant journey."
+
+5. Self-check
+(a) Numbers used:
+- 47.3%, 23.7%, 23.6%, 28.1%: line "Share of flights delayed 15 minutes or more in July, by year".
+- 25%: line "THRESHOLD". Two of four years, last two in a row: line "Disruption level".
+- 25.2%: line "Delta network average" (used as a comparison only, not as a threshold). The 22.1-point gap is 47.3 - 25.2 = 22.1, from those two lines.
+- 6.4%: line "late-arriving aircraft" under the July cause shares.
+- 42% and 46%: line "Share of delays Delta controls".
+- 21%: line "Weather inside the 'national aviation system' cause".
+- 50%: the rule for the controllable, external or mixed categories in the task, not a DATA line.
+(b) Sentences that are not facts from DATA: both suggestions are recommendations chosen from the approved action list, and their timing comes from the task. The mostly external and not-more-than-half conclusions in the interpretation are readings of the DATA ranges and percentages.

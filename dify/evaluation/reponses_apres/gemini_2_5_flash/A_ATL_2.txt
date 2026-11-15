@@ -1,0 +1,41 @@
+1. Facts
+
+* In February, the share of Delta Air Lines mainline flights arriving at Hartsfield-Jackson Atlanta International (ATL) delayed 15 minutes or more was 10.8% in 2023, 8.8% in 2024, 17.6% in 2025, and 11.6% in 2026 (compared with the Delta network average of 15.8%).
+
+* Every delay cause in February was below the airport's all-months average: late-arriving aircraft at 4.6% (average 6.0%, -1.4 points), airline at 4.2% (average 4.6%, -0.4 points), national aviation system at 3.1% (average 3.7%, -0.6 points), and extreme weather at 0.4% (average 0.6%, -0.2 points).
+
+* Tracing each late aircraft back to the flight that started the delay shows that between 56% and 60% of delays are controlled by Delta.
+
+* Inside the "national aviation system" cause, 53% of delay minutes occurred during thunderstorms or low cloud at the airport.
+
+2. Interpretation
+The February disruption level at ATL is normal because the share of delayed flights never exceeded the 25% strong disruption threshold in any of the 4 years. Delays are mostly controllable because the share of delays Delta controls is between 56% and 60%, which is entirely above 50%. Bad weather explains more than half of the air-system delay minutes, accounting for 53% of those minutes.
+
+3. Suggestions
+Suggestion 1: Track storm forecasts at arrival times and warn passengers as soon as an alert is issued – in real time when delays appear – 53% Suggestion 2: Monitor weather alerts and prepare a targeted cancellation plan – in real time when delays appear
+
+4. Passenger message
+"Dear Customer, we regret to inform you that your flight to Atlanta is delayed, and we sincerely apologize for the inconvenience. Your new arrival time and the options available to you can be found in the Fly Delta app, and we will keep you informed of any further change. Thank you for your patience and understanding."
+
+5. Self-check
+
+* (a) Numbers used and their DATA sources:
+   * 15 minutes: from "Share of flights delayed 15 minutes or more in February, by year"
+   * 10.8%, 2023, 8.8%, 2024, 17.6%, 2025, 11.6%, 2026: from "Share of flights delayed 15 minutes or more in February, by year"
+   * 15.8%: from "Delta network average in February"
+   * 4.6%, 6.0%, -1.4 points: late-arriving aircraft
+   * 4.2%, 4.6%, -0.4 points: airline
+   * 3.1%, 3.7%, -0.6 points: national aviation system
+   * 0.4%, 0.6%, -0.2 points: extreme weather
+   * 56%, 60%: from "Share of delays Delta controls"
+   * 53%: from "Weather inside the 'national aviation system' cause" and "APPROVED ACTIONS"
+   * 25%, 4 years: from "Disruption level" and "THRESHOLD"
+   * 50%: from the classification rule in "INTERPRETATION"
+
+* (b) Sentences that are not facts from DATA:
+   * Interpretation sentence 1: "The February disruption level at ATL is normal because the share of delayed flights never exceeded the 25% strong disruption threshold in any of the 4 years." (analytical conclusion applying the threshold rule)
+   * Interpretation sentence 2: "Delays are mostly controllable because the share of delays Delta controls is between 56% and 60%, which is entirely above 50%." (analytical conclusion applying the controllability rule)
+   * Interpretation sentence 3: "Bad weather explains more than half of the air-system delay minutes, accounting for 53% of those minutes." (analytical conclusion comparing 53% to half)
+   * Suggestion 1: "Suggestion 1: Track storm forecasts at arrival times and warn passengers as soon as an alert is issued – in real time when delays appear – 53%" (recommendation)
+   * Suggestion 2: "Suggestion 2: Monitor weather alerts and prepare a targeted cancellation plan – in real time when delays appear" (recommendation)
+   * Passenger message (communication template)

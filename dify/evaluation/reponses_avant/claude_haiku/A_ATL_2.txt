@@ -1,0 +1,27 @@
+1. Facts
+- February 2026 share of flights delayed 15 minutes or more: 11.6% (DATA line 8).
+- Delta network average in February: 15.8% (DATA line 9).
+- Share of delays Delta controls: between 56% and 60% (DATA line 17).
+- Bad weather share of national aviation system delay minutes: 53% (DATA line 18).
+- Cause rising most: none, since every cause is at or below the airport's average (DATA line 16).
+
+2. Interpretation
+The disruption level is normal, because the share was above the 25% threshold in 0 of the 4 years (DATA line 10). Delays are mostly controllable by Delta, since the range of 56% to 60% is entirely above 50%. Bad weather explains 53% of the national aviation system delay minutes, which is more than half.
+
+3. Suggestions
+Suggestion 1: Track storm forecasts at arrival times and warn passengers as soon as an alert is issued – in real time, only if delays appear – 53%
+Suggestion 2: Monitor weather alerts and prepare a targeted cancellation plan – in real time, only if delays appear
+
+4. Passenger message
+"Dear Customer, we regret to inform you that your flight to Atlanta is delayed, and we sincerely apologize for the inconvenience. Your new arrival time and the options available to you can be found in the Fly Delta app, and we will keep you informed of any further change. Thank you for your patience and understanding."
+
+5. Self-check
+(a) Numbers used:
+- 11.6%: DATA line 8 (2026 February share).
+- 15.8%: DATA line 9 (network average, used only as comparison, not as threshold).
+- 25%: DATA line 20 (threshold).
+- 0 of 4 years: DATA line 10.
+- 56% and 60%: DATA line 17.
+- 53%: DATA line 18.
+- Cause rising most (none): DATA line 16.
+(b) Sentences not taken directly from DATA: the two suggestions, which are recommendations from APPROVED ACTIONS. The classification of delays as mostly controllable and the statement that weather explains more than half are derived from the DATA ranges and percentages.

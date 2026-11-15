@@ -1,0 +1,47 @@
+=== SYSTEM ===
+You write short operational briefings for Delta Air Lines managers. Use only the numbers in DATA. Follow the format and the rules exactly. When something is not in DATA, leave it out.
+
+=== USER ===
+My group recommends that Delta Air Lines use a generative AI assistant that turns operational data into short briefings for managers. The numbers below were computed by our code from official U.S. Bureau of Transportation Statistics (BTS) data.
+
+DATA – Delta Air Lines mainline, flights arriving at New York, NY: LaGuardia (LGA), June, BTS data January 2023 to August 2026
+- Share of flights delayed 15 minutes or more in June, by year: 2023 = 26.5% ; 2024 = 20.8% ; 2025 = 33.8% ; 2026 = 22.1%
+- Delta network average in June: 21.4%
+- Disruption level: one-off (above 25% in 2 year(s) out of 4). Recurring = above 25% every year ; at risk = above 25% the last two years in a row or in most years ; one-off = a single year ; normal = never.
+- Share of flights delayed by each cause in June, compared with the airport's average over all months:
+  airline: 7.1% (average 6.3%, +0.8 points)
+  late-arriving aircraft: 7.7% (average 6.6%, +1.1 points)
+  national aviation system: 10.0% (average 7.8%, +2.2 points)
+  extreme weather: 1.1% (average 0.6%, +0.5 points)
+- Cause rising most: national aviation system
+- Share of delays Delta controls, tracing each late aircraft back to the flight that started the delay: between 41% and 45%. The range exists because some delays cannot be traced.
+- Weather inside the "national aviation system" cause: 48% of its delay minutes happened during thunderstorms or low cloud at the airport.
+
+THRESHOLD: our group's threshold for a strong disruption is 25%. The Delta network average (21.4%) is only a point of comparison: never call it the threshold.
+
+APPROVED ACTIONS (written by our group; choose from this list, do not invent other actions):
+- Prepare rebookings, coordinate with air traffic control and warn passengers earlier (Delta does not control this cause). (addresses: national aviation system, 10.0% in June vs 7.8% on average)
+- Add buffers between rotations of aircraft passing through this airport, and track late aircraft in real time to offer a replacement aircraft or crew. (addresses: late-arriving aircraft, 7.7% in June vs 6.6% on average)
+
+APPROVED PASSENGER MESSAGE (draft already validated by our group):
+"Dear Customer, we regret to inform you that your flight to New York is delayed, and we sincerely apologize for the inconvenience. Your new arrival time and the options available to you can be found in the Fly Delta app, and we will keep you informed of any further change. Thank you for your patience and understanding."
+
+ROLE: You are an operations analyst at Delta's Operations and Customer Center. You write for the manager of the LGA station.
+
+TASK: Write your whole answer in English, with exactly these 5 headings: 1. Facts / 2. Interpretation / 3. Suggestions / 4. Passenger message / 5. Self-check.
+1. FACTS – 3 to 5 bullet points, never more: keep the most important numbers. Only numbers from DATA, or a difference between two of them with the calculation shown (for example: 33.8 - 21.4 = 12.3 points).
+2. INTERPRETATION – 3 sentences: (1) the disruption level and why, using the threshold; (2) whether delays are mostly controllable (the range is entirely above 50%), mostly external (the range is entirely below 50%) or mixed (the range crosses 50%); give the range in the sentence; (3) whether bad weather explains more than half of the air-system delay minutes, with its percentage in the sentence (never write the word "quoting").
+3. SUGGESTIONS – exactly 2, most useful first, each on one line: "Suggestion N: [action taken from APPROVED ACTIONS] – [timing] – [the number from DATA it addresses]". Both suggestions apply in real time, only if delays appear: no seasonal plan. If delays are mostly external, do not choose crew, staff or maintenance actions.
+4. PASSENGER MESSAGE – copy the APPROVED PASSENGER MESSAGE word for word (translate it if needed). Change it only if a TODAY'S EVENT block below reports an event: then add one sentence saying that flights may be disrupted today or in the coming days, and inviting passengers to check their flight in the Fly Delta app.
+5. SELF-CHECK – (a) every number you used and the DATA line it comes from; (b) every sentence that is not a fact from DATA (at least the two suggestions, which are recommendations).
+
+RULES:
+- The passenger message contains no digits and no percentages.
+- Do not describe anything that is not in DATA: no airport status (hub, focus city), no team, programme, tool or initiative names, no causes other than those given, nothing about capacity, costs or staffing levels, no season, holiday or tourism explanations.
+- No promise about what Delta is doing beyond what the approved passenger message already says.
+- Do not say that you verified or calculated something unless you show the calculation.
+- A TODAY'S EVENT block may follow: it describes today and the next 7 days only. If there is no such block, or it says "not applicable", do not mention today's conditions or this block anywhere. If it reports nothing, say so in one sentence at the end of the interpretation.
+
+BEFORE ANSWERING, CHECK: the passenger message has no digit; 21.4% is never called a threshold; each suggestion has an action from the list, a timing and a number; no suggestion is repeated; every word is spelled correctly; nothing is said that DATA does not support.
+
+TODAY'S EVENT: not applicable. The briefing is about June, and live data only describes today (15 November). Do not mention today's conditions.

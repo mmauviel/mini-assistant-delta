@@ -1,0 +1,29 @@
+**1. Facts**
+- Share of Delta mainline flights arriving at ATL delayed 15 minutes or more in February: 2023 = 10.8%, 2024 = 8.8%, 2025 = 17.6%, 2026 = 11.6%.
+- February 2026 compared with the Delta network average in February: 11.6 - 15.8 = -4.2 points, so below it.
+- The share was above our 25% threshold in 0 years out of 4.
+- Every cause is at or below the airport's average in February; late-arriving aircraft shows the largest drop, at 4.6% against 6.0% (4.6 - 6.0 = -1.4 points).
+- Delta controls between 56% and 60% of delays, and 53% of the national aviation system delay minutes happened during thunderstorms or low cloud at the airport.
+
+**2. Interpretation**
+The disruption level at ATL in February is normal, because the share of delayed arrivals never went above our 25% threshold from 2023 to 2026, with a highest value of 17.6% in 2025. Delays are mostly controllable, since the share Delta controls lies between 56% and 60%, a range entirely above 50%. Bad weather explains more than half of the national aviation system delay minutes, at 53%.
+
+**3. Suggestions**
+Suggestion 1: Track storm forecasts at arrival times and warn passengers as soon as an alert is issued – in real time, only if delays appear – 53% of air-system delay minutes during bad weather.
+Suggestion 2: Monitor weather alerts and prepare a targeted cancellation plan – in real time, only if delays appear.
+
+**4. Passenger message**
+"Dear Customer, we regret to inform you that your flight to Atlanta is delayed, and we sincerely apologize for the inconvenience. Your new arrival time and the options available to you can be found in the Fly Delta app, and we will keep you informed of any further change. Thank you for your patience and understanding."
+
+**5. Self-check**
+(a) Numbers used and their DATA line:
+- 10.8%, 8.8%, 17.6%, 11.6%: "Share of flights delayed 15 minutes or more in February, by year".
+- 15.8%: "Delta network average in February" (a point of comparison, not the threshold); -4.2 points is 11.6 - 15.8.
+- 25% and "0 year(s) out of 4": "THRESHOLD" and "Disruption level: normal".
+- 4.6%, 6.0%, -1.4 points: "late-arriving aircraft" cause line; "Cause rising most: none".
+- 56% and 60%, and 50%: "Share of delays Delta controls" line and the rule in the TASK.
+- 53%: "Weather inside the national aviation system cause" line.
+(b) Sentences that are not facts from DATA:
+- Suggestion 1 and Suggestion 2 are recommendations.
+- Putting the storm-tracking action first is a judgment: it addresses a number from DATA, while the cancellation plan is a fallback action with no rising cause, so it carries no number.
+- The passenger message is the approved draft from our group, not a fact from DATA.

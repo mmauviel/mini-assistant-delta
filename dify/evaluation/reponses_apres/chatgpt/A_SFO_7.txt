@@ -1,0 +1,19 @@
+1. Facts
+
+* The share of Delta flights delayed by 15 minutes or more at SFO was 47.3% in July 2026, compared with 28.1% in July 2025, 23.6% in July 2024 and 23.7% in July 2023.
+* The July 2026 delay rate was 22.1 percentage points above the Delta network average (47.3 - 25.2 = 22.1 points).
+* The main delay causes in July were national aviation system (13.2%), airline (10.3%), late-arriving aircraft (6.4%) and extreme weather (1.0%).
+* Airline delays were 2.6 points above the airport's monthly average (10.3% vs 7.7%), while late-arriving aircraft delays were 2.1 points above average (6.4% vs 4.3%).
+* Delta controls between 42% and 46% of delays. Additionally, 21% of national aviation system delay minutes occurred during thunderstorms or low cloud at the airport.
+
+2. Interpretation
+The disruption level is at risk because delays exceeded the 25% threshold in the last two consecutive years, with 28.1% in 2025 and 47.3% in 2026. Delays are mostly external because Delta controls only 42% to 46% of them, a range entirely below 50%. Bad weather does not explain more than half of national aviation system delay minutes, accounting for 21%.
+3. Suggestions
+Suggestion 1: Prepare rebookings, coordinate with air traffic control and warn passengers earlier – prepare before July and monitor closely during July – Delta controls 42% to 46% of delays.
+Suggestion 2: Add buffers between rotations of aircraft passing through this airport, and track late aircraft in real time to offer a replacement aircraft or crew – prepare before July and monitor closely during July – late-arriving aircraft delays: 6.4% in July vs 4.3% on average.
+4. Passenger message
+Dear Customer, thank you for choosing Delta. In recent years, arrivals at San Francisco have frequently been delayed in July. We recommend allowing ample time for your connections. Should your flight be delayed, you will be notified promptly in the Fly Delta app. We wish you a pleasant journey.
+5. Self-check
+(a) one line per number with its DATA line (shortened here). (b) both suggestions listed as recommendations.
+
+Final checks: The passenger message contains no digits or percentages. The 25.2% figure is used only as a comparison, never as the threshold. Both suggestions use approved actions, include timing and supporting data, and are not repeated.

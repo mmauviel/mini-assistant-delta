@@ -1,0 +1,28 @@
+1. Facts
+- Share of Delta flights arriving at LGA delayed 15 minutes or more in June 2026: 22.1%.
+- Same share in June of the other years: 26.5% (2023), 20.8% (2024), 33.8% (2025).
+- Delta network average in June: 21.4%.
+- Cause rising most: national aviation system, at 10.0% in June against the airport's average of 7.8% (+2.2 points).
+- Share of delays Delta controls: between 41% and 45%.
+
+2. Interpretation
+The disruption level is one-off, because the share was above the 25% threshold in two of the four Junes (2023 and 2025), and those two years are not in a row. Delays are mostly external, since the range of 41% to 45% lies entirely below 50%. Bad weather does not explain more than half of the air-system delay minutes, at 48%.
+
+3. Suggestions
+Suggestion 1: Prepare rebookings, coordinate with air traffic control and warn passengers earlier – in real time, only if delays appear – 10.0%
+Suggestion 2: Add buffers between rotations of aircraft passing through this airport, and track late aircraft in real time to offer a replacement aircraft or crew – in real time, only if delays appear – 7.7%
+
+4. Passenger message
+"Dear Customer, we regret to inform you that your flight to New York is delayed, and we sincerely apologize for the inconvenience. Your new arrival time and the options available to you can be found in the Fly Delta app, and we will keep you informed of any further change. Thank you for your patience and understanding."
+
+5. Self-check
+(a) Numbers used:
+- 22.1%, 26.5%, 20.8%, 33.8%: line "Share of flights delayed 15 minutes or more in June, by year".
+- 25%: line "THRESHOLD". Two of four years: line "Disruption level".
+- 21.4%: line "Delta network average" (used as a comparison only, not as a threshold).
+- 10.0%, 7.8%, +2.2 points: line "national aviation system" under the June cause shares.
+- 7.7%: line "late-arriving aircraft" under the June cause shares.
+- 41% and 45%: line "Share of delays Delta controls".
+- 48%: line "Weather inside the 'national aviation system' cause".
+- 50%: the rule for the controllable, external or mixed categories in the task, not a DATA line.
+(b) Sentences that are not facts from DATA: both suggestions are recommendations chosen from the approved action list. The one-off and mostly external conclusions in the interpretation are readings of the DATA ranges and counts.

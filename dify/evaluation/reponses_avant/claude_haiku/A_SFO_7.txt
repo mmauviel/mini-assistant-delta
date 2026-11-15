@@ -1,0 +1,28 @@
+1. Facts
+- July 2026 share of flights delayed 15 minutes or more: 47.3% (DATA line 8).
+- 47.3 - 25.2 = 22.1 points above the Delta network average of 25.2% (DATA lines 8 and 9).
+- Above the 25% threshold in 2 of 4 years, 2025 and 2026, which are the last two years in a row (DATA lines 8 and 10).
+- Airline cause: 10.3% against an airport average of 7.7%, +2.6 points (DATA line 12). This is the cause rising most.
+- Bad weather share of national aviation system delay minutes: 21% (DATA line 18).
+
+2. Interpretation
+The disruption level is at risk, because the share was above the 25% threshold in 2025 (28.1%) and 2026 (47.3%), the last two years in a row (DATA lines 8 and 10). Delays are mostly external, since Delta's controllable share ranges from 42% to 46%, which is entirely below 50% (DATA line 17). Bad weather explains 21% of the national aviation system delay minutes, which is not more than half.
+
+3. Suggestions
+No suggestion is given. Both approved actions for SFO involve crew, staff or maintenance measures (reinforce standby crews and ground staff; add buffers and offer a replacement aircraft or crew), and these are excluded because delays are mostly external.
+
+4. Passenger message
+"Dear Customer, thank you for choosing Delta. In recent years, arrivals at San Francisco have frequently been delayed in July. We recommend allowing ample time for your connections. Should your flight be delayed, you will be notified promptly in the Fly Delta app. We wish you a pleasant journey."
+
+5. Self-check
+(a) Numbers used:
+- 47.3%: DATA line 8 (2026 July share).
+- 28.1%: DATA line 8 (2025 July share).
+- 25.2%: DATA line 9 (network average, comparison only, not threshold).
+- 22.1 points: calculated from DATA lines 8 and 9 (47.3 - 25.2 = 22.1).
+- 25%: DATA line 20 (threshold).
+- 2 of 4 years: DATA line 10.
+- 10.3% and 7.7%, +2.6 points: DATA line 12 (cited only in the excluded action).
+- 42% and 46%: DATA line 17.
+- 21%: DATA line 18.
+(b) Sentences not taken directly from DATA: the classifications "at risk" and "mostly external", which are derived from DATA lines 10 and 17. The decision to give no suggestions is my application of the rule on crew, staff and maintenance actions, not a DATA fact.

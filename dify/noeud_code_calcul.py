@@ -160,7 +160,15 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
         "weather_ct": T("Surveiller les alertes météo et préparer un plan d'annulations ciblées.",
                         "Monitor weather alerts and prepare a targeted cancellation plan."),
     }
-    ordre = [c for c in sorted(CAUSES, key=lambda c: hausse[c], reverse=True) if hausse[c] > 0][:2] or [principale]
+    # Retards surtout externes (toute la fourchette contrôlée par Delta sous 50 %) : pas d'action équipage / maintenance,
+    # et l'action « système aérien » est toujours proposée. Sans ce filtre, l'IA devait choisir 2 actions dans une liste
+    # où l'une lui était interdite (test de comparaison des IA du 15 novembre 2026, SFO en juillet).
+    externe = (suivi["max"] if suivi is not None else cmax) < 50
+    ordre = [c for c in sorted(CAUSES, key=lambda c: hausse[c], reverse=True)
+             if hausse[c] > 0 and not (externe and c == "carrier_ct")][:2]
+    if externe and "nas_ct" not in ordre:
+        ordre = ordre[:1] + ["nas_ct"]  # garde la cause qui monte le plus, puis l'action « système aérien »
+    ordre = ordre or [principale]
     REPONSE_METEO = T("Suivre les prévisions d'orages aux heures d'arrivée et prévenir les passagers dès l'alerte : ici, plus de la moitié du retard « système aérien » vient du mauvais temps.",
                       "Track storm forecasts at arrival times and warn passengers as soon as an alert is issued: here, over half of air-system delay comes from bad weather.")
     meteo = suivi is not None and suivi["meteo"] >= 50
@@ -251,7 +259,7 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
          "- Share of flights delayed 15 minutes or more in " + mois_en + ", by year: " + " ; ".join(f"{int(y)} = {v:.1f}%" for y, v in taux_an.items()),
          f"- Delta network average in {mois_en}: {reseau:.1f}%",
          f"- Disruption level: {niveau} (above {SEUIL}% in {n_fort} year(s) out of {len(taux_an)}). Recurring = above {SEUIL}% every year ; "
-         f"at risk = above {SEUIL}% the last two years in a row or in most years ; one-off = a single year ; normal = never.",
+         f"at risk = above {SEUIL}% the last two years in a row or in most years ; one-off = one year, or two years that are not in a row ; normal = never.",
          f"- Share of flights delayed by each cause in {mois_en}, compared with the airport's average over all months:"]
     D += [f"  {CAUSES_EN[c]}: {m[c]:.1f}% (average {calme[c]:.1f}%, {'+' if ecart[c] >= 0 else ''}{ecart[c]:.1f} points)" for c in CAUSES]
     D += ["- Cause rising most: none (every cause is at or below the airport's average)" if aucune_hausse
@@ -275,7 +283,10 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
     if aucune_hausse:  # action de repli : elle ne répond à aucune hausse, donc pas de chiffre à viser (sinon « 0.5% » sans aucun sens)
         actions = [f"- {ACTIONS_EN[c]} (fallback action: no cause rises above the airport's average in {mois_en})" for c in ordre]
     else:
-        actions = [f"- {ACTIONS_EN[c]} (addresses: {CAUSES_EN[c]}, {m[c]:.1f}% in {mois_en} vs {calme[c]:.1f}% on average)" for c in ordre]
+        bornes = (suivi["min"], suivi["max"]) if suivi is not None else (cmin, cmax)
+        actions = [f"- {ACTIONS_EN[c]} (addresses: delays mostly external, Delta controls only {bornes[0]:.0f}% to {bornes[1]:.0f}%)"
+                   if hausse[c] <= 0 else
+                   f"- {ACTIONS_EN[c]} (addresses: {CAUSES_EN[c]}, {m[c]:.1f}% in {mois_en} vs {calme[c]:.1f}% on average)" for c in ordre]
     if meteo:
         actions += [f"- Track storm forecasts at arrival times and warn passengers as soon as an alert is issued "
                     f"(addresses: bad weather, {suivi['meteo']:.0f}% of air-system delay minutes)."]
@@ -306,15 +317,15 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
         "",
         f"TASK: Write your whole answer in {langue_txt}, with exactly these 5 headings: {titres}.",
         "1. FACTS – 3 to 5 bullet points, never more: keep the most important numbers. Only numbers from DATA, or a difference between two of them with the calculation shown "
-        f"(for example: {max(taux_an.values()):.1f} - {reseau:.1f} = {max(taux_an.values()) - reseau:.1f} points).",
+        f"(for example: {max(taux_an.values()):.1f} - {reseau:.1f} = {round(max(taux_an.values()), 1) - round(reseau, 1):.1f} points).",
         f"2. INTERPRETATION – {'3' if suivi is not None else '2'} sentences: (1) the disruption level and why, using the threshold; (2) whether "
         "delays are mostly controllable (the range is entirely above 50%), mostly external (the range is entirely below 50%) or mixed "
         "(the range crosses 50%); give the range in the sentence"
         + ("; (3) whether bad weather explains more than half of the air-system delay minutes, with its percentage in the sentence (never write the word \"quoting\")." if suivi is not None else "."),
-        f"3. SUGGESTIONS – exactly {n_sugg}{', most useful first, each' if n_sugg == 2 else ' (there is only one approved action: do not repeat it)'} on one line: \"Suggestion N: [action taken from APPROVED ACTIONS] – "
+        f"3. SUGGESTIONS – exactly {n_sugg}{', most useful first, each on its own line (start a new line before "Suggestion 2")' if n_sugg == 2 else ' (there is only one approved action: do not repeat it), on one line'}: \"Suggestion N: [action taken from APPROVED ACTIONS] – "
         + ("[timing]\", adding \" – [number]\" only for an action that lists a number: a fallback action addresses no rising cause, "
            "so it gets no number. " if aucune_hausse else "[timing] – [the number from DATA it addresses]\". ") + quand_en +
-        " If delays are mostly external, do not choose crew, staff or maintenance actions.",
+        " The list already fits this airport: choose only from it.",
         "4. PASSENGER MESSAGE – copy the APPROVED PASSENGER MESSAGE word for word (translate it if needed). Change it only if a TODAY'S EVENT "
         "block below reports an event: then add one sentence saying that flights may be disrupted today or in the coming days, and inviting "
         "passengers to check their flight in the Fly Delta app.",
@@ -327,6 +338,7 @@ def analyse(bts, suivi_txt, AP, MOIS, EN):
         "no causes other than those given, nothing about capacity, costs or staffing levels, no season, holiday or tourism explanations.",
         "- No promise about what Delta is doing beyond what the approved passenger message already says.",
         "- Do not say that you verified or calculated something unless you show the calculation.",
+        "- Name a DATA line by its words (for example \"Delta network average\"), never by a line number.",
         "- A TODAY'S EVENT block may follow: it describes today and the next 7 days only. If there is no such block, or it says "
         "\"not applicable\", do not mention today's conditions or this block anywhere. "
         "If it reports nothing, say so in one sentence at the end of the interpretation.",
@@ -415,7 +427,7 @@ def bilan_annuel(bts, AP, EN):
     langue_txt = "English" if EN else "French (formal French, \"vous\")"
     regles = ["",
               f"THRESHOLD: {SEUIL}%. Recurring = above {SEUIL}% every year ; at risk = above {SEUIL}% the last two years in a row or in most years ; "
-              "one-off = a single year ; normal = never. The network average is only a point of comparison, never the threshold.",
+              "one-off = one year, or two years that are not in a row ; normal = never. The network average is only a point of comparison, never the threshold.",
               "",
               f"TASK: Write, in {langue_txt}, a one-page yearly calendar for the manager of the {AP} station.",
               "1. List the recurring and at-risk months in calendar order. For each: the disruption level, the yearly rates, and the date to start "

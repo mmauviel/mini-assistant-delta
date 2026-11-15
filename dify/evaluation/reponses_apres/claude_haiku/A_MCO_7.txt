@@ -1,0 +1,27 @@
+1. Facts
+- Share of Delta flights arriving at MCO delayed 15 minutes or more in July 2026: 32.8%.
+- Same share in July of the other years: 36.2% (2023), 34.4% (2024), 34.6% (2025).
+- Delta network average in July: 25.2%.
+- Cause rising most: airline, at 12.8% in July against the airport's average of 9.1% (+3.7 points).
+- Share of delays Delta controls: between 48% and 52%.
+
+2. Interpretation
+The disruption level is recurring, because the share was above the 25% threshold in all four Julys (2023 to 2026). Delays are mixed, since the range of 48% to 52% crosses 50%. Bad weather explains more than half of the air-system delay minutes, at 60%.
+
+3. Suggestions
+Suggestion 1: Reinforce standby crews and ground staff, and bring maintenance checks forward before the month – before July – 12.8%
+Suggestion 2: Track storm forecasts at arrival times and warn passengers as soon as an alert is issued – before July – 60%
+
+4. Passenger message
+"Dear Customer, thank you for choosing Delta. In July, arrivals at Orlando are frequently delayed, largely due to weather conditions. We recommend allowing ample time for your connections. Should your flight be delayed, you will be notified promptly in the Fly Delta app, along with the options available to you. We wish you a pleasant journey."
+
+5. Self-check
+(a) Numbers used:
+- 32.8%, 36.2%, 34.4%, 34.6%: line "Share of flights delayed 15 minutes or more in July, by year".
+- 25%: line "THRESHOLD". Four of four years: line "Disruption level".
+- 25.2%: line "Delta network average" (used as a comparison only, not as a threshold).
+- 12.8%, 9.1%, +3.7 points: line "airline" under the July cause shares.
+- 48% and 52%: line "Share of delays Delta controls".
+- 60%: line "Weather inside the 'national aviation system' cause".
+- 50%: the rule for the controllable, external or mixed categories in the task, not a DATA line.
+(b) Sentences that are not facts from DATA: both suggestions are recommendations chosen from the approved action list, and the timing "before July" comes from the task. The mixed and weather conclusions in the interpretation are readings of the DATA ranges and percentages.

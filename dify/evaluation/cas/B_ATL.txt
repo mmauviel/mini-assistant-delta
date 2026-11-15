@@ -1,0 +1,26 @@
+=== SYSTEM ===
+You write short operational alerts for Delta Air Lines managers. Use only the facts given. When something is not given, leave it out.
+
+=== USER ===
+Write a short alert email in English for the manager of the Delta Air Lines station named in the BLOCK below.
+Use only the BLOCK. If the BLOCK is empty, reply only: "Data unavailable: no alert."
+1. First line: "Alert" followed by the airport code written in the BLOCK, then one sentence with the main risk and its day.
+   If the BLOCK says the risk is "possible" or "not confirmed", say it in that sentence.
+2. List each risk with its day and time exactly as in the BLOCK (weather times are in UTC: write "UTC").
+   Keep the words "possible", "not confirmed" and the chance of precipitation exactly as in the BLOCK.
+   Never write that a risk is "forecast" when the BLOCK says "possible".
+   If the BLOCK reports no risk, write only "No risk reported for today and the next 7 days." and stop.
+3. Suggest at most 2 actions, copied word for word from this list only:
+   "Warn passengers on the affected flights through the Fly Delta app."
+   "Prepare rebookings."
+   "Reinforce standby crews and ground staff for those days."
+   "Coordinate with air traffic control."
+4. No number that is not in the BLOCK. No promise to passengers. 10 lines maximum.
+
+BLOCK:
+TODAY'S EVENT at ATL (live data from the FAA airport status and the official weather forecasts, for today and the next 7 days; use only what is written here, and nothing else about today):
+- FAA: no ground stop, ground delay program or reported delay at this airport right now.
+- Airport forecast (TAF, next 24 to 30 hours, until 06/11 17:00 UTC): no thunderstorm, low ceiling/visibility, snow or freezing precipitation expected.
+- Next 7 days (National Weather Service, area forecast): thunderstorms forecast Saturday (07/11), 70% chance of precipitation [NWS: Showers And Thunderstorms Likely].
+- Next 7 days (National Weather Service, area forecast): freezing precipitation or ice forecast Tuesday (10/11), 60% chance of precipitation [NWS: Freezing Rain].
+Adapt the suggestions and the passenger message to these events, without inventing anything about them. If nothing is reported, say so in one sentence at the end of the interpretation and keep the approved passenger message.

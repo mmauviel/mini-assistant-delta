@@ -1,0 +1,10 @@
+Alert MCO
+Thunderstorms and low ceiling/visibility are the main risks at MCO on 06/11, with an FAA ground stop in place until 5:00 pm EST.
+Risks:
+- FAA ground stop, reason: thunderstorms, until 5:00 pm EST.
+- FAA arrival delays 31 minutes to 45 minutes (increasing), reason: WX:Thunderstorms.
+- Thunderstorm, low ceiling/visibility (ceiling 800 ft, visibility 2 mi) forecast 06/11 17:00 UTC to 06/11 21:00 UTC (TEMPO) [TAF: TSRA].
+- Low ceiling/visibility (ceiling 200 ft, visibility 0.5 mi) forecast 06/11 21:00 UTC to 06/11 23:00 UTC (PROB 30% probability) [TAF: FG].
+Suggested actions:
+- Warn passengers on the affected flights through the Fly Delta app.
+- Prepare rebookings.

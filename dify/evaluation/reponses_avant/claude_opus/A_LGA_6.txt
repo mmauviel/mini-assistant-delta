@@ -1,0 +1,31 @@
+**1. Facts**
+- Share of Delta mainline flights arriving at LGA delayed 15 minutes or more in June: 2023 = 26.5%, 2024 = 20.8%, 2025 = 33.8%, 2026 = 22.1%.
+- June 2026 compared with the Delta network average in June: 22.1 - 21.4 = 0.7 points above; the highest year, 2025, was 33.8 - 21.4 = 12.4 points above.
+- The share was above our 25% threshold in 2 years out of 4 (2023 and 2025).
+- The national aviation system cause rose most: 10.0% in June against an average of 7.8% (10.0 - 7.8 = 2.2 points); late-arriving aircraft reached 7.7% against 6.6% (+1.1 points).
+- Delta controls between 41% and 45% of delays, and 48% of the national aviation system delay minutes happened during thunderstorms or low cloud at the airport.
+
+**2. Interpretation**
+DATA classifies the disruption at LGA in June as one-off, because the share of delayed arrivals went above our 25% threshold only in 2023 (26.5%) and 2025 (33.8%), never in two years in a row, and stayed below it in 2024 (20.8%) and 2026 (22.1%). Delays are mostly external, since the share Delta controls lies between 41% and 45%, a range entirely below 50%. Bad weather does not explain more than half of the national aviation system delay minutes, at 48%.
+
+**3. Suggestions**
+Suggestion 1: Prepare rebookings, coordinate with air traffic control and warn passengers earlier (Delta does not control this cause) – in real time, only if delays appear – national aviation system at 10.0% in June vs 7.8% on average.
+Suggestion 2: Add buffers between rotations of aircraft passing through this airport, and track late aircraft in real time to offer a replacement aircraft or crew – in real time, only if delays appear – late-arriving aircraft at 7.7% in June vs 6.6% on average.
+
+**4. Passenger message**
+"Dear Customer, we regret to inform you that your flight to New York is delayed, and we sincerely apologize for the inconvenience. Your new arrival time and the options available to you can be found in the Fly Delta app, and we will keep you informed of any further change. Thank you for your patience and understanding."
+
+**5. Self-check**
+(a) Numbers used and their DATA line:
+- 26.5%, 20.8%, 33.8%, 22.1%: "Share of flights delayed 15 minutes or more in June, by year".
+- 21.4%: "Delta network average in June" (a point of comparison, not the threshold); 0.7 points is 22.1 - 21.4, and 12.4 points is 33.8 - 21.4 (the example in the task gives 12.3, but the difference is 12.4).
+- 25% and "2 year(s) out of 4": "THRESHOLD" and "Disruption level: one-off".
+- 10.0%, 7.8%, 2.2 points: "national aviation system" cause line; "Cause rising most: national aviation system".
+- 7.7%, 6.6%, 1.1 points: "late-arriving aircraft" cause line.
+- 41% and 45%, and 50%: "Share of delays Delta controls" line and the rule in the TASK.
+- 48%: "Weather inside the national aviation system cause" line.
+(b) Sentences that are not facts from DATA:
+- Suggestion 1 and Suggestion 2 are recommendations.
+- The order of the suggestions is a judgment: the national aviation system is the cause rising most and the one Delta does not control, which fits delays that are mostly external. Suggestion 2 is an aircraft rotation action, not a crew, staff or maintenance action.
+- Point to check: DATA labels the level "one-off" (defined as a single year), but the share was above 25% in two years that were not in a row, which is not "at risk" either. I kept the label given in DATA.
+- The passenger message is the approved draft from our group, not a fact from DATA.

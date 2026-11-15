@@ -1,0 +1,30 @@
+**1. Facts**
+- Share of Delta mainline flights arriving at MCO delayed 15 minutes or more in July: 2023 = 36.2%, 2024 = 34.4%, 2025 = 34.6%, 2026 = 32.8%.
+- July 2026 compared with the Delta network average in July: 32.8 - 25.2 = 7.6 points above.
+- The share was above our 25% threshold in 4 years out of 4.
+- The airline cause rose most: 12.8% in July against an average of 9.1% (12.8 - 9.1 = 3.7 points); late-arriving aircraft reached 8.8% against 5.4% (+3.4 points).
+- Delta controls between 48% and 52% of delays, and 60% of the national aviation system delay minutes happened during thunderstorms or low cloud at the airport.
+
+**2. Interpretation**
+The disruption at MCO in July is recurring, because the share of delayed arrivals was above our 25% threshold in every year from 2023 to 2026, from 32.8% to 36.2%. Delays are mixed, since the share Delta controls lies between 48% and 52%, a range that crosses 50%. Bad weather explains more than half of the national aviation system delay minutes, at 60%.
+
+**3. Suggestions**
+Suggestion 1: Reinforce standby crews and ground staff, and bring maintenance checks forward before the month – before July – airline cause at 12.8% in July vs 9.1% on average.
+Suggestion 2: Add buffers between rotations of aircraft passing through this airport, and track late aircraft in real time to offer a replacement aircraft or crew – before July – late-arriving aircraft at 8.8% in July vs 5.4% on average.
+
+**4. Passenger message**
+"Dear Customer, thank you for choosing Delta. In July, arrivals at Orlando are frequently delayed, largely due to weather conditions. We recommend allowing ample time for your connections. Should your flight be delayed, you will be notified promptly in the Fly Delta app, along with the options available to you. We wish you a pleasant journey."
+
+**5. Self-check**
+(a) Numbers used and their DATA line:
+- 36.2%, 34.4%, 34.6%, 32.8%: "Share of flights delayed 15 minutes or more in July, by year".
+- 25.2%: "Delta network average in July" (a point of comparison, not the threshold); 7.6 points is 32.8 - 25.2.
+- 25% and "4 year(s) out of 4": "THRESHOLD" and "Disruption level: recurring".
+- 12.8%, 9.1%, 3.7 points: "airline" cause line; "Cause rising most: airline".
+- 8.8%, 5.4%, 3.4 points: "late-arriving aircraft" cause line.
+- 48% and 52%, and 50%: "Share of delays Delta controls" line and the rule in the TASK.
+- 60%: "Weather inside the national aviation system cause" line.
+(b) Sentences that are not facts from DATA:
+- Suggestion 1 and Suggestion 2 are recommendations.
+- The choice of order between the two suggestions is a judgment.
+- The passenger message is the approved draft from our group, not a fact from DATA.

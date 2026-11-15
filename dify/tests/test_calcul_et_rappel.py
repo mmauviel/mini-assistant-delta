@@ -128,3 +128,50 @@ def test_sans_colonne_arr_delay_pas_de_cout():
     sans = sortie.getvalue()
     assert "cost" not in calcul.main(sans, SUIVI, "MCO", 7)["fiche"].lower()
     assert "Delay cost" not in calcul.main(sans, SUIVI, "MCO", 0)["fiche"]
+
+
+# Corrections après la comparaison des IA (15 novembre 2026, docs/COMPARAISON_IA.md)
+import csv
+import re
+
+AEROPORTS = sorted({r["airport"] for r in csv.DictReader(open(DONNEES / "Airline_Delay_Cause.csv", encoding="utf-8"))})
+
+
+def _actions(prompt):
+    return re.findall(r"^- (.+)$", prompt.split("APPROVED ACTIONS")[1].split("APPROVED PASSENGER")[0], re.M)
+
+
+def test_retards_externes_pas_d_action_equipage_et_action_systeme_aerien():
+    vus = 0
+    for ap in AEROPORTS:
+        for mois in range(1, 13):
+            prompt = calcul.main(BTS, SUIVI, ap, mois)["prompt"]
+            bornes = re.search(r"Delta controls[^:]*: between (\d+)% and (\d+)%", prompt)
+            if not bornes or int(bornes.group(2)) >= 50:
+                continue
+            vus += 1
+            actions = _actions(prompt)
+            assert not any(a.startswith("Reinforce standby crews") for a in actions), (ap, mois)
+            assert any(a.startswith("Prepare rebookings") for a in actions), (ap, mois)
+            assert "do not choose crew" not in prompt  # plus de règle impossible à suivre
+    assert vus > 50
+
+
+def test_exemple_de_difference_juste_avec_les_chiffres_arrondis():
+    for ap in ("LGA", "MCO", "ATL", "SFO", "BOS"):
+        for mois in range(1, 13):
+            a, b, c = re.search(r"for example: ([\d.]+) - ([\d.]+) = (-?[\d.]+) points",
+                                calcul.main(BTS, SUIVI, ap, mois)["prompt"]).groups()
+            assert abs(float(a) - float(b) - float(c)) < 0.001, (ap, mois, a, b, c)
+
+
+def test_definition_ponctuelle_couvre_deux_annees_non_consecutives():
+    prompt = calcul.main(BTS, SUIVI, "MCO", 7)["prompt"]
+    assert "one-off = one year, or two years that are not in a row" in prompt
+    assert "one-off = a single year" not in prompt and "one-off = a single year" not in calcul.main(BTS, SUIVI, "MCO", 0)["prompt"]
+    assert "never by a line number" in prompt
+
+
+def test_chaque_suggestion_sur_sa_ligne():
+    # Gemini 2.5 Flash écrivait les 2 suggestions sur une seule ligne (comparaison du 15 novembre 2026)
+    assert 'start a new line before "Suggestion 2"' in calcul.main(BTS, SUIVI, "MCO", 7)["prompt"]

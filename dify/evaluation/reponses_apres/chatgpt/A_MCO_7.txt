@@ -1,0 +1,40 @@
+1. Facts
+
+* The share of Delta flights delayed by 15 minutes or more at MCO decreased from 36.2% in July 2023 to 32.8% in July 2026.
+* In July 2026, 32.8% of arrivals were delayed, compared with the Delta network average of 25.2%, a difference of 7.6 percentage points (32.8 - 25.2 = 7.6).
+* Delays exceeded the 25% disruption threshold in all four years. The main causes in July were airline (12.8%), national aviation system (12.0%), and late-arriving aircraft (8.8%).
+* The airline cause increased most compared with its monthly average: 12.8% versus 9.1% (+3.7 points). Late-arriving aircraft accounted for 8.8% versus 5.4% (+3.4 points).
+* Between 48% and 52% of delays were controllable by Delta. Additionally, 60% of national aviation system delay minutes occurred during thunderstorms or low cloud at the airport.
+
+2. Interpretation
+The disruption level is recurring because delays exceeded the 25% threshold in all four years. Delays are mixed in terms of controllability, as the estimated controllable share ranges from 48% to 52%, crossing 50%. Bad weather explains more than half of national aviation system delay minutes, accounting for 60%.
+3. Suggestions
+Suggestion 1: Reinforce standby crews and ground staff, and bring maintenance checks forward before the month. – before July – 12.8% in July versus 9.1% on average.
+Suggestion 2: Track storm forecasts at arrival times and warn passengers as soon as an alert is issued. – before July – 60% of national aviation system delay minutes occurred during thunderstorms or low cloud.
+4. Passenger message
+Dear Customer, thank you for choosing Delta. In July, arrivals at Orlando are frequently delayed, largely due to weather conditions. We recommend allowing ample time for your connections. Should your flight be delayed, you will be notified promptly in the Fly Delta app, along with the options available to you. We wish you a pleasant journey.
+5. Self-check
+(a) Numbers used and their DATA sources
+
+* 36.2%: Share of flights delayed 15 minutes or more in July, 2023.
+* 32.8%: Share of flights delayed 15 minutes or more in July, 2026.
+* 25.2%: Delta network average in July.
+* 7.6 percentage points: Difference between 32.8% and 25.2% (32.8 - 25.2 = 7.6).
+* 25%: Group's threshold for a strong disruption.
+* Four years: Disruption level, above 25% in four years out of four.
+* 12.8% and 9.1%: Airline cause in July and its monthly average.
+* 12.0%: National aviation system cause in July.
+* 8.8% and 5.4%: Late-arriving aircraft cause in July and its monthly average.
+* 3.7 points: Difference between airline cause and its monthly average.
+* 3.4 points: Difference between late-arriving aircraft and its monthly average.
+* 48%–52%: Share of delays Delta controls.
+* 50%: Reference point for determining whether delays are mostly controllable or external.
+* 60%: Share of national aviation system delay minutes occurring during thunderstorms or low cloud.
+
+(b) Statements that are recommendations or interpretations rather than direct facts
+
+* The recurring disruption classification and mixed controllability assessment are interpretations based on the supplied DATA and definitions.
+* The assessment that bad weather explains more than half of national aviation system delay minutes is based on the supplied 60% figure.
+* Suggestion 1 is a recommendation from the approved actions list, addressing the airline cause.
+* Suggestion 2 is a recommendation from the approved actions list, addressing weather-related disruption.
+* The passenger message is reproduced word for word from the approved version.

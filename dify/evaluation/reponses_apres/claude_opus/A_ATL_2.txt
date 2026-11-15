@@ -1,0 +1,28 @@
+1. Facts
+- Share of flights delayed 15 minutes or more in February: 10.8% in 2023, 8.8% in 2024, 17.6% in 2025 and 11.6% in 2026.
+- In February 2026, ATL was below the Delta network average: 11.6 - 15.8 = -4.2 points.
+- No year was above the 25% threshold (0 years out of 4), and every cause was at or below the airport's average over all months (late-arriving aircraft: 4.6% against 6.0%, -1.4 points).
+- Share of delays Delta controls: between 56% and 60%.
+- 53% of "national aviation system" delay minutes happened during thunderstorms or low cloud at the airport.
+
+2. Interpretation
+The disruption level is normal, because the share of delayed flights never went above our 25% threshold in any of the 4 years (the highest was 17.6% in 2025). Delays are mostly controllable, since the share of delays Delta controls, between 56% and 60%, is entirely above 50%. Bad weather explains more than half of the air-system delay minutes, with 53% of them happening during thunderstorms or low cloud at the airport.
+
+3. Suggestions
+Suggestion 1: Monitor weather alerts and prepare a targeted cancellation plan – in real time, only if delays appear in February
+Suggestion 2: Track storm forecasts at arrival times and warn passengers as soon as an alert is issued – in real time, as soon as an alert is issued – 53% of air-system delay minutes
+
+4. Passenger message
+"Dear Customer, we regret to inform you that your flight to Atlanta is delayed, and we sincerely apologize for the inconvenience. Your new arrival time and the options available to you can be found in the Fly Delta app, and we will keep you informed of any further change. Thank you for your patience and understanding."
+
+5. Self-check
+(a) Numbers used and their DATA line:
+- 10.8%, 8.8%, 17.6%, 11.6%: "Share of flights delayed 15 minutes or more in February, by year".
+- 15.8%: "Delta network average in February"; difference 11.6 - 15.8 = -4.2 points, calculation shown.
+- 25%, 0 years out of 4, 4 years: "Disruption level" and THRESHOLD.
+- 4.6%, 6.0%, -1.4 points: "Share of flights delayed by each cause in February" (late-arriving aircraft).
+- 56% and 60%, 50%: "Share of delays Delta controls" (50% is the cut-off given in the task).
+- 53%: "Weather inside the national aviation system cause".
+(b) Sentences that are not facts from DATA:
+- Suggestion 1 and Suggestion 2 are recommendations chosen from APPROVED ACTIONS, not facts.
+- The interpretation sentences ("normal", "mostly controllable", "explains more than half") are conclusions drawn from DATA using the rules in the task.

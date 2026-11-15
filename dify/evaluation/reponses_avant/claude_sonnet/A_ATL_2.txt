@@ -1,0 +1,29 @@
+1. Facts
+- Share of flights delayed 15 minutes or more at ATL in February: 2023 = 10.8%; 2024 = 8.8%; 2025 = 17.6%; 2026 = 11.6%.
+- February 2026 compared with the Delta network average in February: 11.6 - 15.8 = -4.2 points.
+- Late-arriving aircraft: 4.6% in February vs 6.0% on average (-1.4 points); airline: 4.2% vs 4.6% (-0.4 points).
+- Share of delays Delta controls: between 56% and 60%.
+- Weather accounts for 53% of the delay minutes in the national aviation system cause.
+
+2. Interpretation
+The disruption level is normal: no year out of 4 was above our group's 25% threshold for a strong disruption (the highest was 17.6% in 2025). Delays are mostly controllable, because the share Delta controls is between 56% and 60%, a range entirely above 50%. Bad weather explains more than half of the air-system delay minutes, with 53% of them happening during thunderstorms or low cloud at the airport.
+
+3. Suggestions
+Suggestion 1: Track storm forecasts at arrival times and warn passengers as soon as an alert is issued – in real time, only if delays appear – 53%
+Suggestion 2: Monitor weather alerts and prepare a targeted cancellation plan – in real time, only if delays appear
+
+4. Passenger message
+"Dear Customer, we regret to inform you that your flight to Atlanta is delayed, and we sincerely apologize for the inconvenience. Your new arrival time and the options available to you can be found in the Fly Delta app, and we will keep you informed of any further change. Thank you for your patience and understanding."
+
+5. Self-check
+(a) Numbers used and their DATA line:
+- 10.8%, 8.8%, 17.6%, 11.6%: share of flights delayed by year.
+- 15.8%: Delta network average in February; 11.6 - 15.8 = -4.2 points is a difference calculated from these two numbers.
+- 25% and 0 year(s) out of 4: threshold and disruption level lines.
+- 4.6%, 6.0%, -1.4 points; 4.2%, 4.6%, -0.4 points: causes line.
+- 56% and 60%: share of delays Delta controls.
+- 53%: weather inside the national aviation system cause.
+(b) Sentences that are not facts from DATA:
+- Suggestion 1 is a recommendation (approved action, storm forecasts and passenger warnings).
+- Suggestion 2 is a recommendation (approved fallback action, because no cause is above the airport's average).
+- The statement that delays are mostly controllable is an interpretation of the 56% to 60% range against 50%.

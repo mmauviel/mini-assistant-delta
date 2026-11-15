@@ -1,0 +1,29 @@
+1. Facts
+- Share of flights delayed 15 minutes or more in July: 23.7% in 2023, 23.6% in 2024, 28.1% in 2025 and 47.3% in 2026.
+- In July 2026, SFO was well above the Delta network average: 47.3 - 25.2 = 22.1 points.
+- The cause rising most is airline: 10.3% in July against 7.7% on average (+2.6 points); late-arriving aircraft is at 6.4% against 4.3% (+2.1 points).
+- Share of delays Delta controls: between 42% and 46%.
+- 21% of "national aviation system" delay minutes happened during thunderstorms or low cloud at the airport.
+
+2. Interpretation
+The disruption level is at risk, because the share of delayed flights was above our 25% threshold in the last two years in a row (28.1% in 2025 and 47.3% in 2026), after staying below it in 2023 and 2024. Delays are mostly external, since the share of delays Delta controls, between 42% and 46%, is entirely below 50%. Bad weather does not explain more than half of the air-system delay minutes, as only 21% of them happened during thunderstorms or low cloud at the airport.
+
+3. Suggestions
+Suggestion 1: Prepare rebookings, coordinate with air traffic control and warn passengers earlier – light plan prepared before July, then close monitoring during July – delays mostly external, Delta controls only 42% to 46%
+Suggestion 2: Add buffers between rotations of aircraft passing through this airport, and track late aircraft in real time to offer a replacement aircraft or crew – light plan prepared before July, then close monitoring during July – late-arriving aircraft, 6.4% in July vs 4.3% on average
+
+4. Passenger message
+"Dear Customer, thank you for choosing Delta. In recent years, arrivals at San Francisco have frequently been delayed in July. We recommend allowing ample time for your connections. Should your flight be delayed, you will be notified promptly in the Fly Delta app. We wish you a pleasant journey."
+
+5. Self-check
+(a) Numbers used and their DATA line:
+- 23.7%, 23.6%, 28.1%, 47.3%: "Share of flights delayed 15 minutes or more in July, by year".
+- 25.2%: "Delta network average in July"; difference 47.3 - 25.2 = 22.1 points, calculation shown.
+- 25%: THRESHOLD and "Disruption level" (above 25% in 2 years out of 4).
+- 10.3%, 7.7%, +2.6 points: "Share of flights delayed by each cause in July" (airline) and "Cause rising most".
+- 6.4%, 4.3%, +2.1 points: "Share of flights delayed by each cause in July" (late-arriving aircraft).
+- 42% and 46%, 50%: "Share of delays Delta controls" (50% is the cut-off given in the task).
+- 21%: "Weather inside the national aviation system cause".
+(b) Sentences that are not facts from DATA:
+- Suggestion 1 and Suggestion 2 are recommendations chosen from APPROVED ACTIONS, not facts.
+- The interpretation sentences ("at risk", "mostly external", "does not explain more than half") are conclusions drawn from DATA using the rules in the task.

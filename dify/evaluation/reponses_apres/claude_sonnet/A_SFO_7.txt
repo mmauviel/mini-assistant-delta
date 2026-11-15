@@ -1,0 +1,32 @@
+1. Facts
+- Share of flights delayed 15 minutes or more in July, by year: 2023 = 23.7%; 2024 = 23.6%; 2025 = 28.1%; 2026 = 47.3%.
+- July 2026 compared with the Delta network average: 47.3 - 25.2 = 22.1 points.
+- Disruption level: at risk (above 25% in 2 year(s) out of 4).
+- Airline delays: 10.3% in July, against an airport average of 7.7%: 10.3 - 7.7 = 2.6 points above average. This is the cause rising most.
+- Share of delays Delta controls: between 42% and 46%. Weather inside the "national aviation system" cause: 21% of its delay minutes.
+
+2. Interpretation
+The disruption level is at risk, because the share of delayed flights was above our group's threshold of 25% in the last two years in a row (28.1% in 2025 and 47.3% in 2026). Delays are mostly external, because the share Delta controls is between 42% and 46%, a range entirely below 50%. Bad weather does not explain more than half of the air-system delay minutes, because thunderstorms or low cloud at the airport account for 21% of them.
+
+3. Suggestions
+Suggestion 1: Prepare rebookings, coordinate with air traffic control and warn passengers earlier – a light plan prepared before July, plus close monitoring during July – delays mostly external, Delta controls only 42% to 46%
+Suggestion 2: Add buffers between rotations of aircraft passing through this airport, and track late aircraft in real time to offer a replacement aircraft or crew – a light plan prepared before July, plus close monitoring during July – late-arriving aircraft, 6.4% in July vs 4.3% on average
+
+4. Passenger message
+"Dear Customer, thank you for choosing Delta. In recent years, arrivals at San Francisco have frequently been delayed in July. We recommend allowing ample time for your connections. Should your flight be delayed, you will be notified promptly in the Fly Delta app. We wish you a pleasant journey."
+
+5. Self-check
+(a) Numbers used and their DATA line:
+- 23.7%, 23.6%, 28.1%, 47.3%: "Share of flights delayed 15 minutes or more in July, by year".
+- 25.2%: "Delta network average in July" (used only as a point of comparison, not as a threshold); 47.3 - 25.2 = 22.1 points is a difference calculated from these two numbers.
+- 2 year(s) out of 4 and at risk: "Disruption level".
+- 25%: our group's threshold for a strong disruption (THRESHOLD).
+- 10.3% and 7.7%: "airline" in the "Share of flights delayed by each cause in July" line; 10.3 - 7.7 = 2.6 points is a difference calculated from these two numbers.
+- 6.4% and 4.3%: "late-arriving aircraft" in the same line.
+- 42% and 46%, and the 50% limit used to classify the range: "Share of delays Delta controls".
+- 21%: "Weather inside the national aviation system cause".
+(b) Sentences that are not a fact from DATA:
+- Suggestion 1 and Suggestion 2 are recommendations taken from the approved actions.
+- The conclusion that delays are mostly external is an interpretation of the 42% to 46% range against 50%.
+- The conclusion that bad weather does not explain more than half of the air-system delay minutes is an interpretation of 21% against 50%.
+- The conclusion that the disruption level is at risk because the last two years in a row were above 25% comes from the "Disruption level" line and the yearly shares.
