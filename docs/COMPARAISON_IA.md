@@ -77,9 +77,9 @@ réponses floues (« unclear » donne une fiche).
 12 fiches sur 12 sans aucun défaut repéré (3 modèles × 4 cas), 0 chiffre hors données, 2 suggestions de la liste
 à SFO et LGA, « one-off » expliqué correctement. Réponses dans `dify/evaluation/reponses_apres/`.
 
-### Gemini 2.5 Flash (le modèle de production), réponses collées par Maeva
+### Gemini 3.5 (le modèle de production), réponses collées par Maeva
 
-| Point | Gemini 2.5 Flash |
+| Point | Gemini 3.5 |
 |---|---|
 | Chiffres hors données | 0 sur les 7 cas, calculs montrés justes |
 | Interprétation | juste partout (« one-off » de LGA bien expliqué) |
@@ -114,7 +114,7 @@ Correction 6 : la consigne du nœud « Understand the question » précise qu'un
 | Claude Haiku | 4 sans défaut | 2 conformes | 8/8 | le plus court ; avant correction, sautait des suggestions |
 | Claude Sonnet | 4 sans défaut | 2 conformes | 8/8 | aucun |
 | Claude Opus | 4 sans défaut | 2 conformes | 8/8 | le plus long ; repère les incohérences du prompt |
-| Gemini 2.5 Flash | 4 justes | 2 conformes | 8/8 | 2 suggestions sur une ligne (corrigé) |
+| Gemini 3.5 | 4 justes | 2 conformes | 8/8 | 2 suggestions sur une ligne (corrigé) |
 | ChatGPT | 4 sans défaut | 2 conformes | 7/8 | « next month » pris pour un risque (corrigé) |
 
 Conclusion : avec « le code calcule, l'IA rédige », aucun des 5 modèles n'invente de chiffre. Les écarts restants sont
