@@ -106,6 +106,10 @@ Le nœud « mail » ne change aucun mot : il reprend la fiche, la note de l'IA, 
 - **Version texte** : la sortie `texte` est le même mail sans mise en page (lisible dans le journal de Dify). Le plugin Email met dans la partie texte du mail le contenu tel quel, ici le code HTML : seules les rares boîtes « texte seul » le verraient. Pour un mail en texte simple, mettre `mail / texte` comme contenu et désactiver Convert to HTML.
 - **Pied de page** : il précise que c'est un projet étudiant, pas une communication officielle de Delta Air Lines.
 
+## 8. Le master workflow « Delta Flight IQ »
+
+Un Chatflow où le manager pose sa question (« Brief me on MCO for July », « Any FAA risk at ATL today? ») et qui appelle A ou une copie de B sans mail. Mise en place : `docs/MASTER_WORKFLOW.md`.
+
 ## Ce qui reste privé
 
-L'adresse du manager, le mot de passe d'application Gmail et la clé du modèle restent dans Dify (variable Secret, autorisation du plugin, Model Provider). Ne pas exporter le workflow (DSL) dans le dépôt GitHub.
+L'adresse du manager, le mot de passe d'application Gmail et la clé du modèle restent dans Dify (variable Secret, autorisation du plugin, Model Provider). Ne pas exporter le workflow (DSL) dans le dépôt GitHub (le modèle du master, `dify/master/delta_flight_iq_master.yml`, est écrit par un script, pas exporté).

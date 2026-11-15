@@ -23,6 +23,8 @@ Toutes les données sont publiques et gratuites. Le dépôt peut être public : 
 | `src/` | La chaîne de données (téléchargements, suivi des avions, météo, fichiers pour Dify) |
 | `tests/` | Les tests : `python -m pytest -q tests` |
 | `dify/` | Le code des nœuds Dify et le guide des workflows automatiques (alerte du matin, fiche du 1er, bilan d'octobre), avec la mise en page des mails aux couleurs de Delta |
+| `dify/master/` | Le master workflow « Delta Flight IQ » : un Chatflow qui appelle A ou B selon la question (guide : `docs/MASTER_WORKFLOW.md`) |
+| `docs/` | La documentation (master workflow) |
 | `.github/workflows/` | La mise à jour mensuelle et les tests |
 
 ## Mise en route
@@ -43,10 +45,10 @@ Un dépôt public est lisible par tout le monde, et GitHub garde l'historique : 
 | Clé API du modèle (Gemini, Claude…) | Dify → Paramètres → Model Provider |
 | Clé API de Dify | Nulle part dans le dépôt (ce projet n'en a pas besoin) |
 | Adresse mail du manager | Dify → variable d'environnement de type **Secret** |
-| Export du workflow Dify (fichier `.yml` / DSL) | Sur ton ordinateur : il peut contenir des réglages privés |
+| Export du workflow Dify (fichier `.yml` / DSL) | Sur ton ordinateur : il peut contenir des réglages privés. Seule exception : `dify/master/delta_flight_iq_master.yml`, écrit par un script, sans aucun réglage privé (un test le vérifie) |
 
 **Avant chaque envoi sur GitHub :**
-- relire la liste des fichiers envoyés : seulement `README`, `src/`, `tests/`, `dify/`, `donnees/`, `.github/`, `requirements.txt`, `.gitignore` ;
+- relire la liste des fichiers envoyés : seulement `README`, `src/`, `tests/`, `dify/`, `docs/`, `donnees/`, `.github/`, `requirements.txt`, `.gitignore` ;
 - chercher les mots `password`, `key`, `token`, `@gmail` dans ce que tu ajoutes ;
 - laisser activée la protection de GitHub (Settings → Code security → Secret scanning et Push protection) : elle bloque l'envoi de la plupart des clés.
 
