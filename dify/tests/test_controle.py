@@ -21,6 +21,9 @@ def test_tout_est_dans_les_donnees():
 
 def test_difference_juste_permise_fausse_reperee():
     assert "all" in controle.main("* Gap: 17.6 - 15.8 = 1.8 points.\n* Rate 17,6 %", PROMPT)["number_check"]
+    # différence négative (« 8.8 - 10.8 = -2.0 ») : juste
+    assert "all" in controle.main("* Gap: 8.8 - 10.8 = -2.0 points.", PROMPT)["number_check"]
+    assert "wrong" in controle.main("* Gap: 8.8 - 10.8 = 2.0 points.", PROMPT)["number_check"]
     out = controle.main("* Gap: 17.6 - 15.8 = 2.8 points.", PROMPT)["number_check"]
     assert "NOT" in out and "wrong calculation: 17.6 - 15.8 = 2.8" in out
 

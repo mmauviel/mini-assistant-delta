@@ -19,7 +19,7 @@ import re
 # Nombre : 36.2, 1,8 (virgule française), 25, 2026… Les signes et les % sont ignorés (« +3.7 pt » = 3.7).
 NOMBRE = re.compile(r"(?<![\w.])(\d+(?:[.,]\d+)?)(?![\w])")
 # Différence écrite par l'IA : « 17.6 - 15.8 = 1.8 ».
-DIFFERENCE = re.compile(r"(\d+(?:[.,]\d+)?)\s*[-\u2212\u2013]\s*(\d+(?:[.,]\d+)?)\s*=\s*(\d+(?:[.,]\d+)?)")
+DIFFERENCE = re.compile(r"(\d+(?:[.,]\d+)?)\s*[-\u2212\u2013]\s*(\d+(?:[.,]\d+)?)\s*=\s*([-\u2212\u2013+]?\d+(?:[.,]\d+)?)")
 # Numéros de partie ou de liste en début de ligne (« 1. FACTS », « 3) »), à ne pas contrôler.
 NUMERO_DE_LISTE = re.compile(r"^\s*(?:[-*]\s*)?\(?\d{1,2}[.)]\s")
 
@@ -39,7 +39,8 @@ def _nombres(texte):
 
 
 def _valeur(n):
-    return float(n.replace(",", "."))
+    signe = -1 if n[:1] in "-\u2212\u2013" else 1
+    return signe * float(n.lstrip("+-\u2212\u2013").replace(",", "."))
 
 
 def main(ia: str = "", prompt: str = "", fiche: str = "", imprevu: str = "") -> dict:
@@ -50,7 +51,7 @@ def main(ia: str = "", prompt: str = "", fiche: str = "", imprevu: str = "") -> 
         for a, b, c in DIFFERENCE.findall(ligne):
             if _normal(a) in connus and _normal(b) in connus:
                 if abs(_valeur(a) - _valeur(b) - _valeur(c)) <= 0.051:
-                    connus = connus | {_normal(c)}  # différence juste entre deux chiffres de DATA : permise
+                    connus = connus | {_normal(c.lstrip("+-\u2212\u2013"))}  # différence juste entre deux chiffres de DATA : permise
                 else:
                     faux.append(f"{a} - {b} = {c}")
         a_lire = NUMERO_DE_LISTE.sub(" ", ligne, count=1)
