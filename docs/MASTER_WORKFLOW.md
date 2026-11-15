@@ -51,7 +51,7 @@ Les noms des réglages sont en français, avec l'anglais entre parenthèses.
 ### 1. Publier A comme outil
 
 1. Ouvrir **A. Fiche à la demande**. Vérifier que son nœud Début a bien `aeroport` (String), `mois` (Number) et `langue` (String), et que son nœud **Fin** a les sorties `fiche`, `note_ia` et `imprevus`.
-2. **Publier** (Publish), puis **Publier comme outil** (Publish as Tool). Nom de l'outil : `delta_briefing`. Description : `Monthly briefing (mois 1-12) or yearly calendar (mois 0) for a Delta station.` Décrire chaque paramètre en une phrase, en anglais.
+2. **Publier** (Publish), puis, dans le même menu, **Workflow as Tool** (badge « NEEDS SETUP » la première fois). Name : `Delta briefing` ; Tool call name : `delta_briefing`. Description : `Monthly briefing (mois 1-12) or yearly calendar (mois 0) for a Delta station.` Décrire chaque paramètre en une phrase, en anglais.
 
 Publier A ne change rien au test manuel : on peut toujours le lancer avec « Exécuter » (Test Run) pour la démo.
 
@@ -64,7 +64,7 @@ On ne publie pas l'Alerte du matin elle-même : elle démarre sur un déclencheu
 3. Partout où la variable d'environnement `aeroport` était utilisée (Code « OACI »), mettre `Début / aeroport` à la place. Supprimer les variables d'environnement `aeroport` et `email_manager` de la copie : elle n'envoie pas de mail.
 4. Supprimer le **SI/SINON**, le **Code « mail »** et le nœud **Email**. Relier le Code « imprévu » directement au **LLM « alerte »** : le prompt sait déjà répondre « No risk reported for today and the next 7 days. » les jours calmes.
 5. Après le LLM, un nœud **Fin** avec deux sorties : `alerte` = `LLM / text` et `donnees` = `imprévu / resume`.
-6. **Publier**, puis **Publier comme outil** : nom `delta_risk_check`, description `Live weather and FAA risk check for a Delta station, today and the next 7 days.`
+6. **Publier**, puis **Workflow as Tool** : Tool call name `delta_risk_check`, description `Live weather and FAA risk check for a Delta station, today and the next 7 days.`
 
 ### 3. Importer le master
 
