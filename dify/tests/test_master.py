@@ -87,6 +87,11 @@ def test_reponse_remet_les_sorties_dans_l_ordre():
     assert out.index("July briefing") < out.index("# Operational") < out.index("### AI note") < out.index("### Live data")
 
 
+def test_meteo_du_jour_masquee_pour_le_bilan_annuel():
+    sorties = {"fiche": "# Annual review: MCO\n| Month |", "imprevus": "Live events at MCO\n- FAA: nothing."}
+    assert "Live" not in reponse.main(json.dumps(sorties), "")["reponse"]
+
+
 def test_note_ia_reduite_a_interpretation_et_suggestions():
     note = ("1. FACTS\n- 17.6%\n\n2. INTERPRETATION\n- Normal month.\n\n3. SUGGESTIONS\nSuggestion 1: Monitor.\n\n"
             "4. PASSENGER MESSAGE\n\"Dear Customer\"\n\n5. SELF-CHECK\n(a) 17.6%")

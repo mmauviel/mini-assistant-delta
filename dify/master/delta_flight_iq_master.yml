@@ -452,6 +452,8 @@ workflow:
           # Le nœud « imprévu » ajoute cette phrase quand la fiche porte sur un autre mois : la météo du jour ne sert alors à
           # rien dans le chat, on ne l'affiche pas.
           HORS_SUJET = "(Not sent to the AI"
+          # Bilan annuel (mois = 0) : la météo du jour ne le concerne pas non plus.
+          BILAN = ("# Annual review", "# Bilan annuel")
           # Note de l'IA : dans le chat, on ne garde que ce qu'elle ajoute à la fiche, INTERPRETATION et SUGGESTIONS.
           # FACTS répète la fiche, PASSENGER MESSAGE est déjà dans la fiche, SELF-CHECK est remplacé par le contrôle
           # automatique des chiffres (number_check), qui lit, lui, la note complète. Si les titres ne sont pas trouvés,
@@ -511,7 +513,8 @@ workflow:
                       contenu = _texte(sorties.get(nom))
                       if nom == "note_ia":
                           contenu = _note_courte(contenu)
-                      if nom in ("imprevus", "donnees") and HORS_SUJET in contenu:
+                      if nom in ("imprevus", "donnees") and (
+                              HORS_SUJET in contenu or _texte(sorties.get("fiche")).startswith(BILAN)):
                           continue
                       if contenu and contenu not in deja:  # imprevus et donnees peuvent être le même texte
                           parties.append(f"### {titre}\n\n{contenu}" if titre else contenu)
@@ -603,6 +606,8 @@ workflow:
           # Le nœud « imprévu » ajoute cette phrase quand la fiche porte sur un autre mois : la météo du jour ne sert alors à
           # rien dans le chat, on ne l'affiche pas.
           HORS_SUJET = "(Not sent to the AI"
+          # Bilan annuel (mois = 0) : la météo du jour ne le concerne pas non plus.
+          BILAN = ("# Annual review", "# Bilan annuel")
           # Note de l'IA : dans le chat, on ne garde que ce qu'elle ajoute à la fiche, INTERPRETATION et SUGGESTIONS.
           # FACTS répète la fiche, PASSENGER MESSAGE est déjà dans la fiche, SELF-CHECK est remplacé par le contrôle
           # automatique des chiffres (number_check), qui lit, lui, la note complète. Si les titres ne sont pas trouvés,
@@ -662,7 +667,8 @@ workflow:
                       contenu = _texte(sorties.get(nom))
                       if nom == "note_ia":
                           contenu = _note_courte(contenu)
-                      if nom in ("imprevus", "donnees") and HORS_SUJET in contenu:
+                      if nom in ("imprevus", "donnees") and (
+                              HORS_SUJET in contenu or _texte(sorties.get("fiche")).startswith(BILAN)):
                           continue
                       if contenu and contenu not in deja:  # imprevus et donnees peuvent être le même texte
                           parties.append(f"### {titre}\n\n{contenu}" if titre else contenu)
