@@ -93,6 +93,34 @@ réponses floues (« unclear » donne une fiche).
 Correction 5 : le prompt demande maintenant d'aller à la ligne avant « Suggestion 2 ». « Section 3 » n'est plus compté
 comme un chiffre par le contrôle.
 
+### ChatGPT, réponses collées par Maeva
+
+| Point | ChatGPT |
+|---|---|
+| Chiffres hors données | 0 sur les 7 cas, calculs montrés justes |
+| Interprétation | juste partout |
+| Suggestions | 2 de la liste, chacune sur sa ligne ; à SFO pas d'action équipage |
+| Message aux passagers | copié mot pour mot, sans chiffre |
+| Forme | ajoute parfois une partie « Final checks » non demandée ; reformule « PROB 30% » en « possible » |
+| Master | 7/8 : « Is Newark going to be bad next month? » classé « risk » (alerte à 7 jours au lieu de la fiche de décembre) |
+
+Correction 6 : la consigne du nœud « Understand the question » précise qu'un mois, même « next month », n'est jamais
+« risk » (à recoller dans le master).
+
+### Tableau d'ensemble (prompts corrigés)
+
+| Modèle | Fiches (4) | Alertes (2) | Master (8 questions) | Défaut principal |
+|---|---|---|---|---|
+| Claude Haiku | 4 sans défaut | 2 conformes | 8/8 | le plus court ; avant correction, sautait des suggestions |
+| Claude Sonnet | 4 sans défaut | 2 conformes | 8/8 | aucun |
+| Claude Opus | 4 sans défaut | 2 conformes | 8/8 | le plus long ; repère les incohérences du prompt |
+| Gemini 2.5 Flash | 4 justes | 2 conformes | 8/8 | 2 suggestions sur une ligne (corrigé) |
+| ChatGPT | 4 sans défaut | 2 conformes | 7/8 | « next month » pris pour un risque (corrigé) |
+
+Conclusion : avec « le code calcule, l'IA rédige », aucun des 5 modèles n'invente de chiffre. Les écarts restants sont
+de forme, et ils venaient surtout de nos prompts. Gemini peut rester le modèle de production. La vérification humaine
+(checklist) et le contrôle automatique des chiffres restent en place.
+
 Remarque : dans l'application Gemini (et non AI Studio), l'alerte « Write a short alert email » a été prise pour une
 demande d'envoi : Gemini a demandé l'accès à Gmail au lieu d'écrire le texte. Dans Dify, le modèle n'a aucun outil, donc
 ce cas ne peut pas arriver ; mais la même IA ne se comporte pas pareil selon l'endroit où elle tourne.
@@ -101,10 +129,11 @@ ce cas ne peut pas arriver ; mais la même IA ne se comporte pas pareil selon l'
 
 - Les réponses Claude ont été produites par des sous-agents qui lisaient les deux messages, pas par l'API avec une
   température fixée : c'est une bonne approximation, pas une mesure exacte.
-- ChatGPT : pas encore testé (coller les cas, puis `noter_reponse_ia.py` sur ses réponses, un dossier par modèle).
-- Les autocontrôles de deux fiches Gemini (MCO, SFO) sont raccourcis dans le dépôt ; le reste est recopié tel quel.
+- Gemini et ChatGPT ont été testés dans leurs applications, avec les cas d'avant la correction 5.
+- Les autocontrôles de quelques fiches Gemini et ChatGPT sont raccourcis dans le dépôt ; le reste est recopié tel quel.
 
 ## À faire dans Dify après la fusion
 
 Recoller `noeud_code_calcul.py` dans les nœuds « calcul » de A et de C (les deux de C), et
-`noeud_code_controle.py` dans A, puis **Publish → Workflow as Tool → Update** pour le master.
+`noeud_code_controle.py` dans A, puis **Publish → Workflow as Tool → Update** pour le master. Dans le master, recoller
+la consigne du nœud « Understand the question » (dans `dify/master/delta_flight_iq_master.yml`, champ `instruction`).
