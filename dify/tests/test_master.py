@@ -87,6 +87,14 @@ def test_reponse_remet_les_sorties_dans_l_ordre():
     assert out.index("July briefing") < out.index("# Operational") < out.index("### AI note") < out.index("### Live data")
 
 
+def test_meteo_du_jour_masquee_pour_un_mois_lointain():
+    imprevus = "Live events at MCO\n- FAA: nothing.\n(Not sent to the AI: the briefing is about July.)"
+    out = reponse.main(json.dumps({"fiche": "F", "imprevus": imprevus}), "")["reponse"]
+    assert out == "F"
+    out = reponse.main(json.dumps({"alerte": "Alert MCO: storms Wednesday.", "donnees": "Live events at MCO"}), "")
+    assert out["reponse"] == "Alert MCO: storms Wednesday.\n\n### Live data used\n\nLive events at MCO"
+
+
 def test_nouvelle_sortie_affichee_sans_changer_le_master():
     sorties = {"fiche": "F", "cout_des_retards": "About $1.2 M at risk", "niveau_70_30": {"high": 0.7}}
     out = reponse.main(json.dumps(sorties), "")["reponse"]

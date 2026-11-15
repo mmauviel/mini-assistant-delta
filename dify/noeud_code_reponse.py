@@ -13,11 +13,14 @@ import json
 # Sorties connues, dans l'ordre d'affichage, avec leur titre. Les autres suivent, titrées d'après leur nom.
 CONNUES = [
     ("fiche", ""),                     # A : la fiche (elle a déjà son propre titre)
-    ("alerte", "Alert"),               # B en direct : le texte de l'IA
+    ("alerte", ""),                    # B en direct : le texte de l'IA (il commence déjà par « Alert MCO: »)
     ("note_ia", "AI note (to check before acting)"),
     ("imprevus", "Live data used"),    # A : ce que disent les API du jour
     ("donnees", "Live data used"),     # B en direct : le résumé des API
 ]
+# Le nœud « imprévu » ajoute cette phrase quand la fiche porte sur un autre mois : la météo du jour ne sert alors à
+# rien dans le chat, on ne l'affiche pas.
+HORS_SUJET = "(Not sent to the AI"
 MAX_SORTIE = 20000  # caractères : au-delà, la réponse est coupée (le chat de Dify reste lisible)
 
 
@@ -58,8 +61,11 @@ def main(resultat: str = "", message: str = "") -> dict:
         parties.append(brut or "The workflow returned nothing. Please try again in a minute.")
     else:
         deja = set()
+        avant = len(parties)
         for nom, titre in CONNUES:
             contenu = _texte(sorties.get(nom))
+            if nom in ("imprevus", "donnees") and HORS_SUJET in contenu:
+                continue
             if contenu and contenu not in deja:  # imprevus et donnees peuvent être le même texte
                 parties.append(f"### {titre}\n\n{contenu}" if titre else contenu)
                 deja.add(contenu)
@@ -69,7 +75,7 @@ def main(resultat: str = "", message: str = "") -> dict:
             contenu = _texte(valeur)
             if contenu:
                 parties.append(f"### {_titre(nom)}\n\n{contenu}")
-        if len(parties) <= 1:
+        if len(parties) == avant:
             parties.append("The workflow ran but returned no text.")
     reponse = "\n\n".join(parties)
     if len(reponse) > MAX_SORTIE:
