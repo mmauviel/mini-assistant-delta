@@ -44,33 +44,26 @@ Créer un nouveau workflow : **Studio** → **Créer depuis zéro** → **Workfl
    - `aeroport` : type String, valeur `MCO` ;
    - `email_manager` : type **Secret**, l'adresse du manager.
 3. Les nœuds des imprévus, comme dans le mode d'emploi du zip : **Code « OACI »** (entrée `aeroport` = la variable d'environnement `aeroport`), **Requête HTTP « météo »**, **Requête HTTP « FAA »**, **Requête HTTP « points »**, **Code « lien prévision »**, **Requête HTTP « prévision 7 jours »**. Pour les quatre requêtes : Gestion des erreurs → Valeur par défaut.
-4. **Code « imprévu »** : `aeroport`, `taf`, `faa`, `prevision` comme dans le zip. Ne pas relier `langue` : le résumé sort en anglais. **Ne pas** relier `mois` : sans mois, le nœud décrit aujourd'hui et les 7 prochains jours. Sorties `imprevu`, `resume`, `alerte`.
+4. **Code « imprévu »** : `aeroport`, `taf`, `faa`, `prevision` comme dans le zip. Ne pas relier `langue` : le résumé sort en anglais. **Ne pas** relier `mois` : sans mois, le nœud décrit aujourd'hui et les 7 prochains jours. Sorties (String) `imprevu`, `resume`, `alerte`, `evenements`. `evenements` range les faits pour le mail (voir `docs/ALERTE_DU_MATIN.md`) : sans elle déclarée, Dify affiche « Not all output parameters are validated ».
 5. **SI/SINON** (IF/ELSE) : `imprévu / alerte` **est** `oui`.
 6. Branche SI : nœud **LLM** « alerte ». Système : `You write short operational alerts for Delta Air Lines managers. Use only the facts given. When something is not given, leave it out.` Utilisateur : le texte ci-dessous ; à la place de `{{imprevu}}`, insérer la variable `imprévu / imprevu` (taper `/`). Vérifier qu'elle apparaît en bleu : sans elle, le modèle invente (aéroport, neige…). Le mail sort en anglais.
 
    Les deux prévisions météo ne disent pas la même chose, et c'est normal : la **prévision de l'aéroport** (TAF, aviationweather.gov) ne couvre que les 24 à 30 prochaines heures, mais elle est précise ; la **prévision de la zone** (service météo américain, NWS) couvre 7 jours, par périodes de 12 heures, avec une probabilité. Le nœud « imprévu » nomme chaque ligne d'après sa source, écrit « possible » quand le NWS dit « Chance » (30 à 50 %), ajoute « not confirmed » quand la TAF couvre la même période sans rien signaler, et ignore les périodes déjà passées.
 
    ```
-   Write a short alert email in English for the manager of the Delta Air Lines station named in the BLOCK below.
-   Use only the BLOCK. If the BLOCK is empty, reply only: "Data unavailable: no alert."
-   1. First line: "Alert" followed by the airport code written in the BLOCK, then one sentence with the main risk and its day.
-      If the BLOCK says the risk is "possible" or "not confirmed", say it in that sentence.
-   2. List each risk with its day and time exactly as in the BLOCK (weather times are in UTC: write "UTC").
-      Keep the words "possible", "not confirmed" and the chance of precipitation exactly as in the BLOCK.
-      Never write that a risk is "forecast" when the BLOCK says "possible".
-      If the BLOCK reports no risk, write only "No risk reported for today and the next 7 days." and stop.
-   3. Suggest at most 2 actions, copied word for word from this list only:
-      "Warn passengers on the affected flights through the Fly Delta app."
-      "Prepare rebookings."
-      "Reinforce standby crews and ground staff for those days."
-      "Coordinate with air traffic control."
-   4. No number that is not in the BLOCK. No promise to passengers. 10 lines maximum.
+   Write one sentence in English (25 words maximum) for the manager of the Delta Air Lines station named in the BLOCK below:
+   the main risk and its day.
+   Use only the BLOCK. If the BLOCK says the risk is "possible" or "not confirmed", say it in the sentence.
+   No hour, no percentage and no action: the email already lists the time windows and the actions.
+   If the BLOCK reports no risk, write only: "No risk reported for today and the next 7 days."
+   If the BLOCK is empty, write only: "Data unavailable: no alert."
 
    BLOCK:
    {{imprevu}}
    ```
-7. **Code « mail »** (Python 3), après le LLM : coller `noeud_code_mail.py`. Entrées (String) : `aeroport` = `OACI / aeroport` ; `ia` = `LLM / text` ; `donnees` = `imprévu / resume`. Sorties (String) : `html`, `texte`, `apercu`. Pas d'entrée `genre` : sans fiche, le nœud sait que c'est l'alerte. Il habille le mail aux couleurs de la charte Delta (voir partie 7) sans changer le texte.
-8. Nœud **Email** (outil du plugin) : destinataire = la variable d'environnement `email_manager` ; objet = `Weather and FAA alert ` suivi de la variable `OACI / aeroport` ; contenu = `mail / html` ; **Convert to HTML** (Convertir en HTML) = **activé**.
+   Le LLM n'écrit plus qu'une phrase : le niveau de risque, la liste des créneaux et les actions viennent du code (aucun chiffre ne peut être inventé).
+7. **Code « mail »** (Python 3), après le LLM : coller `noeud_code_mail.py`. Entrées (String) : `aeroport` = `OACI / aeroport` ; `ia` = `LLM / text` ; `evenements` = `imprévu / evenements`. (L'ancienne entrée `donnees` = `imprévu / resume` peut être supprimée : avec `evenements`, elle n'est plus utilisée.) Sorties (String) : `html`, `texte`, `apercu`. Pas d'entrée `genre` : sans fiche, le nœud sait que c'est l'alerte. Il habille le mail aux couleurs de la charte Delta (voir partie 7) sans changer le texte.
+8. Nœud **Email** (outil du plugin) : destinataire = la variable d'environnement `email_manager` ; objet = `Weather and FAA alert ` suivi de la variable `OACI / aeroport` ; contenu = `mail / html`, **seule**, sans autre texte ni variable (si le mail arrive sans mise en page, c'est que le contenu est encore `LLM / text` ou `imprévu / resume`) ; **Convert to HTML** (Convertir en HTML) = **activé**.
 9. Relier la branche SINON directement à un nœud **Fin** : les jours calmes, aucun mail.
 10. **Publier** (Publish) : le déclencheur ne tourne qu'une fois le workflow publié. Pour tester sans attendre 6 h : sur le déclencheur, « Exécuter cette étape » (Run this step).
 
@@ -100,7 +93,7 @@ Créer un nouveau workflow : **Studio** → **Créer depuis zéro** → **Workfl
 Le nœud « mail » ne change aucun mot : il reprend la fiche, la note de l'IA, l'alerte et les données en direct, et les met en forme.
 
 - **Charte** : bandeau Delta Blue (`#003366`) avec le logo blanc en haut à gauche (fond foncé, donc logo inversé, avec la marge demandée), filet Delta Red (`#C01933`), texte blanc sur les fonds de couleur, couleurs tertiaires en petites touches seulement (niveau du mois).
-- **En tête** : ce qu'il faut retenir. Fiche : le niveau (Normal month, At-risk, Recurring…), le taux de la dernière année et la prochaine étape. Alerte : le risque principal en rouge, puis les risques jour par jour et les actions à cocher.
+- **En tête** : ce qu'il faut retenir. Fiche : le niveau (Normal month, At-risk, Recurring…), le taux de la dernière année et la prochaine étape. Alerte : le niveau de risque en couleur (High / Medium / Low), le statut FAA en direct, une seule liste de créneaux (heure locale et UTC, source sur chaque ligne) et les actions à cocher, liées aux créneaux (voir `docs/ALERTE_DU_MATIN.md`).
 - **Fiche** : les taux par année en barres (rouge au-dessus du seuil de 25 %), les causes en tableau (écart en rouge s'il monte, en vert s'il baisse), le message aux passagers en citation, la note de l'IA dans un encadré orange « à vérifier ».
 - **Boîtes mail** : tableaux et styles en ligne, largeur 600 px, lisible sur téléphone  ; conçu pour Gmail, Outlook et Apple Mail. Le logo est une image du dépôt (`dify/mail/delta_logo_white.png`) : si la boîte bloque les images, le mot DELTA s'affiche à la place.
 - **Version texte** : la sortie `texte` est le même mail sans mise en page (lisible dans le journal de Dify). Le plugin Email met dans la partie texte du mail le contenu tel quel, ici le code HTML : seules les rares boîtes « texte seul » le verraient. Pour un mail en texte simple, mettre `mail / texte` comme contenu et désactiver Convert to HTML.
