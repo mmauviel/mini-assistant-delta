@@ -1,4 +1,148 @@
 year,month,airport,airport_name,arr_flights,arr_del15,carrier_ct,late_aircraft_ct,nas_ct,weather_ct,arr_delay
+2026,9,ABE,"Allentown/Bethlehem/Easton, PA: Lehigh Valley International",25.0,7.0,2.76,2.71,0.87,0.66,259.0
+2026,9,ABQ,"Albuquerque, NM: Albuquerque International Sunport",109.0,15.0,8.95,3.74,2.18,0.13,1017.0
+2026,9,AGS,"Augusta, GA: Augusta Regional at Bush Field",20.0,1.0,0.0,0.0,1.0,0.0,22.0
+2026,9,ALB,"Albany, NY: Albany International",115.0,25.0,12.81,4.46,6.5,1.23,1343.0
+2026,9,ANC,"Anchorage, AK: Ted Stevens Anchorage International",249.0,69.0,28.84,9.95,30.21,0.0,4289.0
+2026,9,ATL,"Atlanta, GA: Hartsfield-Jackson Atlanta International",19685.0,2750.0,866.48,956.75,808.77,116.53,200058.0
+2026,9,ATW,"Appleton, WI: Appleton International",30.0,5.0,0.02,3.18,0.0,1.8,606.0
+2026,9,AUS,"Austin, TX: Austin - Bergstrom International",1112.0,235.0,82.22,60.19,85.29,7.3,13742.0
+2026,9,AVL,"Asheville, NC: Asheville Regional",187.0,20.0,9.85,1.19,6.96,2.0,1613.0
+2026,9,BDL,"Hartford, CT: Bradley International",368.0,47.0,16.83,13.06,15.98,1.12,2689.0
+2026,9,BGR,"Bangor, ME: Bangor International",13.0,1.0,0.32,0.0,0.68,0.0,25.0
+2026,9,BHM,"Birmingham, AL: Birmingham-Shuttlesworth International",308.0,46.0,16.5,17.84,6.63,5.03,2937.0
+2026,9,BIL,"Billings, MT: Billings Logan International",60.0,11.0,5.71,3.92,1.37,0.0,392.0
+2026,9,BIS,"Bismarck/Mandan, ND: Bismarck Municipal",30.0,5.0,2.98,1.82,0.19,0.0,368.0
+2026,9,BNA,"Nashville, TN: Nashville International",799.0,153.0,65.4,48.89,32.93,5.77,9179.0
+2026,9,BOI,"Boise, ID: Boise Air Terminal",220.0,28.0,17.73,5.55,4.43,0.29,1391.0
+2026,9,BOS,"Boston, MA: Logan International",2263.0,921.0,130.77,207.36,563.87,19.0,66456.0
+2026,9,BTR,"Baton Rouge, LA: Baton Rouge Metropolitan/Ryan Field",91.0,11.0,5.18,4.08,0.68,1.06,1217.0
+2026,9,BTV,"Burlington, VT: Patrick Leahy Burlington International",31.0,9.0,3.49,0.34,1.71,3.47,454.0
+2026,9,BUF,"Buffalo, NY: Buffalo Niagara International",170.0,38.0,14.9,12.29,9.64,1.17,1703.0
+2026,9,BUR,"Burbank, CA: Bob Hope",85.0,12.0,7.54,3.87,0.39,0.2,650.0
+2026,9,BWI,"Baltimore, MD: Baltimore/Washington International Thurgood Marshall",432.0,65.0,21.33,16.96,23.99,2.73,3461.0
+2026,9,BZN,"Bozeman, MT: Bozeman Yellowstone International",165.0,7.0,4.46,0.0,1.89,0.65,449.0
+2026,9,CAE,"Columbia, SC: Columbia Metropolitan",174.0,25.0,14.89,6.42,3.26,0.42,1995.0
+2026,9,CHA,"Chattanooga, TN: Lovell Field",137.0,21.0,10.79,7.84,2.11,0.26,1071.0
+2026,9,CHO,"Charlottesville, VA: Charlottesville Albemarle",1.0,0.0,0.0,0.0,0.0,0.0,0.0
+2026,9,CHS,"Charleston, SC: Charleston AFB/International",372.0,60.0,24.5,10.84,19.19,5.47,2896.0
+2026,9,CID,"Cedar Rapids/Iowa City, IA: The Eastern Iowa",30.0,3.0,3.0,0.0,0.0,0.0,144.0
+2026,9,CLE,"Cleveland, OH: Cleveland-Hopkins International",330.0,60.0,32.58,17.04,6.07,4.31,3294.0
+2026,9,CLT,"Charlotte, NC: Charlotte Douglas International",453.0,77.0,34.36,17.29,21.29,4.06,5558.0
+2026,9,CMH,"Columbus, OH: John Glenn Columbus International",360.0,55.0,33.65,9.37,7.69,4.3,2805.0
+2026,9,COS,"Colorado Springs, CO: City of Colorado Springs Municipal",59.0,6.0,3.87,0.55,1.08,0.5,369.0
+2026,9,CSG,"Columbus, GA: Columbus Airport",3.0,0.0,0.0,0.0,0.0,0.0,0.0
+2026,9,CVG,"Cincinnati, OH: Cincinnati/Northern Kentucky International",596.0,100.0,35.75,36.76,16.86,10.63,6895.0
+2026,9,DAB,"Daytona Beach, FL: Daytona Beach International",117.0,11.0,4.95,2.0,1.19,2.87,481.0
+2026,9,DAL,"Dallas, TX: Dallas Love Field",133.0,28.0,14.3,7.85,2.68,3.17,1477.0
+2026,9,DAY,"Dayton, OH: James M Cox/Dayton International",105.0,18.0,11.27,3.65,2.0,1.08,957.0
+2026,9,DCA,"Washington, DC: Ronald Reagan Washington National",787.0,165.0,58.89,33.52,62.05,10.54,11891.0
+2026,9,DEN,"Denver, CO: Denver International",958.0,221.0,71.67,41.35,99.81,8.17,11146.0
+2026,9,DFW,"Dallas/Fort Worth, TX: Dallas/Fort Worth International",941.0,189.0,75.09,57.34,54.07,2.5,12155.0
+2026,9,DJT,"West Palm Beach/Palm Beach, FL: Donald J Trump International",513.0,113.0,39.51,30.87,39.04,3.59,7099.0
+2026,9,DSM,"Des Moines, IA: Des Moines International",106.0,14.0,4.47,6.74,2.69,0.1,770.0
+2026,9,DTW,"Detroit, MI: Detroit Metro Wayne County",4945.0,760.0,220.7,329.61,189.04,19.65,64289.0
+2026,9,ECP,"Panama City, FL: Northwest Florida Beaches International",191.0,29.0,9.12,6.25,9.04,4.59,1431.0
+2026,9,ELP,"El Paso, TX: El Paso International",60.0,9.0,3.36,1.98,1.65,2.0,476.0
+2026,9,EWR,"Newark, NJ: Newark Liberty International",552.0,123.0,43.12,20.64,56.95,2.29,6584.0
+2026,9,EYW,"Key West, FL: Key West International",120.0,15.0,6.76,2.0,6.24,0.0,707.0
+2026,9,FAI,"Fairbanks, AK: Fairbanks International",58.0,14.0,5.76,0.78,7.46,0.0,402.0
+2026,9,FAR,"Fargo, ND: Hector International",59.0,10.0,7.95,0.87,1.17,0.0,391.0
+2026,9,FCA,"Kalispell, MT: Glacier Park International",121.0,17.0,9.8,4.79,2.41,0.0,830.0
+2026,9,FLL,"Fort Lauderdale, FL: Fort Lauderdale-Hollywood International",962.0,211.0,69.67,41.87,92.37,7.08,13577.0
+2026,9,FSD,"Sioux Falls, SD: Joe Foss Field",60.0,6.0,2.45,2.41,0.75,0.39,762.0
+2026,9,GEG,"Spokane, WA: Spokane International",232.0,31.0,18.21,7.12,5.5,0.16,1464.0
+2026,9,GNV,"Gainesville, FL: Gainesville Regional",141.0,11.0,3.06,3.34,0.2,3.39,629.0
+2026,9,GPT,"Gulfport/Biloxi, MS: Gulfport-Biloxi International",107.0,15.0,5.69,5.61,1.68,2.03,697.0
+2026,9,GRB,"Green Bay, WI: Green Bay Austin Straubel International",45.0,3.0,1.2,1.56,0.06,0.18,527.0
+2026,9,GRR,"Grand Rapids, MI: Gerald R. Ford International",186.0,28.0,11.99,10.27,4.62,1.12,1264.0
+2026,9,GSO,"Greensboro/High Point, NC: Piedmont Triad International",211.0,32.0,11.45,9.07,8.66,2.83,1525.0
+2026,9,GSP,"Greer, SC: Greenville-Spartanburg International",205.0,25.0,14.71,3.99,3.51,2.79,1647.0
+2026,9,HNL,"Honolulu, HI: Daniel K Inouye International",300.0,82.0,22.69,13.97,44.72,0.62,4897.0
+2026,9,HOU,"Houston, TX: William P Hobby",115.0,24.0,12.26,4.96,4.22,2.56,1409.0
+2026,9,HPN,"White Plains, NY: Westchester County",56.0,10.0,5.51,1.79,1.56,1.13,522.0
+2026,9,HSV,"Huntsville, AL: Huntsville International-Carl T Jones Field",176.0,26.0,11.47,6.4,5.27,2.86,2013.0
+2026,9,IAD,"Washington, DC: Washington Dulles International",302.0,62.0,28.89,14.17,15.24,3.7,4461.0
+2026,9,IAH,"Houston, TX: George Bush Intercontinental/Houston",675.0,125.0,52.83,21.71,44.09,6.37,6829.0
+2026,9,ICT,"Wichita, KS: Wichita Dwight D Eisenhower National",108.0,16.0,7.31,3.27,4.25,1.16,859.0
+2026,9,IDA,"Idaho Falls, ID: Idaho Falls Regional",30.0,4.0,1.8,0.79,1.41,0.0,164.0
+2026,9,ILM,"Wilmington, NC: Wilmington International",111.0,15.0,4.02,7.37,2.22,1.39,1036.0
+2026,9,IND,"Indianapolis, IN: Indianapolis International",387.0,40.0,20.26,10.67,4.73,4.34,2267.0
+2026,9,JAC,"Jackson, WY: Jackson Hole",90.0,9.0,3.82,1.92,2.47,0.79,622.0
+2026,9,JAN,"Jackson/Vicksburg, MS: Jackson Medgar Wiley Evers International",196.0,30.0,11.82,9.65,4.21,4.33,1468.0
+2026,9,JAX,"Jacksonville, FL: Jacksonville International",411.0,61.0,29.75,11.23,16.9,3.12,2919.0
+2026,9,JFK,"New York, NY: John F. Kennedy International",2495.0,525.0,132.94,124.85,237.3,29.91,35725.0
+2026,9,JNU,"Juneau, AK: Juneau International",30.0,6.0,1.52,1.32,3.16,0.0,187.0
+2026,9,KOA,"Kona, HI: Ellison Onizuka Kona International at Keahole",60.0,7.0,3.84,0.0,3.16,0.0,281.0
+2026,9,LAS,"Las Vegas, NV: Harry Reid International",1207.0,268.0,100.5,60.6,96.84,8.94,13538.0
+2026,9,LAX,"Los Angeles, CA: Los Angeles International",3151.0,625.0,199.7,192.75,218.06,13.62,40829.0
+2026,9,LEX,"Lexington, KY: Blue Grass",165.0,21.0,11.43,2.48,3.34,3.75,1064.0
+2026,9,LGA,"New York, NY: LaGuardia",2383.0,603.0,116.57,186.78,275.02,24.64,49176.0
+2026,9,LGB,"Long Beach, CA: Long Beach Airport",60.0,4.0,3.26,0.0,0.74,0.0,182.0
+2026,9,LIH,"Lihue, HI: Lihue Airport",60.0,13.0,4.82,2.7,5.48,0.0,512.0
+2026,9,LIT,"Little Rock, AR: Bill and Hillary Clinton Nat Adams Field",184.0,21.0,12.25,4.86,1.5,2.39,1333.0
+2026,9,MCI,"Kansas City, MO: Kansas City International",720.0,127.0,49.82,42.18,28.54,4.85,7414.0
+2026,9,MCO,"Orlando, FL: Orlando International",1630.0,346.0,150.19,86.93,98.68,8.2,22677.0
+2026,9,MDT,"Harrisburg, PA: Harrisburg International",109.0,18.0,9.8,4.84,3.1,0.26,950.0
+2026,9,MDW,"Chicago, IL: Chicago Midway International",109.0,16.0,7.56,4.62,3.37,0.44,816.0
+2026,9,MEM,"Memphis, TN: Memphis International",368.0,57.0,29.91,12.36,10.27,4.46,3527.0
+2026,9,MIA,"Miami, FL: Miami International",868.0,263.0,67.73,37.75,154.57,2.95,23192.0
+2026,9,MKE,"Milwaukee, WI: General Mitchell International",329.0,44.0,17.92,10.15,7.96,7.97,2229.0
+2026,9,MLB,"Melbourne, FL: Melbourne Orlando International",117.0,12.0,4.97,4.07,0.95,2.01,998.0
+2026,9,MOB,"Mobile, AL: Mobile Regional",104.0,22.0,13.06,3.15,3.96,1.83,1263.0
+2026,9,MSN,"Madison, WI: Dane County Regional-Truax Field",132.0,28.0,14.2,8.44,4.81,0.55,1472.0
+2026,9,MSO,"Missoula, MT: Missoula Montana",86.0,13.0,6.71,2.83,3.39,0.08,685.0
+2026,9,MSP,"Minneapolis, MN: Minneapolis-St Paul International",5583.0,798.0,267.87,296.56,207.67,25.9,58254.0
+2026,9,MSY,"New Orleans, LA: Louis Armstrong New Orleans International",520.0,72.0,31.9,15.51,22.05,2.54,4517.0
+2026,9,MYR,"Myrtle Beach, SC: Myrtle Beach International",155.0,21.0,12.26,1.56,4.48,1.86,1444.0
+2026,9,OGG,"Kahului, HI: Kahului Airport",90.0,24.0,11.01,2.58,10.42,0.0,1733.0
+2026,9,OKC,"Oklahoma City, OK: Okc Will Rogers International",134.0,16.0,7.14,3.83,1.77,3.26,1029.0
+2026,9,OMA,"Omaha, NE: Eppley Airfield",134.0,12.0,2.75,3.18,3.66,2.41,714.0
+2026,9,ONT,"Ontario, CA: Ontario International",133.0,21.0,6.43,5.71,8.86,0.0,940.0
+2026,9,ORD,"Chicago, IL: Chicago O'Hare International",1110.0,378.0,89.19,70.87,210.95,5.41,26133.0
+2026,9,ORF,"Norfolk, VA: Norfolk International",280.0,39.0,18.92,9.18,8.13,2.76,2401.0
+2026,9,PDX,"Portland, OR: Portland International",623.0,86.0,38.32,11.77,33.97,1.94,3619.0
+2026,9,PHL,"Philadelphia, PA: Philadelphia International",551.0,115.0,40.75,19.04,48.32,6.89,8767.0
+2026,9,PHX,"Phoenix, AZ: Phoenix Sky Harbor International",800.0,180.0,80.39,41.97,53.64,4.0,9686.0
+2026,9,PIT,"Pittsburgh, PA: Pittsburgh International",286.0,34.0,13.62,9.08,7.11,4.19,1688.0
+2026,9,PNS,"Pensacola, FL: Pensacola International",222.0,29.0,10.95,7.79,6.31,3.95,1922.0
+2026,9,PSC,"Pasco/Kennewick/Richland, WA: Tri Cities",60.0,13.0,7.43,2.98,2.59,0.0,625.0
+2026,9,PSP,"Palm Springs, CA: Palm Springs International",3.0,3.0,1.0,0.0,2.0,0.0,179.0
+2026,9,PVD,"Providence, RI: Rhode Island Tf Green International",116.0,18.0,7.9,1.65,6.93,1.52,820.0
+2026,9,PWM,"Portland, ME: Portland International Jetport",149.0,21.0,7.73,6.48,6.45,0.33,1082.0
+2026,9,RAP,"Rapid City, SD: Rapid City Regional",1.0,0.0,0.0,0.0,0.0,0.0,0.0
+2026,9,RDU,"Raleigh/Durham, NC: Raleigh-Durham International",1004.0,169.0,60.22,70.18,31.32,7.29,12495.0
+2026,9,RIC,"Richmond, VA: Richmond International",224.0,47.0,26.13,10.18,6.82,3.88,2246.0
+2026,9,RNO,"Reno, NV: Reno/Tahoe International",90.0,14.0,8.0,2.11,1.89,1.0,557.0
+2026,9,ROA,"Roanoke, VA: Roanoke Blacksburg Regional",30.0,10.0,2.2,4.87,0.78,2.15,972.0
+2026,9,ROC,"Rochester, NY: Frederick Douglass Grtr Rochester International",117.0,20.0,9.22,7.93,1.49,1.36,1212.0
+2026,9,RSW,"Fort Myers, FL: Southwest Florida International",440.0,80.0,36.78,15.13,21.86,6.23,4442.0
+2026,9,SAN,"San Diego, CA: San Diego International",795.0,240.0,66.62,34.51,133.94,4.94,11435.0
+2026,9,SAT,"San Antonio, TX: San Antonio International",562.0,83.0,40.41,19.65,17.94,5.0,4720.0
+2026,9,SAV,"Savannah, GA: Savannah/Hilton Head International",300.0,42.0,15.66,7.67,15.26,3.41,2140.0
+2026,9,SDF,"Louisville, KY: Louisville Muhammad Ali International",231.0,33.0,12.39,9.7,7.22,3.69,1889.0
+2026,9,SEA,"Seattle, WA: Seattle/Tacoma International",2775.0,509.0,174.08,139.16,186.64,9.13,36538.0
+2026,9,SFO,"San Francisco, CA: San Francisco International",1196.0,407.0,80.4,51.3,270.66,4.4,20027.0
+2026,9,SGF,"Springfield, MO: Springfield-Branson National",63.0,5.0,2.0,1.89,0.11,1.0,177.0
+2026,9,SJC,"San Jose, CA: Norman Y. Mineta San Jose International",301.0,45.0,18.15,11.81,11.26,3.77,2186.0
+2026,9,SJU,"San Juan, PR: Luis Munoz Marin International",213.0,35.0,16.55,5.94,10.48,2.04,1922.0
+2026,9,SLC,"Salt Lake City, UT: Salt Lake City International",4468.0,576.0,215.26,216.34,124.02,19.38,41223.0
+2026,9,SMF,"Sacramento, CA: Sacramento International",260.0,46.0,22.68,9.74,8.64,4.94,2673.0
+2026,9,SNA,"Santa Ana, CA: John Wayne Airport-Orange County",338.0,74.0,27.76,8.76,33.68,3.8,3413.0
+2026,9,SRQ,"Sarasota/Bradenton, FL: Sarasota/Bradenton International",193.0,37.0,17.36,6.83,9.46,3.36,2840.0
+2026,9,STL,"St. Louis, MO: St Louis Lambert International",466.0,65.0,37.27,15.38,7.03,4.32,4149.0
+2026,9,STT,"Charlotte Amalie, VI: Cyril E King",31.0,3.0,2.0,0.0,1.0,0.0,261.0
+2026,9,STX,"Christiansted, VI: Henry E. Rohlsen",1.0,0.0,0.0,0.0,0.0,0.0,0.0
+2026,9,SYR,"Syracuse, NY: Syracuse Hancock International",169.0,21.0,10.17,5.81,3.13,1.0,1253.0
+2026,9,TLH,"Tallahassee, FL: Tallahassee International",162.0,20.0,12.13,5.27,0.65,1.95,2327.0
+2026,9,TPA,"Tampa, FL: Tampa International",1084.0,241.0,99.96,74.83,59.76,5.97,15256.0
+2026,9,TRI,"Bristol/Johnson City/Kingsport, TN: Tri Cities",60.0,4.0,0.11,2.65,1.0,0.25,340.0
+2026,9,TUL,"Tulsa, OK: Tulsa International",130.0,12.0,6.88,2.68,2.06,0.38,819.0
+2026,9,TUS,"Tucson, AZ: Tucson International",60.0,9.0,5.01,1.49,2.0,0.49,823.0
+2026,9,TVC,"Traverse City, MI: Cherry Capital",33.0,3.0,1.86,1.14,0.0,0.0,170.0
+2026,9,TYS,"Knoxville, TN: McGhee Tyson",149.0,29.0,14.32,6.8,6.7,1.19,1395.0
+2026,9,VPS,"Valparaiso, FL: Eglin AFB Destin Fort Walton Beach",198.0,23.0,12.42,3.48,3.95,3.15,1434.0
+2026,9,XNA,"Fayetteville, AR: Northwest Arkansas National",56.0,8.0,5.36,0.0,2.64,0.0,433.0
 2026,8,ABE,"Allentown/Bethlehem/Easton, PA: Lehigh Valley International",31.0,2.0,0.0,0.01,1.9,0.09,288.0
 2026,8,ABQ,"Albuquerque, NM: Albuquerque International Sunport",118.0,27.0,10.43,10.15,5.87,0.55,2000.0
 2026,8,AGS,"Augusta, GA: Augusta Regional at Bush Field",2.0,0.0,0.0,0.0,0.0,0.0,0.0
