@@ -10,7 +10,10 @@
 #               le déduit : une fiche reçue = « briefing » (workflow C), sinon « alert » (workflow B)
 #   aeroport  : code IATA (MCO)
 #   ia        : le texte du LLM (B : l'alerte ; C : la note de l'IA)
-#   donnees   : B seulement, imprévu / resume (les données en direct, pour vérifier)
+#   donnees   : B seulement, ancien branchement : imprévu / resume (les données en direct, pour vérifier)
+#   evenements: B seulement, imprévu / evenements (JSON). Avec elle, le mail montre le niveau de risque, le statut
+#               FAA, une seule liste de créneaux (heure locale + UTC, codes météo en mots) et les actions liées
+#               aux créneaux ; « donnees » n'est alors plus utilisé (plus de doublon)
 #   intro     : C seulement, rappel / message (le début du mail)
 #   fiche     : C seulement, calcul / fiche (la fiche du mois, ou le bilan annuel)
 #   logo      : adresse de l'image du logo (vide = le logo blanc du dépôt GitHub)
@@ -23,6 +26,7 @@
 # Pourquoi une seule ligne et des caractères codés : avec « Convert to HTML », le plugin Email de Dify lit le
 # contenu comme du Markdown, ligne par ligne. Une seule ligne sans « * », « [ », « ] » ni « ` » passe intacte.
 import html as _html
+import json
 import re
 from datetime import datetime, timezone
 
@@ -533,8 +537,145 @@ def mail_alerte(aeroport, ia, donnees, logo, jour):
     return html, "\n".join(t).strip(), apercu
 
 
+# Niveau de risque de l'alerte -> (couleur, fond, texte)
+NIVEAUX_ALERTE = {
+    "high": (ROUGE, "#FCEDEF", "High risk"),
+    "medium": (ORANGE, "#FDF3E7", "Medium risk"),
+    "low": (VERT, "#EEF4E6", "Low risk"),
+    "none": (BLEU, "#EEF1F5", "No risk"),
+}
+
+
+def lire_evenements(texte):
+    """La sortie « evenements » du nœud imprévu (JSON) ; None si absente ou illisible (ancien branchement)."""
+    try:
+        ev = json.loads(texte or "")
+    except (TypeError, ValueError):
+        return None
+    return ev if isinstance(ev, dict) and isinstance(ev.get("lignes"), list) else None
+
+
+def phrase_ia(ia):
+    """La phrase du LLM, sans « Alert MCO: » ni Markdown ; seulement la première ligne utile."""
+    for l in (ia or "").splitlines():
+        s = sans_md(l).strip().strip('"')
+        s = re.sub(r"^\s*alert\s+[A-Z]{3}\s*[:\-–]\s*", "", s, flags=re.I)
+        if s and not s.startswith(("-", "•")):
+            return s
+    return ""
+
+
+def sans_fuseau(texte, ap):
+    return re.sub(rf"\s+{re.escape(ap)} time$", "", str(texte or ""))
+
+
+def mail_alerte_v2(aeroport, ia, ev, logo, jour):
+    """Alerte du matin : niveau de risque, statut FAA, une seule liste de créneaux, actions liées aux créneaux."""
+    ap = aeroport or str(ev.get("aeroport") or "")
+    cle = str(ev.get("niveau") or "none").lower()
+    couleur, fond, nom_niveau = NIVEAUX_ALERTE.get(cle, NIVEAUX_ALERTE["none"])
+    raison = str(ev.get("raison") or "")
+    phrase = phrase_ia(ia)
+    faa = ev.get("faa") or {}
+    lignes = [l for l in ev.get("lignes") or [] if isinstance(l, dict)]
+    actions = [str(a) for a in ev.get("actions") or []]
+    erreurs = [str(e) for e in ev.get("erreurs") or []]
+    fuseau = str(ev.get("fuseau") or "")
+
+    # 1. Le niveau de risque, en couleur, puis la phrase de l'IA
+    contenu = (f'<tr><td style="background-color:{fond};padding:18px 28px;border-bottom:1px solid {LIGNE};">'
+               + etiquette(nom_niveau, couleur)
+               + f'<span style="{POLICE}font-size:13px;color:{GRIS};padding-left:10px;">{esc(raison)}</span>'
+               + (f'<div style="{POLICE}font-size:19px;line-height:26px;font-weight:bold;color:{couleur};margin-top:10px;">'
+                  f'{esc(phrase)}</div>' if phrase else "")
+               + "</td></tr>")
+
+    # 2. Le statut FAA en direct
+    etat = faa.get("etat")
+    c_faa = ROUGE if etat == "active" else (GRIS if etat == "unavailable" else VERT)
+    signe = "&#9888;" if etat == "active" else ("?" if etat == "unavailable" else "&#10003;")
+    contenu += bloc(
+        f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">'
+        f'<tr><td width="28" valign="top" style="width:28px;{POLICE}font-size:16px;line-height:22px;color:{c_faa};font-weight:bold;">{signe}</td>'
+        f'<td valign="top" style="{POLICE}font-size:14px;line-height:22px;color:#1F2A37;">'
+        f'<strong style="color:{c_faa};">FAA live status</strong> &nbsp;'
+        + "<br>".join(esc(x) for x in faa.get("lignes") or []) + "</td></tr></table>", 16, 0)
+
+    # 3. Une seule liste de créneaux, dans l'ordre, avec la source sur chaque ligne
+    if lignes:
+        rangs = []
+        for l in lignes:
+            local = sans_fuseau(l.get("quand_local"), ap)
+            titre = l.get("titre") or ""
+            haut = titre or local or l.get("quand_utc") or ""
+            bas_g = local if titre and local else ""
+            utc = l.get("quand_utc") or ""
+            certitude = l.get("certitude") or ""
+            c_cert = ORANGE if certitude.startswith(("possible", "not confirmed")) or "chance" in certitude else BLEU
+            details = " · ".join(x for x in [l.get("pluie") or "", l.get("detail") or ""] if x)
+            rangs.append(
+                f'<tr><td valign="top" width="40%" style="width:40%;padding:11px 12px 11px 0;border-bottom:1px solid {LIGNE};">'
+                f'<div style="{POLICE}font-size:14px;line-height:20px;font-weight:bold;color:{BLEU};">{esc(haut)}</div>'
+                + (f'<div style="{POLICE}font-size:13px;line-height:18px;color:{BLEU};">{esc(bas_g)}</div>' if bas_g else "")
+                + (f'<div style="{POLICE}font-size:12px;line-height:17px;color:{GRIS};">{esc(utc)}</div>' if utc else "")
+                + f'</td><td valign="top" style="padding:11px 0;border-bottom:1px solid {LIGNE};">'
+                f'<div style="{POLICE}font-size:15px;line-height:21px;font-weight:bold;color:#1F2A37;">'
+                f'{esc((l.get("risque") or "").capitalize())}'
+                f' <span style="font-weight:normal;font-size:13px;color:{c_cert};">({esc(certitude)})</span></div>'
+                + (f'<div style="{POLICE}font-size:13px;line-height:19px;color:#3A4654;">{esc(details)}</div>' if details else "")
+                + f'<div style="{POLICE}font-size:11px;line-height:16px;color:{GRIS};letter-spacing:0.5px;text-transform:uppercase;margin-top:3px;">'
+                f'{esc(l.get("source_long") or l.get("source") or "")}</div></td></tr>')
+        note = f"Times in {fuseau} (local), UTC in grey." if fuseau else "Times in UTC."
+        contenu += bloc(titre_section("", "Risk windows")
+                        + paragraphe(esc(note), 12, GRIS, 4)
+                        + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">'
+                        + "".join(rangs) + "</table>", 20, 4)
+
+    # 4. Les actions, liées aux créneaux
+    if actions:
+        cases = "".join(
+            f'<tr><td width="26" valign="top" style="width:26px;{POLICE}font-size:16px;line-height:22px;color:{BLEU};">&#9744;</td>'
+            f'<td valign="top" style="padding-bottom:8px;{POLICE}font-size:15px;line-height:22px;color:#1F2A37;">{esc(a)}</td></tr>'
+            for a in actions)
+        contenu += bloc(titre_section("", "What to do") + encadre(
+            f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">{cases}</table>',
+            "#F5F7FA", BLEU), 16, 4)
+    if erreurs:
+        contenu += bloc(paragraphe(esc(" ".join(erreurs)), 13, GRIS), 8, 4)
+
+    pied = ("Sources: FAA airport status (live), aviationweather.gov (airport forecast, TAF) and the National Weather Service "
+            "(7-day area forecast, NWS). Weather codes are written in plain words; local times come from the NWS forecast."
+            "<br>Sent automatically at 6:00 only when a risk is reported.<br>"
+            "Student project (Delta mini-assistant): not an official Delta Air Lines communication.")
+    titre = f"Weather and FAA alert · {ap}"
+    sous = date_du_jour(jour, False)
+    apercu = f"{nom_niveau}: {phrase or raison}"
+    html = page(contenu, apercu, logo, titre, sous, pied)
+
+    t = [titre.upper(), sous, "=" * 60, "", f"{nom_niveau.upper()}: {raison}"]
+    if phrase:
+        t += [phrase]
+    t += ["", "FAA LIVE STATUS: " + " ".join(faa.get("lignes") or []), ""]
+    if lignes:
+        t += ["RISK WINDOWS" + (f" ({fuseau}, UTC in brackets)" if fuseau else ""), "-" * 40]
+        for l in lignes:
+            local = sans_fuseau(l.get("quand_local"), ap)
+            quand = " ".join(x for x in [l.get("titre") or "", local] if x) or l.get("quand_utc") or ""
+            utc = f" ({l.get('quand_utc')})" if l.get("quand_utc") and (l.get("titre") or local) else ""
+            details = "; ".join(x for x in [l.get("pluie") or "", l.get("detail") or ""] if x)
+            t.append(f"- {quand}{utc}: {l.get('risque')} ({l.get('certitude')})"
+                     + (f", {details}" if details else "") + f" [{l.get('source')}]")
+        t.append("")
+    if actions:
+        t += ["WHAT TO DO", "-" * 40] + [f"[ ] {a}" for a in actions] + [""]
+    t += erreurs + ([""] if erreurs else [])
+    t += ["Sources: FAA (live), airport forecast (TAF), National Weather Service 7-day forecast (NWS).",
+          "Sent automatically at 6:00 only when a risk is reported."]
+    return html, "\n".join(t).strip(), apercu
+
+
 def main(genre: str = "", aeroport: str = "", ia: str = "", donnees: str = "", intro: str = "",
-         fiche: str = "", logo: str = "", aujourd_hui: str = "") -> dict:
+         fiche: str = "", logo: str = "", aujourd_hui: str = "", evenements: str = "") -> dict:
     ap = "".join(ch for ch in (aeroport or "").upper() if ch.isalpha())[:3]
     jour = datetime.fromisoformat(aujourd_hui) if aujourd_hui else datetime.now(timezone.utc)
     if logo and not str(logo).startswith("https://"):
@@ -543,7 +684,11 @@ def main(genre: str = "", aeroport: str = "", ia: str = "", donnees: str = "", i
     if not g:
         g = "briefing" if (fiche or "").strip() else "alert"
     if g.startswith(("alert", "alerte")):
-        html, texte, apercu = mail_alerte(ap, ia, donnees, logo, jour)
+        ev = lire_evenements(evenements)
+        if ev is not None:
+            html, texte, apercu = mail_alerte_v2(ap, ia, ev, logo, jour)
+        else:  # ancien branchement, sans la sortie « evenements »
+            html, texte, apercu = mail_alerte(ap, ia, donnees, logo, jour)
     else:
         html, texte, apercu = mail_fiche(ap, ia, intro, fiche, logo, jour)
     return {"html": html.replace("\n", " "), "texte": texte, "apercu": apercu}
